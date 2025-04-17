@@ -1,6 +1,13 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Navbar } from '../components/layout/Navbar';
+import dynamic from 'next/dynamic';
+
+// Import ErrorBoundary dynamically to avoid SSR issues
+const ErrorBoundary = dynamic(
+  () => import('../components/ErrorBoundary'),
+  { ssr: false }
+);
 
 export const metadata: Metadata = {
   title: 'AI Travel Agent',
@@ -17,7 +24,9 @@ export default function RootLayout({
       <body className="min-h-screen bg-light">
         <Navbar />
         <main className="container mx-auto px-4 py-8">
-          {children}
+          <ErrorBoundary>
+            {children}
+          </ErrorBoundary>
         </main>
       </body>
     </html>
