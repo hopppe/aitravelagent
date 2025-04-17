@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* Calendar input styles */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  transform: scale(1.5);
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-datetime-edit {
+  font-size: 16px;
+  padding: 8px 0;
+}
+
+::-webkit-calendar-picker {
+  font-size: 150%;
+} 
