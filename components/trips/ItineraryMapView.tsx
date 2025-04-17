@@ -51,9 +51,9 @@ const containerStyle = {
   height: '100%'
 };
 
-// Get the API key once at module level, outside of component
-const googleMapsApiKey = typeof window !== 'undefined' 
-  ? (process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '') 
+// Improved API key handling for both client and server side rendering
+const googleMapsApiKey = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY 
+  ? process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY 
   : '';
 
 export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
@@ -70,16 +70,25 @@ export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
 
   // Log any errors with the API key
   useEffect(() => {
+    // More detailed debugging in development mode
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Environment check:', {
+        hasKey: !!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+        keyLength: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.length || 0,
+        envVars: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_')),
+      });
+    }
+
     if (!googleMapsApiKey) {
       console.error('Google Maps API key is not defined in environment variables');
-      setError('Google Maps API key is missing. Please add it to your .env.local file.');
+      setError('Google Maps API key is missing. Please add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to your deployment environment variables.');
     }
     
     if (loadError) {
       console.error('Google Maps loading error:', loadError);
-      setError(`Failed to load Google Maps: ${loadError.message}`);
+      setError(`Failed to load Google Maps: ${loadError.message} - Please check if your API key is valid and has correct domain restrictions.`);
     }
-  }, [loadError]);
+  }, [loadError, googleMapsApiKey]);
 
   // Flatten all activities into a single array
   const allActivities = days.flatMap(day => day.activities);
@@ -201,11 +210,20 @@ export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
           <h3 className="text-lg font-semibold text-gray-800">Google Maps Error</h3>
           <p className="text-gray-600 mt-1">Failed to load Google Maps API. This could be due to:</p>
           <ul className="text-sm text-left list-disc pl-8 mt-2 text-gray-700">
-            <li>Invalid API key</li>
-            <li>API key restrictions (domain, IP, etc)</li>
-            <li>API key not enabled for Maps JavaScript API</li>
-            <li>Billing not enabled for the project</li>
+            <li>Missing NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in environment variables</li>
+            <li>API key restrictions not allowing this domain</li>
+            <li>Maps JavaScript API not enabled for this API key</li>
+            <li>Billing not enabled in Google Cloud Console</li>
           </ul>
+          <div className="mt-4 bg-gray-200 p-3 rounded text-xs text-gray-700 text-left">
+            <p className="font-semibold">For Administrators:</p>
+            <ol className="list-decimal pl-5 mt-1 space-y-1">
+              <li>Verify the environment variable is set on the hosting platform</li>
+              <li>Check that the API key's "Application restrictions" in Google Cloud Console include this domain</li>
+              <li>Ensure the "API restrictions" include "Maps JavaScript API"</li>
+              <li>Visit the Google Cloud Console to enable billing</li>
+            </ol>
+          </div>
           <p className="text-sm text-gray-500 mt-4 bg-gray-100 p-2 rounded overflow-auto">
             Error details: {loadError.message}
           </p>
@@ -237,8 +255,14 @@ export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
             </svg>
           </div>
           <h3 className="text-lg font-semibold text-gray-800">Map Error</h3>
-          <p className="text-gray-600 mt-1">{error}</p>
-          <p className="text-sm text-gray-500 mt-4">Try refreshing the page or check your internet connection.</p>
+          <p className="text-gray-600 mb-2">{error}</p>
+          
+          {typeof window !== 'undefined' && (
+            <div className="mt-3 text-xs text-gray-500 bg-gray-100 p-2 rounded">
+              <p>Current domain: <span className="font-mono">{window.location.hostname}</span></p>
+              <p className="mt-1">Make sure this domain is allowed in your Google Cloud Console API key restrictions.</p>
+            </div>
+          )}
         </div>
       </div>
     );

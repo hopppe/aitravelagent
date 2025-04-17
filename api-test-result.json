@@ -1,0 +1,181 @@
+{
+  "title": "Relaxing Vacation in Paris",
+  "destination": "Paris, France",
+  "dates": {
+    "start": "2023-10-15",
+    "end": "2023-10-18"
+  },
+  "days": [
+    {
+      "date": "2023-10-15",
+      "activities": [
+        {
+          "id": "1",
+          "time": "Morning",
+          "title": "Arrival and Check-in",
+          "description": "Arrive in Paris and check-in to a comfortable mid-range hotel.",
+          "location": "Hotel in central Paris",
+          "coordinates": {
+            "lat": 48.8566,
+            "lng": 2.3522
+          },
+          "cost": 0
+        },
+        {
+          "id": "2",
+          "time": "Afternoon",
+          "title": "Visit Louvre Museum",
+          "description": "Explore the world-renowned Louvre Museum and discover its art collections.",
+          "location": "Rue de Rivoli, 75001 Paris",
+          "coordinates": {
+            "lat": 48.8606,
+            "lng": 2.3376
+          },
+          "cost": 15
+        },
+        {
+          "id": "3",
+          "time": "Evening",
+          "title": "Dinner at Le Bouillon Chartier",
+          "description": "Enjoy a delicious French meal at this historic restaurant known for its traditional dishes.",
+          "location": "7 Rue du Faubourg Montmartre, 75009 Paris",
+          "coordinates": {
+            "lat": 48.8738,
+            "lng": 2.3432
+          },
+          "cost": 30
+        }
+      ]
+    },
+    {
+      "date": "2023-10-16",
+      "activities": [
+        {
+          "id": "4",
+          "time": "Morning",
+          "title": "Explore Montmartre",
+          "description": "Wander through the charming streets of Montmartre, visit Sacré-Cœur Basilica, and enjoy panoramic views of Paris.",
+          "location": "Montmartre, 75018 Paris",
+          "coordinates": {
+            "lat": 48.8867,
+            "lng": 2.3431
+          },
+          "cost": 0
+        },
+        {
+          "id": "5",
+          "time": "Afternoon",
+          "title": "Lunch at Le Relais Gascon",
+          "description": "Savor a delicious French meal at this cozy restaurant known for its traditional cuisine.",
+          "location": "6 Rue des Abbesses, 75018 Paris",
+          "coordinates": {
+            "lat": 48.8863,
+            "lng": 2.3374
+          },
+          "cost": 25
+        },
+        {
+          "id": "6",
+          "time": "Evening",
+          "title": "Seine River Cruise",
+          "description": "Relax on a scenic Seine River cruise and admire the iconic landmarks of Paris illuminated at night.",
+          "location": "Seine River, Paris",
+          "coordinates": {
+            "lat": 48.8564,
+            "lng": 2.3523
+          },
+          "cost": 20
+        }
+      ]
+    },
+    {
+      "date": "2023-10-17",
+      "activities": [
+        {
+          "id": "7",
+          "time": "Morning",
+          "title": "Visit Musée d'Orsay",
+          "description": "Explore the impressive collection of Impressionist and Post-Impressionist masterpieces at Musée d'Orsay.",
+          "location": "1 Rue de la Légion d'Honneur, 75007 Paris",
+          "coordinates": {
+            "lat": 48.8599,
+            "lng": 2.3266
+          },
+          "cost": 12
+        },
+        {
+          "id": "8",
+          "time": "Afternoon",
+          "title": "Lunch at Le Procope",
+          "description": "Dine at the oldest café in Paris, known for its historic ambiance and French cuisine.",
+          "location": "13 Rue de l'Ancienne Comédie, 75006 Paris",
+          "coordinates": {
+            "lat": 48.8533,
+            "lng": 2.3407
+          },
+          "cost": 35
+        },
+        {
+          "id": "9",
+          "time": "Evening",
+          "title": "Stroll along Champs-Élysées",
+          "description": "Walk down the famous avenue, shop at luxury boutiques, and enjoy the vibrant atmosphere.",
+          "location": "Champs-Élysées, 75008 Paris",
+          "coordinates": {
+            "lat": 48.8699,
+            "lng": 2.3073
+          },
+          "cost": 0
+        }
+      ]
+    },
+    {
+      "date": "2023-10-18",
+      "activities": [
+        {
+          "id": "10",
+          "time": "Morning",
+          "title": "Visit Notre-Dame Cathedral",
+          "description": "Admire the stunning Gothic architecture of Notre-Dame Cathedral on Île de la Cité.",
+          "location": "6 Parvis Notre-Dame - Pl. Jean-Paul II, 75004 Paris",
+          "coordinates": {
+            "lat": 48.853,
+            "lng": 2.3499
+          },
+          "cost": 0
+        },
+        {
+          "id": "11",
+          "time": "Afternoon",
+          "title": "Lunch at Café de Flore",
+          "description": "Experience a classic Parisian café culture at this historic café frequented by famous intellectuals.",
+          "location": "172 Boulevard Saint-Germain, 75006 Paris",
+          "coordinates": {
+            "lat": 48.8543,
+            "lng": 2.3333
+          },
+          "cost": 30
+        },
+        {
+          "id": "12",
+          "time": "Evening",
+          "title": "Farewell Dinner at Le Comptoir du Relais",
+          "description": "Enjoy a memorable dinner at this popular bistro known for its exceptional French cuisine.",
+          "location": "9 Carrefour de l'Odéon, 75006 Paris",
+          "coordinates": {
+            "lat": 48.8496,
+            "lng": 2.3375
+          },
+          "cost": 40
+        }
+      ]
+    }
+  ],
+  "budget": {
+    "accommodation": 400,
+    "food": 250,
+    "activities": 112,
+    "transport": 100,
+    "total": 862
+  }
+}
