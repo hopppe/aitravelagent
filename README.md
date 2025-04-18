@@ -57,6 +57,55 @@ npm run dev
 
 See the [todo.md](todo.md) file for the list of planned features and current development status.
 
+## Supabase Setup
+
+This application uses Supabase for persistently storing job status information. To set up Supabase:
+
+1. **Create a Supabase Account**:
+   - Go to [Supabase](https://supabase.com/) and sign up for a free account
+   - Create a new project with a name of your choice
+
+2. **Create the Jobs Table**:
+   - Go to the "Table Editor" in your Supabase dashboard
+   - Click "Create a new table"
+   - Name the table `jobs`
+   - Add the following columns:
+     - `id` (type: text, primary key)
+     - `status` (type: text)
+     - `result` (type: jsonb, nullable)
+     - `error` (type: text, nullable)
+     - `created_at` (type: timestamptz, default: now())
+     - `updated_at` (type: timestamptz)
+
+3. **Get Your API Keys**:
+   - Go to "Project Settings" > "API"
+   - Find your project URL and anon/public key
+   - Add these to your `.env.local` file:
+     ```
+     NEXT_PUBLIC_SUPABASE_URL=your_project_url
+     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+     ```
+
+4. **Set Row-Level Security** (Optional but Recommended):
+   - Go to the "Authentication" > "Policies" section
+   - Create policies that restrict access as needed
+
+## OpenAI API Setup
+
+To generate travel itineraries, you need an OpenAI API key:
+
+1. **Create an OpenAI Account**:
+   - Go to [OpenAI](https://platform.openai.com/signup) and sign up for an account
+   - Navigate to the API section
+
+2. **Create an API Key**:
+   - Go to "API keys" in your account
+   - Click "Create new secret key"
+   - Add this to your `.env.local` file:
+     ```
+     OPENAI_API_KEY=your_openai_api_key
+     ```
+
 ## Google Maps API Setup
 
 To use the Google Maps functionality in this application, you need to set up a valid API key:

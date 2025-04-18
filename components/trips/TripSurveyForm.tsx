@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import JobStatusPoller from './JobStatusPoller';
+import ErrorDisplay from '../ErrorDisplay';
 
 // Define the survey steps
 type SurveyStep = 'destination' | 'dates' | 'purpose' | 'budget' | 'preferences';
@@ -51,9 +53,16 @@ export default function TripSurveyForm() {
     preferences: [] as string[],
   });
   
-  // Add loading state
+  // Add loading and job tracking state
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [jobId, setJobId] = useState<string | null>(null);
+
+  // Add error details state
+  const [errorDetails, setErrorDetails] = useState<string | null>(null);
+
+  // Add testing connection state
+  const [isTestingConnection, setIsTestingConnection] = useState<boolean>(false);
 
   // Handle text input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,11 +116,43 @@ export default function TripSurveyForm() {
     }
   };
 
+  // Test the job system connection
+  const testJobSystem = async () => {
+    try {
+      setIsTestingConnection(true);
+      setError(null);
+      setErrorDetails(null);
+      
+      const response = await fetch('/api/test-job');
+      const data = await response.json();
+      
+      if (!response.ok || !data.success) {
+        throw new Error(data.error || 'Connection test failed');
+      }
+      
+      console.log('Job system test successful:', data);
+      return true;
+    } catch (err) {
+      console.error('Job system test failed:', err);
+      return false;
+    } finally {
+      setIsTestingConnection(false);
+    }
+  };
+
   // Submit the form
   const handleSubmit = async () => {
     try {
+      // Test connection first
+      const connectionOk = await testJobSystem();
+      if (!connectionOk) {
+        throw new Error('Job system connection test failed. Please check your Supabase configuration.');
+      }
+      
       setIsGenerating(true);
       setError(null);
+      setErrorDetails(null);
+      setJobId(null);
       
       console.log('Submitting trip form with data:', JSON.stringify(formData, null, 2));
       
@@ -127,29 +168,42 @@ export default function TripSurveyForm() {
       
       console.log('API response status:', response.status);
       
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('API error response:', errorData);
-        
-        // Show more detailed error message if available
-        const errorMessage = errorData.details 
-          ? `${errorData.error}: ${errorData.details}` 
-          : errorData.error || 'Failed to generate itinerary';
-        
-        throw new Error(errorMessage);
-      }
-      
-      console.log('Successfully received response from API');
-      
-      // Parse the response as JSON
+      // Get the response data first, then check if it's ok
       let data;
       try {
         data = await response.json();
+        console.log('Raw API response:', data);
       } catch (parseError) {
         console.error('Error parsing API response:', parseError);
         throw new Error('Invalid response format from server');
       }
       
+      // Now check if the response was ok
+      if (!response.ok) {
+        console.error('API error response:', data);
+        
+        // Show more detailed error message if available
+        const errorMessage = data.error || 'Failed to generate itinerary';
+        throw new Error(errorMessage);
+      }
+      
+      console.log('Successfully received response from API');
+      
+      // Check if the response contains a job ID (background processing)
+      if (data.jobId) {
+        console.log('Received job ID:', data.jobId);
+        setJobId(data.jobId);
+        
+        // If job is already completed (for mock data in development)
+        if (data.status === 'completed') {
+          handleJobComplete(data.result);
+        }
+        
+        // Background job will be polled by JobStatusPoller component
+        return;
+      }
+      
+      // Legacy mode: direct itinerary response
       console.log('Received data structure:', Object.keys(data).join(', '));
       
       if (!data.itinerary) {
@@ -157,45 +211,31 @@ export default function TripSurveyForm() {
         throw new Error('API response missing itinerary data');
       }
       
-      if (!data.itinerary.days || !Array.isArray(data.itinerary.days)) {
-        console.error('Invalid itinerary structure - days array is missing or not an array');
-        console.log('Itinerary structure received:', JSON.stringify(data.itinerary, null, 2));
-        throw new Error('Invalid itinerary structure received from API');
-      }
+      // Store the itinerary and navigate
+      handleStoreItineraryAndNavigate(data.itinerary);
       
-      console.log(`Itinerary has ${data.itinerary.days.length} days`);
-      
-      // Store the generated itinerary in localStorage for demo purposes
-      try {
-        console.log('Saving itinerary to localStorage...');
-        const itineraryJson = JSON.stringify(data.itinerary);
-        console.log('Stringified length:', itineraryJson.length);
-        localStorage.setItem('generatedItinerary', itineraryJson);
-        console.log('Successfully saved to localStorage');
-      } catch (storageError) {
-        console.error('Error saving to localStorage:', storageError);
-        throw new Error('Failed to save itinerary data: ' + (storageError instanceof Error ? storageError.message : 'Unknown error'));
-      }
-      
-      // Navigate to the generated trip page
-      console.log('Navigating to generated trip page...');
-      router.push('/trips/generated-trip');
     } catch (err) {
       console.error('Error generating itinerary:', err);
       
       // Display a more user-friendly error message
       let errorMessage = 'An unexpected error occurred';
+      let details = '';
       
       if (err instanceof Error) {
         // Clean up technical error messages to make them more user-friendly
         const message = err.message;
+        details = message; // Store original message as details
         
-        if (message.includes('Failed to fetch') || message.includes('NetworkError')) {
+        if (message.includes('Supabase')) {
+          errorMessage = 'Database connection error. Please check your Supabase setup.';
+        } else if (message.includes('Failed to fetch') || message.includes('NetworkError')) {
           errorMessage = 'Network error: Please check your internet connection and try again.';
         } else if (message.includes('timeout')) {
           errorMessage = 'The request timed out. Our servers might be busy, please try again.';
         } else if (message.includes('parse')) {
           errorMessage = 'There was a problem with the response from our server. Please try again.';
+        } else if (message.includes('pattern')) {
+          errorMessage = 'There was a problem with the data format. Please try again with different preferences.';
         } else if (message.includes('itinerary')) {
           errorMessage = 'We had trouble creating your itinerary. Please try again or modify your preferences.';
         } else {
@@ -205,8 +245,83 @@ export default function TripSurveyForm() {
       }
       
       setError(errorMessage);
-    } finally {
+      setErrorDetails(details);
       setIsGenerating(false);
+    }
+  };
+  
+  // Handle job completion from the JobStatusPoller
+  const handleJobComplete = (result: any) => {
+    console.log('Job completed with result:', result);
+    
+    try {
+      if (!result || !result.itinerary) {
+        throw new Error('Invalid result from job');
+      }
+      
+      handleStoreItineraryAndNavigate(result.itinerary);
+    } catch (err) {
+      console.error('Error processing job result:', err);
+      setError('Error processing the generated itinerary');
+      setErrorDetails('Error processing the generated itinerary');
+      setIsGenerating(false);
+    }
+  };
+  
+  // Handle job errors from the JobStatusPoller
+  const handleJobError = (errorMessage: string) => {
+    console.error('Job error:', errorMessage);
+    setError(errorMessage);
+    setErrorDetails(errorMessage);
+    setIsGenerating(false);
+  };
+  
+  // Store itinerary and navigate to results page
+  const handleStoreItineraryAndNavigate = (itinerary: any) => {
+    try {
+      console.log('Saving itinerary to localStorage...');
+      
+      // Validate the itinerary data
+      if (!itinerary.days || !Array.isArray(itinerary.days)) {
+        console.error('Invalid itinerary structure - days array is missing or not an array');
+        throw new Error('Invalid itinerary structure received');
+      }
+      
+      console.log(`Itinerary has ${itinerary.days.length} days`);
+      
+      // Check coordinates before storing
+      if (itinerary.days.length > 0 && itinerary.days[0].activities?.length > 0) {
+        const firstActivity = itinerary.days[0].activities[0];
+        console.log('First activity before storing:', {
+          title: firstActivity.title,
+          hasCoordinates: !!firstActivity.coordinates,
+          coordinates: firstActivity.coordinates ? JSON.stringify(firstActivity.coordinates) : 'none'
+        });
+        
+        // Log all activities coordinates for the first day
+        const missingCoordinates = itinerary.days[0].activities.filter(
+          (activity: any) => !activity.coordinates || 
+          typeof activity.coordinates !== 'object' || 
+          activity.coordinates.lat === undefined || 
+          activity.coordinates.lng === undefined
+        );
+        
+        console.log(`First day has ${missingCoordinates.length} activities with missing coordinates out of ${itinerary.days[0].activities.length} total`);
+      }
+      
+      // Store in localStorage
+      const itineraryJson = JSON.stringify(itinerary);
+      console.log('Stringified length:', itineraryJson.length);
+      localStorage.setItem('generatedItinerary', itineraryJson);
+      console.log('Successfully saved to localStorage');
+      
+      // Navigate to the generated trip page
+      console.log('Navigating to generated trip page...');
+      router.push('/trips/generated-trip');
+    } catch (storageError) {
+      console.error('Error saving to localStorage:', storageError);
+      throw new Error('Failed to save itinerary data: ' + 
+        (storageError instanceof Error ? storageError.message : 'Unknown error'));
     }
   };
 
@@ -385,80 +500,79 @@ export default function TripSurveyForm() {
   const totalSteps = 5;
   const currentStepIndex = ['destination', 'dates', 'purpose', 'budget', 'preferences'].indexOf(currentStep) + 1;
   
-  // Render loading state when generating itinerary
-  if (isGenerating) {
+  // Show a better loading state with the job status poller
+  const renderLoadingState = () => {
+    if (!isGenerating) return null;
+    
+    if (jobId) {
+      return (
+        <JobStatusPoller 
+          jobId={jobId}
+          onComplete={handleJobComplete}
+          onError={handleJobError}
+          pollingInterval={2000} // Poll every 2 seconds
+          maxPolls={60} // Up to 2 minutes (60 * 2s)
+        />
+      );
+    }
+    
+    // Legacy loading spinner if no job ID
     return (
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
-          <h2 className="text-2xl font-bold mb-2">Creating Your Perfect Trip</h2>
-          <p className="text-gray-600">
-            Our AI is planning your personalized itinerary for {formData.destination}.
-            <br />This may take a minute...
-          </p>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">Generating Your Itinerary</h3>
+          <p className="text-sm text-gray-500">This may take up to a minute...</p>
         </div>
       </div>
     );
-  }
-  
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+    <div className="bg-white rounded-lg shadow-md p-6">
+      {renderFormStep()}
+      
       {/* Error message */}
       {error && (
-        <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
-          <div className="flex">
-            <div>
-              <p className="text-sm text-red-700">
-                {error}
-              </p>
-            </div>
-          </div>
-        </div>
+        <ErrorDisplay 
+          title="Error Generating Itinerary"
+          message={error}
+          details={errorDetails || undefined}
+          suggestion="Please try again or modify your preferences"
+          actionText="Try Again"
+          actionFn={() => {
+            setError(null);
+            setErrorDetails(null);
+          }}
+        />
       )}
       
-      {/* Progress bar */}
-      <div className="mb-8">
-        <div className="flex justify-between mb-2">
-          <span className="text-sm font-medium text-gray-500">Step {currentStepIndex} of {totalSteps}</span>
-          <span className="text-sm font-medium text-primary">{Math.round((currentStepIndex / totalSteps) * 100)}%</span>
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2.5">
-          <div 
-            className="bg-primary rounded-full h-2.5 transition-all" 
-            style={{ width: `${(currentStepIndex / totalSteps) * 100}%` }}
-          ></div>
-        </div>
-      </div>
-
-      {/* Form step content */}
-      <form className="mb-6" onSubmit={(e) => e.preventDefault()}>
-        {renderFormStep()}
-      </form>
-
       {/* Navigation buttons */}
-      <div className="flex justify-between pt-4 border-t">
-        <button
-          type="button"
-          onClick={prevStep}
-          disabled={currentStep === 'destination'}
-          className={`
-            px-4 py-2 rounded-md 
-            ${currentStep === 'destination' 
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}
-          `}
-        >
-          Back
-        </button>
-        
-        <button
-          type="button"
-          onClick={nextStep}
-          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-opacity-90"
-        >
-          {currentStep === 'preferences' ? 'Create Trip' : 'Next'}
-        </button>
+      <div className="flex justify-between mt-6">
+        {currentStep !== 'destination' && (
+          <button
+            type="button"
+            onClick={prevStep}
+            disabled={isGenerating}
+            className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
+          >
+            Back
+          </button>
+        )}
+        <div className={`${currentStep === 'destination' ? 'ml-auto' : ''}`}>
+          <button
+            type="button"
+            onClick={nextStep}
+            disabled={isGenerating}
+            className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
+          >
+            {currentStep === 'preferences' ? 'Generate Itinerary' : 'Next'}
+          </button>
+        </div>
       </div>
+      
+      {/* Loading overlay and job status poller */}
+      {renderLoadingState()}
     </div>
   );
 } 

@@ -308,6 +308,17 @@ export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
         {days.map((day, dayIndex) => {
           const dayColor = dayColors[dayIndex % dayColors.length];
           
+          // Added debugging for coordinates
+          console.log(`Day ${dayIndex} activities count:`, day.activities ? day.activities.length : 0);
+          if (day.activities && day.activities.length > 0) {
+            console.log(`Day ${dayIndex} first activity:`, {
+              title: day.activities[0].title,
+              hasCoordinates: !!day.activities[0].coordinates,
+              coordinatesType: day.activities[0].coordinates ? typeof day.activities[0].coordinates : 'none',
+              coordinatesContent: day.activities[0].coordinates ? JSON.stringify(day.activities[0].coordinates) : 'none'
+            });
+          }
+          
           // Filter activities with valid coordinates
           const validActivities = day.activities.filter(
             activity => activity && 
@@ -320,6 +331,9 @@ export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
             isFinite(Number(activity.coordinates.lat)) && 
             isFinite(Number(activity.coordinates.lng))
           );
+          
+          // Log filtered activities count for debugging
+          console.log(`Day ${dayIndex} valid activities with coordinates:`, validActivities.length);
           
           return (
             <div key={day.date}>

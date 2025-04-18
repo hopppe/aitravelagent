@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server';
+import { generateJobId, processItineraryJob } from '../job-processor';
+import { createJob, updateJobStatus, supabase } from '../../../lib/supabase';
 
 // Use API key from environment variables
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+
+// Check if Supabase is properly configured
+const isSupabaseConfigured = Boolean(
+  process.env.NEXT_PUBLIC_SUPABASE_URL && 
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 // Survey data type
 type SurveyData = {
@@ -15,351 +23,119 @@ type SurveyData = {
 
 export async function POST(request: Request) {
   try {
+    // Log environment variables (without exposing actual values)
+    console.log('Supabase connection check:', {
+      hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
+      hasSupabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      urlLength: process.env.NEXT_PUBLIC_SUPABASE_URL?.length || 0,
+      keyLength: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length || 0
+    });
+
+    // Only test Supabase connection if properly configured
+    if (isSupabaseConfigured) {
+      try {
+        const { data, error } = await supabase.from('jobs').select('count').limit(1);
+        if (error) {
+          console.error('Supabase connection test failed:', {
+            message: error.message,
+            hint: error.hint || '',
+            code: error.code || ''
+          });
+          // Continue execution despite connection error
+          // The job will be stored in memory
+        } else {
+          console.log('Supabase connection test successful:', data);
+        }
+      } catch (connError: any) {
+        console.error('Supabase connection test exception:', {
+          message: connError.message,
+          details: connError.toString(),
+          hint: '',
+          code: ''
+        });
+        // Continue execution despite connection error
+        // The job will be stored in memory
+      }
+    } else {
+      console.log('Skipping Supabase connection test - not configured');
+    }
+
     // Parse the request body
     const surveyData: SurveyData = await request.json();
 
-    // Create the prompt for GPT
-    const prompt = generatePrompt(surveyData);
+    // Create a unique job ID
+    const jobId = generateJobId();
 
-    // If we're in development or testing, return the prompt without calling the API
+    // If we're in development or testing, return mock data immediately
     if (process.env.NODE_ENV === 'development' && !OPENAI_API_KEY.startsWith('sk-')) {
       console.log('Development mode: Returning mock data');
-      return NextResponse.json({
-        itinerary: createMockItinerary(surveyData),
-        prompt
-      });
-    }
-
-    // Call OpenAI API with timeout
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 25000); // 25 second timeout
-    
-    try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are an expert travel planner. Generate a detailed travel itinerary based on the user\'s preferences. Return your response in a structured JSON format only, with no additional text, explanation, or markdown formatting. Do not wrap the JSON in code blocks. Ensure all property names use double quotes. IMPORTANT: Every activity MUST include a valid "coordinates" object with "lat" and "lng" numerical values - never omit coordinates or use empty objects. Return a valid JSON object that can be parsed with JSON.parse().'
-            },
-            {
-              role: 'user',
-              content: prompt
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 2000, // Reduced from 3000 to help with timeouts
-        }),
-        signal: controller.signal,
+      const mockItinerary = createMockItinerary(surveyData);
+      const updateResult = await updateJobStatus(jobId, 'completed', { 
+        result: { 
+          itinerary: mockItinerary, 
+          prompt: generatePrompt(surveyData) 
+        }
       });
       
-      clearTimeout(timeout);
-      
-      if (!response.ok) {
-        const error = await response.json();
-        console.error('OpenAI API error:', error);
+      if (!updateResult) {
+        console.error('Failed to update job status in development mode');
         return NextResponse.json(
-          { error: `Failed to generate itinerary: ${error.error?.message || 'Unknown error'}` },
-          { status: response.status }
-        );
-      }
-
-      const data = await response.json();
-      const itineraryContent = data.choices[0].message.content;
-      
-      // Debug: Log the complete content from the API
-      console.log('Raw content from API:', itineraryContent);
-      
-      // Parse the JSON response with a simpler approach
-      let itinerary;
-      try {
-        // Simple direct parsing first
-        try {
-          itinerary = JSON.parse(itineraryContent);
-        } catch (initialError) {
-          console.log('Initial parsing failed, trying to clean up JSON');
-          
-          // Try to find valid JSON within the response
-          const firstBrace = itineraryContent.indexOf('{');
-          const lastBrace = itineraryContent.lastIndexOf('}');
-          
-          if (firstBrace === -1 || lastBrace === -1 || firstBrace >= lastBrace) {
-            throw new Error('Invalid JSON structure - missing braces');
-          }
-          
-          // Extract just the JSON part
-          const jsonContent = itineraryContent.substring(firstBrace, lastBrace + 1);
-          
-          // Try parsing again, if still fails, try more aggressive cleaning
-          try {
-            itinerary = JSON.parse(jsonContent);
-          } catch (parseError: any) {
-            console.error('Error parsing extracted JSON:', parseError.message);
-            
-            // For debugging - log a smaller portion around the error
-            if (parseError instanceof SyntaxError && parseError.message.includes('position')) {
-              const posMatch = parseError.message.match(/position (\d+)/);
-              if (posMatch && posMatch[1]) {
-                const errorPos = parseInt(posMatch[1]);
-                const contextStart = Math.max(0, errorPos - 50);
-                const contextEnd = Math.min(jsonContent.length, errorPos + 50);
-                console.error(`JSON context around error: '${jsonContent.substring(contextStart, errorPos)}|ERROR HERE|${jsonContent.substring(errorPos, contextEnd)}'`);
-              }
-            }
-            
-            // Try to repair the JSON manually
-            let fixedJSON = jsonContent;
-            
-            // Fix missing quotes around property names (more comprehensive)
-            fixedJSON = fixedJSON.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3');
-            
-            // Fix missing quotes around string values
-            fixedJSON = fixedJSON.replace(/:\s*([a-zA-Z][a-zA-Z0-9_]*)\s*([,}])/g, ': "$1"$2');
-            
-            // Fix missing comma after activities array item
-            fixedJSON = fixedJSON.replace(/}\s*{/g, '}, {');
-            
-            // Fix missing coordinates or empty coordinates objects
-            fixedJSON = fixedJSON.replace(/"coordinates"\s*:\s*{}\s*([,}])/g, '"coordinates": {"lat": 0, "lng": 0}$1');
-            fixedJSON = fixedJSON.replace(/"coordinates"\s*:\s*"([^"]*)"\s*([,}])/g, '"coordinates": {"lat": 0, "lng": 0}$2');
-            
-            // Fix malformed coordinates that might be causing position 779 line 27 error
-            fixedJSON = fixedJSON.replace(/"coordinates"\s*:\s*([^{][\s\S]*?[,}])/g, (match: string, p1: string) => {
-              if (p1.trim().startsWith('{')) return match; // Already properly formatted
-              return '"coordinates": {"lat": 0, "lng": 0}' + (p1.endsWith(',') ? ',' : p1.endsWith('}') ? '}' : p1);
-            });
-            
-            // Fix activities without coordinates by adding a default
-            const checkAndAddCoordinates = (obj: any) => {
-              if (obj && typeof obj === 'object') {
-                if (obj.activities && Array.isArray(obj.activities)) {
-                  for (let i = 0; i < obj.activities.length; i++) {
-                    const activity = obj.activities[i];
-                    if (activity && !activity.coordinates) {
-                      activity.coordinates = { lat: 0, lng: 0 };
-                    }
-                  }
-                }
-                
-                // Process all nested objects
-                for (const key in obj) {
-                  if (obj[key] && typeof obj[key] === 'object') {
-                    checkAndAddCoordinates(obj[key]);
-                  }
-                }
-              }
-            };
-
-            try {
-              itinerary = JSON.parse(fixedJSON);
-              console.log('Successfully parsed JSON after manual repairs');
-              
-              // Add default coordinates for any activities missing them
-              checkAndAddCoordinates(itinerary);
-            } catch (finalError) {
-              console.error('Even after repairs, parsing failed:', finalError);
-              throw new Error('Unable to parse the generated itinerary data');
-            }
-          }
-        }
-        
-        // Log the structure of the parsed itinerary
-        console.log('Parsed itinerary top-level structure:', Object.keys(itinerary).join(', '));
-        
-        // Make sure dates exist and are correctly formatted
-        if (!itinerary.dates) {
-          itinerary.dates = {
-            start: surveyData.startDate,
-            end: surveyData.endDate
-          };
-        }
-        
-        // Ensure days array exists
-        if (!itinerary.days) {
-          console.error('Days array missing from parsed itinerary, creating it');
-          itinerary.days = [];
-        } else if (!Array.isArray(itinerary.days)) {
-          console.error('Days property exists but is not an array, fixing:', typeof itinerary.days);
-          itinerary.days = [];
-        }
-
-        // Ensure all days have properly formed activities with coordinates
-        for (let i = 0; i < itinerary.days.length; i++) {
-          const day = itinerary.days[i];
-          
-          if (!day.activities) {
-            day.activities = [];
-            continue;
-          }
-          
-          for (let j = 0; j < day.activities.length; j++) {
-            const activity = day.activities[j];
-            
-            // Skip if not an object
-            if (!activity || typeof activity !== 'object') {
-              day.activities[j] = {
-                id: `auto-${i}-${j}`,
-                time: 'Morning',
-                title: 'Placeholder Activity',
-                description: 'Auto-generated activity.',
-                location: itinerary.destination || surveyData.destination,
-                coordinates: { lat: 40.7128, lng: -74.0060 }, // Default coordinates
-                cost: 0
-              };
-              continue;
-            }
-            
-            // Ensure ID exists
-            if (!activity.id) {
-              activity.id = `auto-${i}-${j}`;
-            }
-            
-            // Ensure coordinates exist and are properly formatted
-            if (!activity.coordinates) {
-              activity.coordinates = { lat: 40.7128, lng: -74.0060 }; // Default coordinates
-            } else if (typeof activity.coordinates !== 'object') {
-              activity.coordinates = { lat: 40.7128, lng: -74.0060 }; // Default coordinates
-            } else {
-              // Make sure lat and lng are numbers, not strings or undefined
-              if (activity.coordinates.lat === undefined || activity.coordinates.lat === null) {
-                activity.coordinates.lat = 40.7128; // Default latitude
-              } else if (typeof activity.coordinates.lat === 'string') {
-                activity.coordinates.lat = parseFloat(activity.coordinates.lat) || 40.7128;
-              }
-              
-              if (activity.coordinates.lng === undefined || activity.coordinates.lng === null) {
-                activity.coordinates.lng = -74.0060; // Default longitude
-              } else if (typeof activity.coordinates.lng === 'string') {
-                activity.coordinates.lng = parseFloat(activity.coordinates.lng) || -74.0060;
-              }
-            }
-            
-            // Ensure cost is a number
-            if (activity.cost === undefined || activity.cost === null) {
-              activity.cost = 0;
-            } else if (typeof activity.cost === 'string') {
-              activity.cost = parseFloat(activity.cost) || 0;
-            }
-          }
-        }
-        
-        // Calculate expected number of days based on the date range
-        const startDate = new Date(surveyData.startDate);
-        const endDate = new Date(surveyData.endDate);
-        
-        // Set time to noon to avoid timezone issues
-        startDate.setHours(12, 0, 0, 0);
-        endDate.setHours(12, 0, 0, 0);
-        
-        const diffTime = endDate.getTime() - startDate.getTime();
-        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        const expectedDays = diffDays + 1; // Add 1 to include both start and end date
-        
-        console.log(`Expected days: ${expectedDays}, Actual days in itinerary: ${itinerary.days.length}`);
-        
-        // Fix the days array if needed
-        if (itinerary.days.length !== expectedDays) {
-          console.warn(`Days count mismatch. Expected ${expectedDays} days but got ${itinerary.days.length} days. Fixing...`);
-          
-          // Create a new array with the correct number of days
-          const correctedDays = [];
-          
-          for (let i = 0; i < expectedDays; i++) {
-            const currentDate = new Date(startDate);
-            currentDate.setDate(startDate.getDate() + i);
-            const formattedDate = currentDate.toISOString().split('T')[0];
-            
-            // Check if we have a day for this date in the original array
-            const existingDay = itinerary.days.find((day: any) => 
-              day.date === formattedDate || 
-              new Date(day.date).toISOString().split('T')[0] === formattedDate
-            );
-            
-            if (existingDay) {
-              // Make sure the date is in the correct format
-              existingDay.date = formattedDate;
-              correctedDays.push(existingDay);
-            } else {
-              // Create a new day if missing
-              correctedDays.push({
-                date: formattedDate,
-                activities: [
-                  {
-                    id: `act-${i}-1`,
-                    time: 'Morning',
-                    title: `Explore ${itinerary.destination || surveyData.destination} - Day ${i + 1} Morning`,
-                    description: 'Start your day with a visit to a popular local attraction.',
-                    location: `${itinerary.destination || surveyData.destination} City Center`,
-                    coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-                    cost: 25,
-                  },
-                  {
-                    id: `act-${i}-2`,
-                    time: 'Afternoon',
-                    title: `${itinerary.destination || surveyData.destination} Afternoon Activity`,
-                    description: 'Enjoy a relaxing afternoon activity based on your preferences.',
-                    location: `${itinerary.destination || surveyData.destination} Park`,
-                    coordinates: { lat: 40.7828, lng: -73.9654 }, // Central Park coordinates as placeholder
-                    cost: 15,
-                  },
-                  {
-                    id: `act-${i}-3`,
-                    time: 'Evening',
-                    title: `${itinerary.destination || surveyData.destination} Night Experience`,
-                    description: 'Experience the local nightlife and culture.',
-                    location: `${itinerary.destination || surveyData.destination} Entertainment District`,
-                    coordinates: { lat: 40.7590, lng: -73.9845 }, // Times Square coordinates as placeholder
-                    cost: 50,
-                  },
-                ]
-              });
-            }
-          }
-          
-          // Replace the original days array with our corrected one
-          itinerary.days = correctedDays;
-        }
-        
-        // Log the final structure before returning
-        console.log('Final itinerary days count:', itinerary.days.length);
-        
-      } catch (error) {
-        console.error('Failed to parse itinerary JSON:', error);
-        
-        // Return a simple error that doesn't expose internal details
-        return NextResponse.json(
-          { error: 'We were unable to generate a valid itinerary. Please try again.' },
+          { error: 'Failed to update job status' },
           { status: 500 }
         );
       }
+      
+      return NextResponse.json({ jobId, status: 'completed' });
+    }
 
-      return NextResponse.json({ itinerary, prompt });
-    } catch (error: any) {
-      clearTimeout(timeout);
-      console.error('Fetch error:', error);
-      
-      if (error.name === 'AbortError') {
-        return NextResponse.json(
-          { error: 'Request timed out. Please try again with a simpler itinerary request.' },
-          { status: 504 }
-        );
-      }
-      
+    // Create a new job
+    console.log('Creating new job with ID:', jobId);
+    const jobCreated = await createJob(jobId);
+    
+    if (!jobCreated) {
+      console.error('Failed to create job');
       return NextResponse.json(
-        { error: `API request failed: ${error.message}` },
+        { error: 'Failed to create job in database' },
         { status: 500 }
       );
     }
-  } catch (error) {
-    console.error('Error generating itinerary:', error);
+
+    // Start processing in the background without awaiting
+    console.log(`Starting background processing for job ${jobId}...`);
+    setTimeout(async () => {
+      try {
+        console.log(`Background processing started for job ${jobId}`);
+        // First update to processing status to indicate we've started
+        await updateJobStatus(jobId, 'processing');
+        
+        // Process the job
+        await processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY);
+        
+        console.log(`Background processing completed successfully for job ${jobId}`);
+      } catch (error: any) {
+        console.error(`Background processing error for job ${jobId}:`, error);
+        // Make extra sure we update the job status on error
+        try {
+          await updateJobStatus(jobId, 'failed', { 
+            error: error.message || 'Internal server error'
+          });
+        } catch (updateError) {
+          console.error(`Failed to update job status after error for ${jobId}:`, updateError);
+        }
+      }
+    }, 100); // Small delay to ensure job is created first
+
+    // Return immediately with the job ID
+    return NextResponse.json({ 
+      jobId, 
+      status: 'queued',
+      message: 'Your itinerary is being generated. Poll the job-status endpoint for updates.'
+    });
+    
+  } catch (error: any) {
+    console.error('Error initiating itinerary generation:', error);
     return NextResponse.json(
-      { error: 'Failed to generate itinerary' },
+      { error: `Failed to initiate itinerary generation: ${error.message || 'Unknown error'}` },
       { status: 500 }
     );
   }

@@ -6,6 +6,69 @@ import { useRouter } from 'next/navigation';
 import ItineraryTabs from '../../../components/trips/ItineraryTabs';
 import BookingServices from '../../../components/trips/BookingServices';
 
+// Helper function to ensure valid coordinates
+function ensureValidCoordinates(itinerary: any) {
+  if (!itinerary || !itinerary.days || !Array.isArray(itinerary.days)) {
+    return itinerary;
+  }
+  
+  console.log('Validating coordinates in loaded itinerary...');
+  let issuesFixed = 0;
+  
+  for (const day of itinerary.days) {
+    if (!day.activities || !Array.isArray(day.activities)) {
+      day.activities = [];
+      continue;
+    }
+    
+    for (const activity of day.activities) {
+      // Skip if not an object
+      if (!activity || typeof activity !== 'object') continue;
+      
+      // Ensure coordinates exist and are properly formatted
+      if (!activity.coordinates || typeof activity.coordinates !== 'object') {
+        console.log(`Missing coordinates for activity "${activity.title}", adding default coordinates`);
+        activity.coordinates = { lat: 40.7128, lng: -74.0060 }; // Default to NYC coordinates
+        issuesFixed++;
+      } else {
+        // Make sure lat and lng are numbers
+        let coordinateFixed = false;
+        
+        if (typeof activity.coordinates.lat !== 'number' && activity.coordinates.lat !== undefined) {
+          console.log(`Converting lat coordinate for activity "${activity.title}" from ${typeof activity.coordinates.lat} to number`);
+          activity.coordinates.lat = parseFloat(String(activity.coordinates.lat)) || 40.7128;
+          coordinateFixed = true;
+          issuesFixed++;
+        } else if (activity.coordinates.lat === undefined) {
+          console.log(`Missing lat coordinate for activity "${activity.title}", adding default`);
+          activity.coordinates.lat = 40.7128;
+          coordinateFixed = true;
+          issuesFixed++;
+        }
+        
+        if (typeof activity.coordinates.lng !== 'number' && activity.coordinates.lng !== undefined) {
+          console.log(`Converting lng coordinate for activity "${activity.title}" from ${typeof activity.coordinates.lng} to number`);
+          activity.coordinates.lng = parseFloat(String(activity.coordinates.lng)) || -74.0060;
+          coordinateFixed = true;
+          issuesFixed++;
+        } else if (activity.coordinates.lng === undefined) {
+          console.log(`Missing lng coordinate for activity "${activity.title}", adding default`);
+          activity.coordinates.lng = -74.0060;
+          coordinateFixed = true;
+          issuesFixed++;
+        }
+        
+        if (coordinateFixed) {
+          console.log(`Fixed coordinates for activity "${activity.title}": ${JSON.stringify(activity.coordinates)}`);
+        }
+      }
+    }
+  }
+  
+  console.log(`Coordinates validation complete. Fixed ${issuesFixed} issues.`);
+  return itinerary;
+}
+
 // Mock itinerary data as fallback
 const mockItinerary = {
   id: 'trip-123',
@@ -211,8 +274,26 @@ export default function GeneratedTripPage() {
               console.log('First day structure:', Object.keys(parsedItinerary.days[0]).join(', '));
               console.log('First day has activities:', Array.isArray(parsedItinerary.days[0].activities), 
                 parsedItinerary.days[0].activities ? parsedItinerary.days[0].activities.length : 0);
+              
+              // Debug coordinates specifically
+              if (parsedItinerary.days[0].activities && parsedItinerary.days[0].activities.length > 0) {
+                const firstActivity = parsedItinerary.days[0].activities[0];
+                console.log('First activity properties:', Object.keys(firstActivity).join(', '));
+                console.log('First activity coordinates exists:', !!firstActivity.coordinates);
+                if (firstActivity.coordinates) {
+                  console.log('Coordinates type:', typeof firstActivity.coordinates);
+                  console.log('Coordinates structure:', JSON.stringify(firstActivity.coordinates));
+                  console.log('Coordinates lat/lng values:', 
+                    firstActivity.coordinates.lat, 
+                    firstActivity.coordinates.lng);
+                  console.log('Are lat/lng valid numbers:', 
+                    !isNaN(Number(firstActivity.coordinates.lat)) && isFinite(Number(firstActivity.coordinates.lat)),
+                    !isNaN(Number(firstActivity.coordinates.lng)) && isFinite(Number(firstActivity.coordinates.lng))
+                  );
+                }
+              }
             }
-            setItinerary(parsedItinerary);
+            setItinerary(ensureValidCoordinates(parsedItinerary));
           }
         } catch (parseError) {
           console.error('Error parsing itinerary JSON:', parseError);
@@ -225,6 +306,11 @@ export default function GeneratedTripPage() {
       console.error('Error accessing localStorage:', error);
       // If there's an error, we'll use the mock data
     } finally {
+      // If we're using the mock data, make sure it also has valid coordinates
+      if (!isLoading && itinerary === mockItinerary) {
+        console.log('Using mock itinerary, validating coordinates...');
+        setItinerary(ensureValidCoordinates(mockItinerary));
+      }
       setIsLoading(false);
     }
   }, []);
