@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { generateJobId, processItineraryJob } from '../job-processor';
-import { createJob, updateJobStatus, supabase } from '../../../lib/supabase';
+import { createJob, updateJobStatus, getJobStatus, supabase } from '../../../lib/supabase';
 
 // Configure runtime for serverless function
 export const runtime = 'nodejs';
@@ -30,6 +30,13 @@ type SurveyData = {
 
 export async function POST(request: Request) {
   try {
+    // Log key information for debugging
+    console.log(`API Request started: ${new Date().toISOString()}`);
+    console.log('Environment:', {
+      nodeEnv: process.env.NODE_ENV,
+      isProduction
+    });
+    
     // Log environment variables (without exposing actual values)
     console.log('Supabase connection check:', {
       hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -69,9 +76,18 @@ export async function POST(request: Request) {
 
     // Parse the request body
     const surveyData: SurveyData = await request.json();
+    console.log('Received survey data:', {
+      destination: surveyData.destination,
+      startDate: surveyData.startDate,
+      endDate: surveyData.endDate,
+      purpose: surveyData.purpose,
+      budget: surveyData.budget,
+      preferences: surveyData.preferences 
+    });
 
     // Create a unique job ID
     const jobId = generateJobId();
+    console.log(`Generated new job ID: ${jobId}`);
 
     // If we're in development or testing, return mock data immediately
     if (process.env.NODE_ENV === 'development' && !OPENAI_API_KEY.startsWith('sk-')) {
@@ -106,15 +122,39 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
+    
+    console.log(`Job ${jobId} created successfully, current status: queued`);
+
+    // Verify the job was created properly by fetching its status
+    try {
+      const statusCheck = await getJobStatus(jobId);
+      console.log(`Initial job status check: ${statusCheck.status}`);
+      
+      if (statusCheck.status === 'not_found') {
+        console.error(`Critical error: Job ${jobId} was not found immediately after creation`);
+      }
+    } catch (statusCheckError) {
+      console.error('Error checking initial job status:', statusCheckError);
+    }
 
     // In production or when immediate request handling is needed, process synchronously
     if (isProduction) {
+      console.log(`Running in production mode for job ${jobId}`);
+      
       // Update status to processing and immediately return response
-      await updateJobStatus(jobId, 'processing');
+      const statusUpdateSuccess = await updateJobStatus(jobId, 'processing');
+      if (!statusUpdateSuccess) {
+        console.error(`Failed to update job ${jobId} status to processing`);
+      } else {
+        console.log(`Successfully updated job ${jobId} status to processing`);
+      }
       
       // Start processing directly without setTimeout (which can cause issues in serverless environments)
       // We don't await this so the request can return quickly
       processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY)
+        .then(() => {
+          console.log(`Background processing completed for job ${jobId}`);
+        })
         .catch(error => {
           console.error(`Background processing error for job ${jobId}:`, error);
           updateJobStatus(jobId, 'failed', { 
@@ -125,7 +165,7 @@ export async function POST(request: Request) {
       console.log(`Job ${jobId} started processing directly`);
     } else {
       // In development, use setTimeout for background processing (more reliable locally)
-      console.log(`Starting background processing for job ${jobId} with setTimeout...`);
+      console.log(`Running in development mode for job ${jobId} with setTimeout...`);
       setTimeout(async () => {
         try {
           console.log(`Background processing started for job ${jobId}`);
@@ -151,6 +191,7 @@ export async function POST(request: Request) {
     }
 
     // Return immediately with the job ID
+    console.log(`Returning response for job ${jobId} with status: queued`);
     return NextResponse.json({ 
       jobId, 
       status: 'queued',

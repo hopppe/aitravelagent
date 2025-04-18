@@ -211,13 +211,24 @@ function getDbCompatibleId(id: string): number {
     return Number(id);
   }
   
-  // Simple hash function to convert string to number 
-  // This helps if Supabase table requires numeric IDs
+  // For job IDs that start with a timestamp (job_ or debug_), extract the timestamp
+  // This ensures consistent ID generation across environments
+  const timestampMatch = id.match(/^(job|debug|test)_(\d+)/);
+  if (timestampMatch && !isNaN(Number(timestampMatch[2]))) {
+    // Use the timestamp portion as the numeric ID
+    return Number(timestampMatch[2]);
+  }
+
+  // Consistent hash function using a specific algorithm
+  // Using a more deterministic approach than the previous version
   let hash = 0;
+  const prime = 31; // Use a prime number for better distribution
+  
   for (let i = 0; i < id.length; i++) {
+    // Get the character code
     const char = id.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
+    // Multiply the current hash by the prime and add the character code
+    hash = Math.imul(hash, prime) + char | 0;
   }
   
   // Ensure positive number by using absolute value
@@ -500,6 +511,7 @@ export async function createJob(jobId: string): Promise<boolean> {
   
   // Save to in-memory store
   inMemoryJobs[jobId] = memoryJob;
+  console.log(`Created job ${jobId} in memory with status: ${memoryJob.status}`);
 
   // If we shouldn't use Supabase, return early with success
   if (!shouldUseSupabase()) {
@@ -511,14 +523,38 @@ export async function createJob(jobId: string): Promise<boolean> {
     const dbId = getDbCompatibleId(jobId);
     console.log(`Creating job ${jobId} (dbId: ${dbId}) in Supabase`);
     
-    const { error } = await supabase
+    // First try to check if the job already exists to avoid conflicts
+    const { data: existingJob, error: checkError } = await supabase
+      .from('jobs')
+      .select('id, status')
+      .eq('id', dbId)
+      .maybeSingle();
+      
+    if (checkError) {
+      console.error('Error checking for existing job in Supabase:', {
+        code: checkError.code,
+        message: checkError.message,
+        details: checkError.details,
+        jobId,
+        dbId
+      });
+    }
+    
+    if (existingJob) {
+      console.log(`Job ${jobId} already exists in Supabase with status: ${existingJob.status}`);
+      return true;
+    }
+    
+    // Insert the new job
+    const { data, error } = await supabase
       .from('jobs')
       .insert({
         id: dbId,
         status: 'queued',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
-      });
+      })
+      .select();
 
     if (error) {
       console.error('Error creating job in Supabase:', {
@@ -528,8 +564,14 @@ export async function createJob(jobId: string): Promise<boolean> {
         jobId,
         dbId
       });
+      
+      // If this was a unique constraint error (job already exists), that's okay
+      if (error.code === '23505') {
+        console.log(`Job ${jobId} already exists (constraint error), proceeding anyway`);
+        return true;
+      }
     } else {
-      console.log(`Successfully created job ${jobId} in Supabase`);
+      console.log(`Successfully created job ${jobId} in Supabase:`, data);
     }
   } catch (error) {
     handleSupabaseError(error);

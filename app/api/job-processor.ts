@@ -2,7 +2,9 @@ import { updateJobStatus } from '../../lib/supabase';
 
 // Helper function to generate a unique job ID
 export function generateJobId() {
-  return 'job_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+  const timestamp = Date.now();
+  // Use a simple format with just the timestamp to ensure consistency across environments
+  return `job_${timestamp}`;
 }
 
 // Process the itinerary generation in the background

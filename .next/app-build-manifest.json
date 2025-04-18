@@ -21,15 +21,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/trips/new/page": [
+    "/api-debug/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/trips/new/page.js"
+      "static/chunks/app/api-debug/page.js"
     ],
-    "/trips/generated-trip/page": [
+    "/_not-found/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/trips/generated-trip/page.js"
+      "static/chunks/app/_not-found/page.js"
     ]
   }
 }
