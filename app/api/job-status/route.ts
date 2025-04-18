@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getJobStatus } from '../../../lib/supabase';
 
-// Remove the in-memory store and functions since we're using Supabase now
+// Maximum duration to handle potential Supabase connection issues
+export const maxDuration = 10; // 10 seconds for a status check should be plenty
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -14,14 +15,25 @@ export async function GET(request: Request) {
     );
   }
   
-  const jobStatus = await getJobStatus(jobId);
-  
-  if (!jobStatus) {
+  try {
+    console.log(`Getting status for job ${jobId}`);
+    const jobStatus = await getJobStatus(jobId);
+    
+    if (jobStatus.status === 'not_found') {
+      console.log(`Job ${jobId} not found`);
+      return NextResponse.json(
+        { error: 'Job not found' },
+        { status: 404 }
+      );
+    }
+    
+    console.log(`Returning job status: ${jobStatus.status}`);
+    return NextResponse.json(jobStatus);
+  } catch (error: any) {
+    console.error(`Error retrieving job status for ${jobId}:`, error);
     return NextResponse.json(
-      { error: 'Job not found' },
-      { status: 404 }
+      { error: 'Failed to retrieve job status', message: error.message },
+      { status: 500 }
     );
   }
-  
-  return NextResponse.json(jobStatus);
 } 

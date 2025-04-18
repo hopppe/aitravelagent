@@ -107,30 +107,48 @@ export async function POST(request: Request) {
       );
     }
 
-    // Start processing in the background without awaiting
-    console.log(`Starting background processing for job ${jobId}...`);
-    setTimeout(async () => {
-      try {
-        console.log(`Background processing started for job ${jobId}`);
-        // First update to processing status to indicate we've started
-        await updateJobStatus(jobId, 'processing');
-        
-        // Process the job
-        await processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY);
-        
-        console.log(`Background processing completed successfully for job ${jobId}`);
-      } catch (error: any) {
-        console.error(`Background processing error for job ${jobId}:`, error);
-        // Make extra sure we update the job status on error
-        try {
-          await updateJobStatus(jobId, 'failed', { 
+    // In production or when immediate request handling is needed, process synchronously
+    if (isProduction) {
+      // Update status to processing and immediately return response
+      await updateJobStatus(jobId, 'processing');
+      
+      // Start processing directly without setTimeout (which can cause issues in serverless environments)
+      // We don't await this so the request can return quickly
+      processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY)
+        .catch(error => {
+          console.error(`Background processing error for job ${jobId}:`, error);
+          updateJobStatus(jobId, 'failed', { 
             error: error.message || 'Internal server error'
-          });
-        } catch (updateError) {
-          console.error(`Failed to update job status after error for ${jobId}:`, updateError);
+          }).catch(e => console.error(`Failed to update job status after error for ${jobId}:`, e));
+        });
+        
+      console.log(`Job ${jobId} started processing directly`);
+    } else {
+      // In development, use setTimeout for background processing (more reliable locally)
+      console.log(`Starting background processing for job ${jobId} with setTimeout...`);
+      setTimeout(async () => {
+        try {
+          console.log(`Background processing started for job ${jobId}`);
+          // First update to processing status to indicate we've started
+          await updateJobStatus(jobId, 'processing');
+          
+          // Process the job
+          await processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY);
+          
+          console.log(`Background processing completed successfully for job ${jobId}`);
+        } catch (error: any) {
+          console.error(`Background processing error for job ${jobId}:`, error);
+          // Make extra sure we update the job status on error
+          try {
+            await updateJobStatus(jobId, 'failed', { 
+              error: error.message || 'Internal server error'
+            });
+          } catch (updateError) {
+            console.error(`Failed to update job status after error for ${jobId}:`, updateError);
+          }
         }
-      }
-    }, 100); // Small delay to ensure job is created first
+      }, 100); // Small delay to ensure job is created first
+    }
 
     // Return immediately with the job ID
     return NextResponse.json({ 

@@ -372,59 +372,120 @@ export async function updateJobStatus(
   return true;
 }
 
-// Function to fetch a job's status
-export async function getJobStatus(jobId: string): Promise<JobData | null> {
-  // Check in-memory first
+// Get the status of a job
+export async function getJobStatus(jobId: string): Promise<{ status: string; result?: any; error?: string }> {
+  // First check in-memory cache for faster response and fallback
   const memoryJob = inMemoryJobs[jobId];
-
-  // If we shouldn't use Supabase or already have it in memory, return early
+  
+  // Not even in memory
+  if (!memoryJob) {
+    return { status: 'not_found' };
+  }
+  
+  // If Supabase is disabled or improperly configured, only use in-memory storage
   if (!shouldUseSupabase()) {
-    console.log(`Using in-memory job data for ${jobId}`);
-    return memoryJob || null;
-  }
-
-  try {
-    const dbId = getDbCompatibleId(jobId);
-    console.log(`Fetching job ${jobId} (dbId: ${dbId}) from Supabase`);
-    
-    // Try by numeric ID
-    const { data, error } = await supabase
-      .from('jobs')
-      .select('*')
-      .eq('id', dbId)
-      .single();
-
-    if (error) {
-      console.error('Error fetching job from Supabase:', {
-        code: error.code,
-        message: error.message,
-        details: error.details,
-        jobId,
-        dbId
-      });
-      return memoryJob || null;
-    }
-    
-    if (!data) {
-      console.log(`Job ${jobId} not found in Supabase`);
-      return memoryJob || null;
-    }
-
-    console.log(`Successfully fetched job ${jobId} from Supabase`);
-    
-    // Map data to JobData format
     return {
-      id: jobId, // Use the original string ID for consistency
-      status: data.status,
-      result: data.result,
-      error: data.error,
-      created_at: data.created_at,
-      updated_at: data.updated_at
+      status: memoryJob.status,
+      result: memoryJob.result,
+      error: memoryJob.error
     };
-  } catch (error) {
-    handleSupabaseError(error);
-    return memoryJob || null;
   }
+  
+  // Add retry logic for fetching status from Supabase
+  const maxRetries = 3;
+  let attempts = 0;
+  
+  while (attempts < maxRetries) {
+    try {
+      const dbId = getDbCompatibleId(jobId);
+      console.log(`Fetching job status for ${jobId} (dbId: ${dbId}) from Supabase (attempt ${attempts + 1})`);
+      
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('id', dbId)
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error retrieving job status from Supabase:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          jobId,
+          dbId,
+          attempt: attempts + 1
+        });
+        
+        attempts++;
+        if (attempts < maxRetries) {
+          // Wait before retrying (exponential backoff)
+          await new Promise(resolve => setTimeout(resolve, 500 * Math.pow(2, attempts)));
+          continue;
+        }
+        
+        // Fall back to in-memory after all retries
+        console.log(`All ${maxRetries} attempts to fetch job from Supabase failed, using in-memory data`);
+        handleSupabaseError(error);
+        return {
+          status: memoryJob.status,
+          result: memoryJob.result,
+          error: memoryJob.error
+        };
+      }
+
+      if (!data) {
+        console.log(`Job ${jobId} not found in Supabase, using in-memory data`);
+        // Not found in DB but in memory, return memory version
+        return {
+          status: memoryJob.status,
+          result: memoryJob.result,
+          error: memoryJob.error
+        };
+      }
+      
+      console.log(`Successfully retrieved job ${jobId} status from Supabase: ${data.status}`);
+      
+      // Update in-memory store to keep in sync
+      inMemoryJobs[jobId] = {
+        id: jobId,
+        status: data.status,
+        result: data.result,
+        error: data.error,
+        created_at: data.created_at,
+        updated_at: data.updated_at
+      };
+      
+      return {
+        status: data.status,
+        result: data.result,
+        error: data.error
+      };
+    } catch (error) {
+      attempts++;
+      console.error(`Error fetching job status (attempt ${attempts}):`, error);
+      
+      if (attempts < maxRetries) {
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 500 * Math.pow(2, attempts)));
+        continue;
+      }
+      
+      // All retries failed, fall back to in-memory
+      handleSupabaseError(error);
+      return {
+        status: memoryJob.status,
+        result: memoryJob.result,
+        error: memoryJob.error
+      };
+    }
+  }
+  
+  // This should never be reached due to the returns in the loop, but TypeScript needs it
+  return {
+    status: memoryJob.status,
+    result: memoryJob.result,
+    error: memoryJob.error
+  };
 }
 
 // Function to create a new job
