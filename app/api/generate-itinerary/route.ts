@@ -2,8 +2,15 @@ import { NextResponse } from 'next/server';
 import { generateJobId, processItineraryJob } from '../job-processor';
 import { createJob, updateJobStatus, supabase } from '../../../lib/supabase';
 
+// Configure runtime for serverless function
+export const runtime = 'nodejs';
+export const maxDuration = 60; // Set max duration to 60 seconds
+
 // Use API key from environment variables
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
+
+// Check if running in production environment
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Check if Supabase is properly configured
 const isSupabaseConfigured = Boolean(

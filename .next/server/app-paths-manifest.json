@@ -1,8 +1,8 @@
 {
-  "/trips/new/page": "app/trips/new/page.js",
-  "/page": "app/page.js",
-  "/trips/generated-trip/page": "app/trips/generated-trip/page.js",
+  "/api/generate-itinerary/route": "app/api/generate-itinerary/route.js",
   "/api/test-job/route": "app/api/test-job/route.js",
   "/api/job-status/route": "app/api/job-status/route.js",
-  "/api/generate-itinerary/route": "app/api/generate-itinerary/route.js"
+  "/trips/generated-trip/page": "app/trips/generated-trip/page.js",
+  "/trips/new/page": "app/trips/new/page.js",
+  "/page": "app/page.js"
 }
