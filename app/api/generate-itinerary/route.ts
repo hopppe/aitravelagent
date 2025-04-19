@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import { generateJobId, processItineraryJob } from '../job-processor';
 import { createJob, updateJobStatus, getJobStatus, supabase } from '../../../lib/supabase';
 
-// Configure runtime for serverless function
-export const runtime = 'nodejs';
+// Configure runtime for serverless function with Edge option for better response handling
+export const runtime = 'edge';
 export const maxDuration = 60; // Set max duration to 60 seconds
 
 // Use API key from environment variables
@@ -179,7 +179,7 @@ export async function POST(request: Request) {
     if (isProduction) {
       console.log(`Running in production mode for job ${jobId}`);
       
-      // Update status to processing and immediately return response
+      // Update status to processing
       const statusUpdateSuccess = await updateJobStatus(jobId, 'processing');
       if (!statusUpdateSuccess) {
         console.error(`Failed to update job ${jobId} status to processing`);
@@ -187,28 +187,32 @@ export async function POST(request: Request) {
         console.log(`Successfully updated job ${jobId} status to processing`);
       }
 
-      // IMPORTANT: Vercel Hobby plan has a 10-second execution timeout
-      // OpenAI API calls typically take 15-30 seconds, which will cause timeout
-      // We'll use fire-and-forget, but this relies on Vercel's undocumented behavior
-      // where background promises may still complete even after response returns
-      console.log(`⚠️ WARNING: Using fire-and-forget pattern with Vercel timeout constraints`);
-      console.log(`⚠️ IMPORTANT: For reliable operation, upgrade to Vercel Pro ($20/month) with 60s timeout`);
+      // Edge functions allow us to continue processing after response
+      console.log(`Initiating background processing for job ${jobId} with Edge Functions`);
       
-      // Don't await this - return response immediately
-      // The promise will continue executing in the background
-      processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY)
+      // Start the processing, but don't await it
+      const processingPromise = processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY)
         .then(() => {
           console.log(`Background processing completed for job ${jobId}`);
         })
         .catch(error => {
           console.error(`Background processing error for job ${jobId}:`, error);
-          // Try to update the job status on error
-          updateJobStatus(jobId, 'failed', { 
+          return updateJobStatus(jobId, 'failed', { 
             error: error.message || 'Internal server error'
-          }).catch(e => console.error(`Failed to update job status after error for ${jobId}:`, e));
+          }).catch(e => {
+            console.error(`Failed to update job status after error for ${jobId}:`, e);
+          });
         });
       
-      console.log(`Returning immediately while job ${jobId} processes in background`);
+      // In Edge runtime, we don't need to explicitly use waitUntil
+      // The function will continue running after response is sent
+      
+      // Return the response immediately
+      return NextResponse.json({ 
+        jobId, 
+        status: 'processing',
+        message: 'Your itinerary is being generated. Poll the job-status endpoint for updates.'
+      });
     } else {
       // In development, use setTimeout for background processing (more reliable locally)
       console.log(`Running in development mode for job ${jobId} with setTimeout...`);
@@ -254,7 +258,7 @@ export async function POST(request: Request) {
 }
 
 // Function to generate a prompt based on survey data
-function generatePrompt(surveyData: SurveyData): string {
+export function generatePrompt(surveyData: SurveyData): string {
   // Calculate trip duration - adding 1 to include both start and end date
   const startDate = new Date(surveyData.startDate);
   const endDate = new Date(surveyData.endDate);

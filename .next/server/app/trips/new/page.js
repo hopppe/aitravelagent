@@ -270,7 +270,7 @@ __webpack_require__.r(__webpack_exports__);
 var __webpack_require__ = require("../../../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/react-icons","vendor-chunks/next","vendor-chunks/@swc"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Ftrips%2Fnew%2Fpage&page=%2Ftrips%2Fnew%2Fpage&appPaths=%2Ftrips%2Fnew%2Fpage&pagePath=private-next-app-dir%2Ftrips%2Fnew%2Fpage.tsx&appDir=%2FUsers%2Fethanhoppe%2FDesktop%2FAItravelagent%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2FUsers%2Fethanhoppe%2FDesktop%2FAItravelagent&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/react-icons","vendor-chunks/@swc"], () => (__webpack_exec__("(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader.js?name=app%2Ftrips%2Fnew%2Fpage&page=%2Ftrips%2Fnew%2Fpage&appPaths=%2Ftrips%2Fnew%2Fpage&pagePath=private-next-app-dir%2Ftrips%2Fnew%2Fpage.tsx&appDir=%2FUsers%2Fethanhoppe%2FDesktop%2FAItravelagent%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2FUsers%2Fethanhoppe%2FDesktop%2FAItravelagent&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!")));
 module.exports = __webpack_exports__;
 
 })();

@@ -1,4 +1,7 @@
 {
+  "/api/generate-itinerary/route": "app/api/generate-itinerary/route.js",
+  "/api/google-maps/route": "app/api/google-maps/route.js",
+  "/api/job-status/route": "app/api/job-status/route.js",
   "/trips/new/page": "app/trips/new/page.js",
   "/trips/generated-trip/page": "app/trips/generated-trip/page.js"
 }
