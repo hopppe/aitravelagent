@@ -1,0 +1,1 @@
+{"version":1,"functions":{"/api/debug-job-creation":{"maxDuration":15},"/api/env-test":{},"/api/process-itinerary":{"maxDuration":300},"/api/jobs/test":{},"/api/job-status":{"maxDuration":60},"/api/generate-itinerary":{"maxDuration":60},"/api/supabase-test":{"maxDuration":15}}}

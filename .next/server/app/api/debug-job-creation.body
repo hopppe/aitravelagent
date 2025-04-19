@@ -1,0 +1,1 @@
+{"success":true,"message":"Job was created and found with status: queued","jobId":"debug_1745075779442","jobStatus":{"status":"queued","result":null,"error":null},"hashing":{"explanation":"This shows how string IDs are converted to numeric IDs for Supabase"}}

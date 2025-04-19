@@ -1,0 +1,56 @@
+"use strict";exports.id=287,exports.ids=[287],exports.modules={6287:(e,t,r)=>{r.r(t),r.d(t,{POST:()=>d,generatePrompt:()=>l,maxDuration:()=>c,runtime:()=>s});var a=r(7070),o=r(647),n=r(5662);let i=(0,r(7435).h)("generate-itinerary"),s="nodejs",c=60;async function d(e){try{let t;i.info("========== ITINERARY GENERATION REQUEST =========="),i.info(`API Request started: ${new Date().toISOString()}`),i.info("Environment:",{nodeEnv:"production",isProduction:!0}),i.info("Supabase connection details:",{hasSupabaseUrl:!0,hasSupabaseKey:!0,urlPrefix:"https://toaiekqwflojwicejvne.supabase.co".substring(0,10)||0,keyPrefix:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvYWlla3F3ZmxvandpY2Vqdm5lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ5MzM2MzMsImV4cCI6MjA2MDUwOTYzM30.E70hBHGjbvCJPjYpMmlMIMvyfyBlotOwP01YaXf37Mg".substring(0,5)||0,urlLength:40,keyLength:208});try{i.info("Testing Supabase connection...");let{data:e,error:t}=await n.OQ.from("jobs").select("*").limit(1);t?i.error("❌ Supabase connection test failed:",{message:t.message,hint:t.hint||"",code:t.code||""}):i.info("✅ Supabase connection test successful")}catch(e){i.error("❌ Supabase connection test exception:",{message:e.message,details:e.toString(),name:e.name,stack:e.stack?.substring(0,200)})}let r=await e.json();i.info("Received survey data:",{destination:r.destination,startDate:r.startDate,endDate:r.endDate,purpose:r.purpose,budget:r.budget,preferences:r.preferences});let s=(0,o.WE)();i.info(`Generated new job ID: ${s}`);let c=l(r);i.info(`Generated prompt for job ${s}, length: ${c.length} characters`),i.info("Creating new job with ID:",s);let d=!1,u=0;for(;!d&&u<3;)try{(d=await (0,n.Cq)(s))||(i.error(`Failed to create job on attempt ${u+1}/3`),++u<3&&await new Promise(e=>setTimeout(e,500*Math.pow(2,u))))}catch(e){i.error(`Error creating job on attempt ${u+1}/3:`,e),++u<3&&await new Promise(e=>setTimeout(e,500*Math.pow(2,u)))}if(!d)return i.error("Failed to create job after multiple attempts"),a.NextResponse.json({error:"Failed to create job in database after multiple attempts"},{status:500});i.info(`Job ${s} created successfully, current status: queued`);try{t=await (0,n.jW)(s),i.info(`Initial job status check: ${t.status}`),"not_found"===t.status&&(i.error(`Critical error: Job ${s} was not found immediately after creation`),(d=await (0,n.Cq)(s))&&(i.info(`Job ${s} recreated successfully after initial not_found status`),t=await (0,n.jW)(s),i.info(`Second job status check: ${t.status}`)))}catch(e){i.error("Error checking initial job status:",e)}try{i.info(`Invoking Supabase Edge Function for job ${s}`),await (0,n.L2)(s,"processing");let{data:e,error:t}=await n.OQ.functions.invoke("generate-itinerary",{body:{jobId:s,surveyData:r,prompt:c}});if(t)throw i.error("Error invoking Supabase Edge Function:",t),Error(`Edge Function error: ${t.message||"Unknown error"}`);i.info(`Supabase Edge Function invoked successfully for job ${s}:`,e),e&&e.result&&(i.info(`Processing immediate result from edge function for job ${s}`),await (0,o.Vn)(s,e.result))}catch(e){i.error("Failed to invoke Supabase Edge Function:",e),await (0,n.L2)(s,"processing",{error:`Edge function invocation error (will retry): ${e.message||"Unknown error"}`})}return i.info(`Returning response for job ${s} with status: processing`),a.NextResponse.json({jobId:s,status:"processing",message:"Your itinerary is being generated. Poll the job-status endpoint for updates."})}catch(e){return i.error("Error initiating itinerary generation:",e),a.NextResponse.json({error:`Failed to initiate itinerary generation: ${e.message||"Unknown error"}`},{status:500})}}function l(e){let t=new Date(e.startDate),r=new Date(e.endDate);t.setHours(12,0,0,0),r.setHours(12,0,0,0);let a=Math.ceil((r.getTime()-t.getTime())/864e5)+1,o=u(t),n=u(r),i="";return e.preferences&&e.preferences.length>0&&(i="The traveler has expressed interest in the following: "+e.preferences.join(", ")+". "),`
+Create a personalized travel itinerary for a trip to ${e.destination} from ${o} to ${n} (${a} days).
+
+Trip purpose: ${e.purpose}
+Budget level: ${e.budget}
+${i}
+
+Generate a comprehensive day-by-day travel itinerary with the following structure (as a valid JSON object):
+
+{
+  "destination": "${e.destination}",
+  "tripName": "<create a catchy name for this trip>",
+  "dates": {
+    "start": "${e.startDate}",
+    "end": "${e.endDate}"
+  },
+  "summary": "<brief overview of the trip highlighting key attractions and experiences>",
+  "days": [
+    {
+      "day": 1,
+      "date": "${e.startDate}",
+      "activities": [
+        {
+          "time": "<morning/afternoon/evening>",
+          "title": "<activity name>",
+          "description": "<detailed description>",
+          "location": "<specific location name>",
+          "coordinates": {
+            "lat": <latitude as number>,
+            "lng": <longitude as number>
+          },
+          "duration": "<estimated duration>",
+          "cost": "<cost estimate or budget level>"
+        },
+        ... more activities ...
+      ]
+    },
+    ... more days ...
+  ],
+  "budgetEstimate": {
+    "accommodation": <estimated total cost as number>,
+    "food": <estimated total cost as number>,
+    "activities": <estimated total cost as number>,
+    "transportation": <estimated total cost as number>,
+    "total": <total estimated cost as number>
+  },
+  "travelTips": [
+    "<useful tip for this destination>",
+    ... more tips ...
+  ]
+}
+
+Remember, EACH activity MUST include valid and accurate coordinates (latitude and longitude) as numerical values - never use empty or placeholder coordinates. Research real locations in ${e.destination} and include their actual coordinates.
+
+Only return valid JSON that can be parsed with JSON.parse(). Do not include any explanations, markdown formatting, or code blocks outside the JSON object. Ensure all property names and string values use double quotes, not single quotes.
+  `}function u(e){let t=e.getDate(),r=["January","February","March","April","May","June","July","August","September","October","November","December"][e.getMonth()],a=e.getFullYear(),o="th";return 1===t||21===t||31===t?o="st":2===t||22===t?o="nd":(3===t||23===t)&&(o="rd"),`${r} ${t}${o}, ${a}`}},647:(e,t,r)=>{r.d(t,{E_:()=>s,Vn:()=>i,WE:()=>n});var a=r(5662);let o=(0,r(7435).h)("job-processor");function n(){return`job_${Date.now()}_${Math.random().toString(36).substring(2,9)}`}async function i(e,t){try{if(o.info(`Processing itinerary response for job ${e}`),!t||!t.rawContent)return o.error(`Invalid response data for job ${e}`),await (0,a.L2)(e,"failed",{error:"Invalid response data from Supabase edge function"}),!1;let r=t.rawContent;o.debug(`Content length for job ${e}: ${r.length} characters`);try{let n;o.debug(`Parsing JSON response for job ${e}`);try{n=JSON.parse(r),o.info(`JSON for job ${e} parsed successfully on first attempt`)}catch(a){o.error(`Initial JSON parse failed for job ${e}:`,a.message);let t=r.match(/\{[\s\S]*\}/);if(t)try{o.debug(`Attempting to extract JSON from response for job ${e}`),n=JSON.parse(t[0]),o.info(`JSON extracted and parsed successfully for job ${e}`)}catch(t){o.error(`Failed to extract valid JSON for job ${e}:`,t.message);try{o.debug(`Attempting to sanitize and repair the JSON for job ${e}`);let t=(o.debug("Sanitizing JSON content"),r.replace(/\/\/.*?(\r?\n|$)/g,"$1").replace(/\/\*[\s\S]*?\*\//g,"").replace(/(\{|\,)\s*([a-zA-Z0-9_]+)\s*\:/g,'$1"$2":').replace(/,(\s*[\]\}])/g,"$1").replace(/'/g,'"'));n=JSON.parse(t),o.info(`Sanitized JSON parsed successfully for job ${e}`)}catch(e){throw a}}else throw a}if(!n||"object"!=typeof n)throw Error("Parsed result is not a valid object");return o.debug(`Validating coordinates for job ${e}`),function(e){o.debug("Validating and fixing coordinates in itinerary");let t={lat:48.8566,lng:2.3522},r=e=>e&&"object"==typeof e&&"number"==typeof e.lat&&"number"==typeof e.lng&&!isNaN(e.lat)&&!isNaN(e.lng);if(!e.days||!Array.isArray(e.days))return o.warn("No days array found in itinerary");let a=0;e.days.forEach((e,n)=>{if(!e.activities||!Array.isArray(e.activities)){o.warn(`Day ${n+1} has no activities array`);return}e.activities.forEach((e,i)=>{if(!e||"object"!=typeof e){o.warn(`Invalid activity at day ${n+1}, index ${i}`);return}r(e.coordinates)||(a++,o.warn(`Invalid coordinates found for activity "${e.title}" on day ${n+1}`,{coordinates:e.coordinates,activityIndex:i,dayIndex:n}),e.coordinates&&"object"==typeof e.coordinates?("string"==typeof e.coordinates.lat&&(e.coordinates.lat=parseFloat(e.coordinates.lat)),"string"==typeof e.coordinates.lng&&(e.coordinates.lng=parseFloat(e.coordinates.lng)),r(e.coordinates)||(e.coordinates={...t})):e.coordinates={...t},o.debug(`Fixed coordinates for activity "${e.title}"`,e.coordinates))})}),a>0?o.info(`Fixed ${a} coordinate issues in itinerary`):o.debug("All coordinates in itinerary are valid")}(n),o.info(`Coordinates validated successfully for job ${e}`),o.info(`Updating job ${e} status to completed`),await (0,a.L2)(e,"completed",{result:{itinerary:n,prompt:t.prompt,generatedAt:new Date().toISOString()}}),o.info(`Job ${e} completed successfully`),!0}catch(t){return o.error(`JSON parsing error for job ${e}:`,{message:t.message,stack:t.stack?.substring(0,200)}),await (0,a.L2)(e,"failed",{error:`Failed to parse itinerary JSON: ${t.message}`}),o.info(`Job ${e} failed due to JSON parsing error`),!1}}catch(t){return o.error(`Error processing itinerary job ${e}:`,{message:t.message,stack:t.stack?.substring(0,200)}),await (0,a.L2)(e,"failed",{error:t.message||"Unknown error"}),!1}}async function s(e,t,r,n){try{let a;o.info(`Processing itinerary job for job ${e}`),"function"==typeof r?(a=r(t),o.debug(`Generated prompt for job ${e}, length: ${a.length} characters`)):(a=r,o.debug(`Using pre-formulated prompt for job ${e}, length: ${a.length} characters`)),o.info(`Calling OpenAI API for job ${e}`);let s=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{"Content-Type":"application/json",Authorization:`Bearer ${n}`},body:JSON.stringify({model:"gpt-3.5-turbo",messages:[{role:"system",content:'You are an expert travel planner. Generate a detailed travel itinerary based on the user\'s preferences. Return your response in a structured JSON format only, with no additional text, explanation, or markdown formatting. Do not wrap the JSON in code blocks. Ensure all property names use double quotes. IMPORTANT: Every activity MUST include a valid "coordinates" object with "lat" and "lng" numerical values - never omit coordinates or use empty objects. For price fields, DO NOT use $ symbols directly - use price descriptors like "Budget", "Moderate", "Expensive" or numeric values without currency symbols.'},{role:"user",content:a}],temperature:.7,max_tokens:3e3})});if(!s.ok){let e=await s.json();throw Error(`OpenAI API error: ${e.error?.message||"Unknown error"}`)}let c=await s.json(),d=c.choices[0].message.content;return await i(e,{rawContent:d,prompt:a,usage:c.usage}),!0}catch(t){return o.error(`Failed to process itinerary job ${e}:`,t),await (0,a.L2)(e,"failed",{error:`OpenAI API error: ${t.message||"Unknown error"}`}),!1}}}};

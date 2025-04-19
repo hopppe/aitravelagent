@@ -2106,3 +2106,702 @@
 }
 [2025-04-19T15:09:57.572Z] [INFO] [app] Returning job status: completed 
 [2025-04-19T15:09:57.940Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:18.621Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.623Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.623Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.626Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.627Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.626Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.628Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.628Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.628Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.629Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.630Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.631Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.630Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.633Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.635Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.633Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.633Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.637Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.637Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.639Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.641Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.637Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.644Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.642Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.647Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.647Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.651Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.655Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.656Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.663Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.660Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:18.667Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.668Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.667Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:18.678Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:18.680Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:18.903Z] [INFO] [debug-jobs-api] Debug jobs API called 
+[2025-04-19T15:15:18.906Z] [ERROR] [debug-jobs-api] Error in debug-jobs API: {
+  "description": "Route /api/debug-jobs couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  "digest": "DYNAMIC_SERVER_USAGE"
+}
+[2025-04-19T15:15:19.693Z] [INFO] [supabase] Creating new job: debug_1745075719693 (db id: 1745075719693) 
+[2025-04-19T15:15:19.962Z] [INFO] [supabase] Creating new job: test_job_1745075719961 (db id: 474781069) 
+[2025-04-19T15:15:22.059Z] [INFO] [supabase] Creating new job: test_1745075722059 (db id: 1745075722059) 
+[2025-04-19T15:15:22.114Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.336Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.337Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.337Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.337Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.339Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.338Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.340Z] [INFO] [supabase] Job test_1745075722059 created successfully 
+[2025-04-19T15:15:22.340Z] [INFO] [supabase] Job debug_1745075719693 created successfully 
+[2025-04-19T15:15:22.340Z] [INFO] [supabase] Job test_job_1745075719961 created successfully 
+[2025-04-19T15:15:22.341Z] [INFO] [supabase] Getting status for job: test_1745075722059 (db id: 1745075722059) 
+[2025-04-19T15:15:22.342Z] [INFO] [supabase] Updating job status: test_job_1745075719961 -> processing {
+  "dbId": 474781069,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T15:15:22.344Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.349Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:15:22.549Z] [INFO] [supabase] Job test_job_1745075719961 status updated successfully to processing 
+[2025-04-19T15:15:22.550Z] [INFO] [supabase] Job test_1745075722059 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:15:22.059+00:00"
+}
+[2025-04-19T15:15:22.551Z] [INFO] [supabase] Getting status for job: test_job_1745075719961 (db id: 474781069) 
+[2025-04-19T15:15:22.556Z] [INFO] [supabase] Updating job status: test_1745075722059 -> completed {
+  "dbId": 1745075722059,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T15:15:22.774Z] [INFO] [supabase] Job test_1745075722059 status updated successfully to completed 
+[2025-04-19T15:15:22.929Z] [INFO] [supabase] Job test_job_1745075719961 status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:15:22.342+00:00"
+}
+[2025-04-19T15:15:22.930Z] [INFO] [supabase] Updating job status: test_job_1745075719961 -> completed {
+  "dbId": 474781069,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T15:15:23.151Z] [INFO] [supabase] Job test_job_1745075719961 status updated successfully to completed 
+[2025-04-19T15:15:23.155Z] [INFO] [supabase] Getting status for job: test_job_1745075719961 (db id: 474781069) 
+[2025-04-19T15:15:23.343Z] [INFO] [supabase] Getting status for job: debug_1745075719693 (db id: 1745075719693) 
+[2025-04-19T15:15:23.564Z] [INFO] [supabase] Job test_job_1745075719961 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:15:22.93+00:00"
+}
+[2025-04-19T15:15:23.756Z] [INFO] [supabase] Job debug_1745075719693 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:15:19.693+00:00"
+}
+[2025-04-19T15:15:53.029Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.031Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.033Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.038Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.039Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.039Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.040Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.044Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.045Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.042Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.046Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.046Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.048Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.046Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.048Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.051Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.052Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.054Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.054Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.053Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.056Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.057Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.057Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.063Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.066Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.055Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.069Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.069Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.074Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.074Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.060Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:15:53.078Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.078Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:15:53.078Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.081Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:15:53.083Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:15:53.354Z] [INFO] [supabase] Creating new job: debug_1745075753354 (db id: 1745075753354) 
+[2025-04-19T15:15:53.358Z] [INFO] [supabase] Creating new job: test_job_1745075753358 (db id: 478290617) 
+[2025-04-19T15:15:53.357Z] [INFO] [debug-jobs-api] Debug jobs API called 
+[2025-04-19T15:15:53.364Z] [ERROR] [debug-jobs-api] Error in debug-jobs API: {
+  "description": "Route /api/debug-jobs couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  "digest": "DYNAMIC_SERVER_USAGE"
+}
+[2025-04-19T15:16:02.937Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:02.938Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:02.942Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:02.955Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:02.956Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:02.959Z] [INFO] [supabase] Creating new job: test_1745075762959 (db id: 1745075762959) 
+[2025-04-19T15:16:03.070Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:03.070Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:03.074Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:03.078Z] [INFO] [supabase] Job test_job_1745075753358 created successfully 
+[2025-04-19T15:16:03.079Z] [INFO] [supabase] Updating job status: test_job_1745075753358 -> processing {
+  "dbId": 478290617,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T15:16:03.089Z] [INFO] [supabase] Job debug_1745075753354 created successfully 
+[2025-04-19T15:16:03.105Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:03.197Z] [INFO] [supabase] Job test_1745075762959 created successfully 
+[2025-04-19T15:16:03.202Z] [INFO] [supabase] Getting status for job: test_1745075762959 (db id: 1745075762959) 
+[2025-04-19T15:16:03.291Z] [INFO] [supabase] Job test_job_1745075753358 status updated successfully to processing 
+[2025-04-19T15:16:03.293Z] [INFO] [supabase] Getting status for job: test_job_1745075753358 (db id: 478290617) 
+[2025-04-19T15:16:03.532Z] [INFO] [supabase] Job test_job_1745075753358 status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:16:03.079+00:00"
+}
+[2025-04-19T15:16:03.537Z] [INFO] [supabase] Updating job status: test_job_1745075753358 -> completed {
+  "dbId": 478290617,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T15:16:03.590Z] [INFO] [supabase] Job test_1745075762959 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:16:02.959+00:00"
+}
+[2025-04-19T15:16:03.597Z] [INFO] [supabase] Updating job status: test_1745075762959 -> completed {
+  "dbId": 1745075762959,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T15:16:03.762Z] [INFO] [supabase] Job test_job_1745075753358 status updated successfully to completed 
+[2025-04-19T15:16:03.766Z] [INFO] [supabase] Getting status for job: test_job_1745075753358 (db id: 478290617) 
+[2025-04-19T15:16:03.814Z] [INFO] [supabase] Job test_1745075762959 status updated successfully to completed 
+[2025-04-19T15:16:04.095Z] [INFO] [supabase] Getting status for job: debug_1745075753354 (db id: 1745075753354) 
+[2025-04-19T15:16:04.156Z] [INFO] [supabase] Job test_job_1745075753358 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:16:03.536+00:00"
+}
+[2025-04-19T15:16:04.479Z] [INFO] [supabase] Job debug_1745075753354 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:15:53.354+00:00"
+}
+[2025-04-19T15:16:19.141Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.143Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.147Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.151Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.153Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.153Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.154Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.157Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.156Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.156Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.157Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.159Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.156Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.161Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.159Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.162Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.162Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.160Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.164Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.167Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.159Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.169Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.170Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.171Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.164Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.167Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.175Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.163Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.165Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.177Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.182Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.180Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "production",
+  "hasProcessEnv": true,
+  "nodeEnv": "production",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 6
+}
+[2025-04-19T15:16:19.185Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.187Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:16:19.192Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:16:19.196Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:16:19.442Z] [INFO] [supabase] Creating new job: debug_1745075779442 (db id: 1745075779442) 
+[2025-04-19T15:16:19.559Z] [INFO] [supabase] Creating new job: test_job_1745075779559 (db id: 480318328) 
+[2025-04-19T15:16:19.560Z] [INFO] [debug-jobs-api] Debug jobs API called 
+[2025-04-19T15:16:19.567Z] [ERROR] [debug-jobs-api] Error in debug-jobs API: {
+  "description": "Route /api/debug-jobs couldn't be rendered statically because it used `request.url`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  "digest": "DYNAMIC_SERVER_USAGE"
+}
+[2025-04-19T15:16:22.759Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:22.914Z] [INFO] [supabase] Creating new job: test_1745075782914 (db id: 1745075782914) 
+[2025-04-19T15:16:22.931Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:22.936Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:22.938Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:22.938Z] [INFO] [supabase] Job test_job_1745075779559 created successfully 
+[2025-04-19T15:16:22.938Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:22.938Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:22.939Z] [INFO] [supabase] Updating job status: test_job_1745075779559 -> processing {
+  "dbId": 480318328,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T15:16:22.954Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:22.964Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:23.109Z] [INFO] [supabase] Job debug_1745075779442 created successfully 
+[2025-04-19T15:16:23.110Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:16:23.132Z] [INFO] [supabase] Job test_1745075782914 created successfully 
+[2025-04-19T15:16:23.137Z] [INFO] [supabase] Getting status for job: test_1745075782914 (db id: 1745075782914) 
+[2025-04-19T15:16:23.165Z] [INFO] [supabase] Job test_job_1745075779559 status updated successfully to processing 
+[2025-04-19T15:16:23.170Z] [INFO] [supabase] Getting status for job: test_job_1745075779559 (db id: 480318328) 
+[2025-04-19T15:16:23.548Z] [INFO] [supabase] Job test_1745075782914 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:16:22.914+00:00"
+}
+[2025-04-19T15:16:23.549Z] [INFO] [supabase] Updating job status: test_1745075782914 -> completed {
+  "dbId": 1745075782914,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T15:16:23.553Z] [INFO] [supabase] Job test_job_1745075779559 status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:16:22.938+00:00"
+}
+[2025-04-19T15:16:23.556Z] [INFO] [supabase] Updating job status: test_job_1745075779559 -> completed {
+  "dbId": 480318328,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T15:16:23.764Z] [INFO] [supabase] Job test_1745075782914 status updated successfully to completed 
+[2025-04-19T15:16:23.809Z] [INFO] [supabase] Job test_job_1745075779559 status updated successfully to completed 
+[2025-04-19T15:16:23.810Z] [INFO] [supabase] Getting status for job: test_job_1745075779559 (db id: 480318328) 
+[2025-04-19T15:16:24.040Z] [INFO] [supabase] Job test_job_1745075779559 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:16:23.556+00:00"
+}
+[2025-04-19T15:16:24.109Z] [INFO] [supabase] Getting status for job: debug_1745075779442 (db id: 1745075779442) 
+[2025-04-19T15:16:24.327Z] [INFO] [supabase] Job debug_1745075779442 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:16:19.442+00:00"
+}

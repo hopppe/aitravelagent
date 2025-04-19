@@ -1,0 +1,1 @@
+"use strict";exports.id=546,exports.ids=[546],exports.modules={9546:(e,t,r)=>{r.r(t),r.d(t,{default:()=>s});let s=(0,r(8570).createProxy)(String.raw`/Users/ethanhoppe/Desktop/AItravelagent/components/ErrorBoundary.tsx#default`)}};

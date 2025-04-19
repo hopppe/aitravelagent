@@ -69,14 +69,15 @@ export async function GET(request: Request) {
     // For completed jobs with raw results that haven't been processed yet,
     // process them and return the processed data
     if (
-      statusResult.statusFound &&
       statusResult.status === 'completed' &&
-      statusResult.hasRawResult &&
-      !statusResult.result?.processed
+      statusResult.result &&
+      typeof statusResult.result === 'object' &&
+      !statusResult.result.processed &&
+      statusResult.result.raw
     ) {
       try {
         // Process the raw OpenAI response
-        const processedItinerary = processRawResponse(statusResult.rawResult);
+        const processedItinerary = processRawResponse(statusResult.result.raw);
         
         // Return the processed itinerary along with the status
         return NextResponse.json({
@@ -96,10 +97,8 @@ export async function GET(request: Request) {
     logger.info(`Returning job status: ${statusResult.status}`);
     return NextResponse.json({
       status: statusResult.status,
-      hasResult: statusResult.hasResult,
-      hasError: statusResult.hasError,
-      error: statusResult.error,
-      result: statusResult.result
+      result: statusResult.result,
+      error: statusResult.error
     });
   } catch (error: any) {
     logger.error('Error in job status API:', error);
