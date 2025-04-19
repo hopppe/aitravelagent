@@ -186,21 +186,29 @@ export async function POST(request: Request) {
       } else {
         console.log(`Successfully updated job ${jobId} status to processing`);
       }
+
+      // IMPORTANT: Vercel Hobby plan has a 10-second execution timeout
+      // OpenAI API calls typically take 15-30 seconds, which will cause timeout
+      // We'll use fire-and-forget, but this relies on Vercel's undocumented behavior
+      // where background promises may still complete even after response returns
+      console.log(`⚠️ WARNING: Using fire-and-forget pattern with Vercel timeout constraints`);
+      console.log(`⚠️ IMPORTANT: For reliable operation, upgrade to Vercel Pro ($20/month) with 60s timeout`);
       
-      // Start processing directly without setTimeout (which can cause issues in serverless environments)
-      // We don't await this so the request can return quickly
+      // Don't await this - return response immediately
+      // The promise will continue executing in the background
       processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY)
         .then(() => {
           console.log(`Background processing completed for job ${jobId}`);
         })
         .catch(error => {
           console.error(`Background processing error for job ${jobId}:`, error);
+          // Try to update the job status on error
           updateJobStatus(jobId, 'failed', { 
             error: error.message || 'Internal server error'
           }).catch(e => console.error(`Failed to update job status after error for ${jobId}:`, e));
         });
-        
-      console.log(`Job ${jobId} started processing directly`);
+      
+      console.log(`Returning immediately while job ${jobId} processes in background`);
     } else {
       // In development, use setTimeout for background processing (more reliable locally)
       console.log(`Running in development mode for job ${jobId} with setTimeout...`);
