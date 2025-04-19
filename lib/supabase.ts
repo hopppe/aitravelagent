@@ -385,16 +385,84 @@ export async function updateJobStatus(
 
 // Get the status of a job
 export async function getJobStatus(jobId: string): Promise<{ status: string; result?: any; error?: string }> {
-  // First check in-memory cache for faster response and fallback
+  // Enhanced logging for troubleshooting
+  console.log(`========== JOB STATUS CHECK ==========`);
+  console.log(`getJobStatus called for job: ${jobId}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log(`Supabase configured: ${isSupabaseConfigured}`);
+  console.log(`Supabase disabled flag: ${supabaseDisabled}`);
+  console.log(`shouldUseSupabase(): ${shouldUseSupabase()}`);
+  
+  // Check in-memory storage first
   const memoryJob = inMemoryJobs[jobId];
+  
+  // Log in-memory job status
+  console.log(`In-memory job status for ${jobId}: ${memoryJob ? memoryJob.status : 'not found'}`);
+  console.log(`In-memory jobs count: ${Object.keys(inMemoryJobs).length}`);
+  console.log(`All in-memory job IDs: ${Object.keys(inMemoryJobs).join(', ').substring(0, 200)}`);
   
   // Not even in memory
   if (!memoryJob) {
-    return { status: 'not_found' };
+    console.log(`Job ${jobId} not found in memory, will check Supabase if available`);
+    
+    // If Supabase is properly configured and not disabled, try to fetch from there
+    if (shouldUseSupabase()) {
+      try {
+        const dbId = getDbCompatibleId(jobId);
+        console.log(`Checking Supabase for job ${jobId} (DB ID: ${dbId})`);
+        
+        const { data, error } = await supabase
+          .from('jobs')
+          .select('*')
+          .eq('id', dbId)
+          .maybeSingle();
+          
+        if (error) {
+          console.error(`Supabase error checking for job ${jobId}:`, {
+            message: error.message,
+            code: error.code,
+            details: error.details
+          });
+          return { status: 'not_found' };
+        }
+        
+        if (!data) {
+          console.log(`Job ${jobId} not found in Supabase either`);
+          return { status: 'not_found' };
+        }
+        
+        console.log(`Found job ${jobId} in Supabase with status: ${data.status}`);
+        // Store in memory for future quick access
+        inMemoryJobs[jobId] = {
+          id: jobId,
+          status: data.status,
+          result: data.result,
+          error: data.error,
+          created_at: data.created_at,
+          updated_at: data.updated_at
+        };
+        
+        return {
+          status: data.status,
+          result: data.result,
+          error: data.error
+        };
+      } catch (error: any) {
+        console.error(`Exception checking Supabase for job ${jobId}:`, {
+          message: error.message,
+          stack: error.stack?.substring(0, 200)
+        });
+        return { status: 'not_found' };
+      }
+    } else {
+      console.log(`Supabase not available, job ${jobId} is not found`);
+      return { status: 'not_found' };
+    }
   }
   
   // If Supabase is disabled or improperly configured, only use in-memory storage
   if (!shouldUseSupabase()) {
+    console.log(`Using in-memory data for job ${jobId} (Supabase not available)`);
     return {
       status: memoryJob.status,
       result: memoryJob.result,
@@ -471,9 +539,14 @@ export async function getJobStatus(jobId: string): Promise<{ status: string; res
         result: data.result,
         error: data.error
       };
-    } catch (error) {
+    } catch (error: any) {
       attempts++;
-      console.error(`Error fetching job status (attempt ${attempts}):`, error);
+      console.error(`Error fetching job status (attempt ${attempts}):`, {
+        message: error.message,
+        stack: error.stack?.substring(0, 200),
+        jobId,
+        attempt: attempts
+      });
       
       if (attempts < maxRetries) {
         // Wait before retrying (exponential backoff)
@@ -483,6 +556,7 @@ export async function getJobStatus(jobId: string): Promise<{ status: string; res
       
       // All retries failed, fall back to in-memory
       handleSupabaseError(error);
+      console.log(`Falling back to in-memory data for job ${jobId} after ${maxRetries} failed Supabase attempts`);
       return {
         status: memoryJob.status,
         result: memoryJob.result,
@@ -492,6 +566,7 @@ export async function getJobStatus(jobId: string): Promise<{ status: string; res
   }
   
   // This should never be reached due to the returns in the loop, but TypeScript needs it
+  console.log(`Code reached unreachable point in getJobStatus for job ${jobId}`);
   return {
     status: memoryJob.status,
     result: memoryJob.result,
@@ -501,82 +576,105 @@ export async function getJobStatus(jobId: string): Promise<{ status: string; res
 
 // Function to create a new job
 export async function createJob(jobId: string): Promise<boolean> {
-  // Create in-memory entry
-  const memoryJob: JobData = {
+  // Get a DB-compatible ID
+  const dbId = getDbCompatibleId(jobId);
+  
+  console.log(`Creating job ${jobId} (DB ID: ${dbId})`);
+  
+  // Always create the job in memory first for redundancy
+  inMemoryJobs[jobId] = {
     id: jobId,
     status: 'queued',
-    created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };
+  console.log(`Job ${jobId} created in memory`);
   
-  // Save to in-memory store
-  inMemoryJobs[jobId] = memoryJob;
-  console.log(`Created job ${jobId} in memory with status: ${memoryJob.status}`);
-
-  // If we shouldn't use Supabase, return early with success
+  // If Supabase is disabled, just return success from in-memory storage
   if (!shouldUseSupabase()) {
-    console.log(`Created job ${jobId} in memory only (Supabase disabled)`);
+    console.log(`Using in-memory storage only for job ${jobId}`);
     return true;
   }
-
+  
   try {
-    const dbId = getDbCompatibleId(jobId);
-    console.log(`Creating job ${jobId} (dbId: ${dbId}) in Supabase`);
+    console.log(`Inserting job ${jobId} into Supabase`);
     
-    // First try to check if the job already exists to avoid conflicts
-    const { data: existingJob, error: checkError } = await supabase
-      .from('jobs')
-      .select('id, status')
-      .eq('id', dbId)
-      .maybeSingle();
-      
-    if (checkError) {
-      console.error('Error checking for existing job in Supabase:', {
-        code: checkError.code,
-        message: checkError.message,
-        details: checkError.details,
-        jobId,
-        dbId
-      });
-    }
-    
-    if (existingJob) {
-      console.log(`Job ${jobId} already exists in Supabase with status: ${existingJob.status}`);
-      return true;
-    }
-    
-    // Insert the new job
-    const { data, error } = await supabase
+    // Try to insert the job into Supabase
+    const { error } = await supabase
       .from('jobs')
       .insert({
         id: dbId,
         status: 'queued',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
-      })
-      .select();
-
+      });
+    
     if (error) {
-      console.error('Error creating job in Supabase:', {
-        code: error.code,
+      console.error(`Error creating job ${jobId} in Supabase:`, {
         message: error.message,
-        details: error.details,
-        jobId,
-        dbId
+        code: error.code,
+        details: error.details
       });
       
-      // If this was a unique constraint error (job already exists), that's okay
+      // For conflicts, the job might already exist
       if (error.code === '23505') {
-        console.log(`Job ${jobId} already exists (constraint error), proceeding anyway`);
-        return true;
+        console.log(`Job ${jobId} already exists in Supabase, updating status instead`);
+        
+        // Try to update the job instead
+        const { error: updateError } = await supabase
+          .from('jobs')
+          .update({
+            status: 'queued',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', dbId);
+        
+        if (updateError) {
+          console.error(`Error updating existing job ${jobId} in Supabase:`, updateError);
+          // Even if update fails, we have the job in memory
+          handleSupabaseError(updateError);
+          return true;
+        } else {
+          console.log(`Successfully updated job ${jobId} in Supabase`);
+          return true;
+        }
       }
-    } else {
-      console.log(`Successfully created job ${jobId} in Supabase:`, data);
+      
+      // For foreign key constraint failures, try to create with minimal fields
+      if (error.code === '23503') {
+        console.log(`Trying simplified job creation for ${jobId}`);
+        
+        const { error: simpleError } = await supabase
+          .from('jobs')
+          .insert({
+            id: dbId,
+            status: 'queued'
+          });
+        
+        if (simpleError) {
+          console.error(`Simplified job creation also failed for ${jobId}:`, simpleError);
+          handleSupabaseError(simpleError);
+          return true; // Still return true since we have in-memory backup
+        } else {
+          console.log(`Simplified job creation succeeded for ${jobId}`);
+          return true;
+        }
+      }
+      
+      // For other errors, handle gracefully and use in-memory storage as fallback
+      handleSupabaseError(error);
+      return true; // Still return true since we have in-memory backup
     }
-  } catch (error) {
+    
+    console.log(`Successfully created job ${jobId} in Supabase`);
+    return true;
+  } catch (error: any) {
+    console.error(`Exception while creating job ${jobId}:`, {
+      message: error.message,
+      stack: error.stack?.substring(0, 200)
+    });
+    
+    // In case of network or other exception, we already have the job in memory
     handleSupabaseError(error);
+    return true; // Still return true since we have in-memory backup
   }
-  
-  // Always return true since we saved to in-memory storage
-  return true;
 } 

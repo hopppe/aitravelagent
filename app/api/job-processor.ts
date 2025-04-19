@@ -48,7 +48,7 @@ export async function processItineraryJob(jobId: string, surveyData: any, genera
           messages: [
             {
               role: 'system',
-              content: 'You are an expert travel planner. Generate a detailed travel itinerary based on the user\'s preferences. Return your response in a structured JSON format only, with no additional text, explanation, or markdown formatting. Do not wrap the JSON in code blocks. Ensure all property names use double quotes. IMPORTANT: Every activity MUST include a valid "coordinates" object with "lat" and "lng" numerical values - never omit coordinates or use empty objects. Return a valid JSON object that can be parsed with JSON.parse().'
+              content: 'You are an expert travel planner. Generate a detailed travel itinerary based on the user\'s preferences. Return your response in a structured JSON format only, with no additional text, explanation, or markdown formatting. Do not wrap the JSON in code blocks. Ensure all property names use double quotes. IMPORTANT: Every activity MUST include a valid "coordinates" object with "lat" and "lng" numerical values - never omit coordinates or use empty objects. For price fields, DO NOT use $ symbols directly - use price descriptors like "Budget", "Moderate", "Expensive" or numeric values without currency symbols. ALL city names and locations with periods (like "St. Louis") must be properly escaped in JSON. Return a valid JSON object that can be parsed with JSON.parse().'
             },
             {
               role: 'user',
@@ -94,8 +94,7 @@ export async function processItineraryJob(jobId: string, surveyData: any, genera
           const parseError = err as Error;
           console.error(`[${jobId}] Initial JSON parse failed:`, parseError.message);
           
-          // Sometimes the API might return markdown-formatted JSON with backticks or extra text
-          // Try to extract JSON content from the response
+          // First try to extract JSON content from the response
           const jsonMatch = itineraryContent.match(/\{[\s\S]*\}/);
           if (jsonMatch) {
             try {
@@ -105,12 +104,115 @@ export async function processItineraryJob(jobId: string, surveyData: any, genera
             } catch (err2) {
               const extractError = err2 as Error;
               console.error(`[${jobId}] Failed to extract valid JSON:`, extractError.message);
-              // If we can't parse it, throw the original error
-              throw parseError;
+              
+              // Try to sanitize and repair the JSON
+              try {
+                console.log(`[${jobId}] Attempting to sanitize and repair the JSON...`);
+                const sanitizedJSON = sanitizeJSON(itineraryContent);
+                console.log(`[${jobId}] JSON sanitized, attempting to parse...`);
+                
+                itinerary = JSON.parse(sanitizedJSON);
+                console.log(`[${jobId}] Sanitized JSON parsed successfully`);
+              } catch (err3) {
+                const sanitizeError = err3 as Error;
+                console.error(`[${jobId}] Failed to parse sanitized JSON:`, sanitizeError.message);
+                
+                // Last resort: try to fix common JSON syntax errors
+                try {
+                  console.log(`[${jobId}] Using last resort JSON repair attempt...`);
+                  
+                  // Replace single quotes with double quotes for property names and values
+                  let lastResortJSON = itineraryContent.replace(/'/g, '"');
+                  
+                  // Fix property names without quotes (common error)
+                  lastResortJSON = lastResortJSON.replace(/([{,]\s*)([a-zA-Z0-9_\.]+)(\s*:)/g, '$1"$2"$3');
+                  
+                  // Fix dollar signs in price fields (a common source of problems)
+                  lastResortJSON = lastResortJSON.replace(/"(price|priceRange|cost|estimatedCost)"(\s*):(\s*)"(\$+)"/g, '"$1"$2:$3"Price Range $4"');
+                  
+                  // Handle common patterns with dollar signs
+                  lastResortJSON = lastResortJSON.replace(/:(\s*)\$(\d+)/g, ': "$$$2"');
+                  lastResortJSON = lastResortJSON.replace(/:(\s*)\$(\d+)-(\d+)/g, ': "$$$2-$$$3"');
+                  
+                  // Replace unquoted property values
+                  lastResortJSON = lastResortJSON.replace(/:(\s*)([^"{}\[\],\s][^,}\]]*?)(\s*[,}])/g, ':"$2"$3');
+                  
+                  // Handle St. Louis and other places with periods
+                  // First ensure property names with periods are properly quoted
+                  lastResortJSON = lastResortJSON.replace(/"([^"]*?\.)([^"]*?)"/g, '"$1$2"');
+                  
+                  // Fix quotes and unescaped characters around periods in content
+                  lastResortJSON = lastResortJSON.replace(/St\.\s*Louis/g, 'St. Louis');
+                  
+                  console.log(`[${jobId}] Repaired JSON sample:`, lastResortJSON.substring(0, 200) + '...');
+                  
+                  try {
+                    itinerary = JSON.parse(lastResortJSON);
+                    console.log(`[${jobId}] Last resort JSON repair successful`);
+                  } catch (directParseError) {
+                    // If direct parsing still fails, try the sliding window approach as a final attempt
+                    console.log(`[${jobId}] Direct repair failed, trying JSON substring extraction...`);
+                    
+                    // Try to find valid JSON objects within the repair attempt
+                    const matches = lastResortJSON.match(/(\{[\s\S]*\})/g) || [];
+                    
+                    for (const match of matches) {
+                      try {
+                        const possibleJSON = JSON.parse(match);
+                        if (possibleJSON && typeof possibleJSON === 'object' && possibleJSON.days) {
+                          console.log(`[${jobId}] Found valid JSON object in repair attempt`);
+                          itinerary = possibleJSON;
+                          break;
+                        }
+                      } catch (e) {
+                        // Continue to the next match
+                      }
+                    }
+                    
+                    if (!itinerary) {
+                      console.error(`[${jobId}] All JSON repair attempts failed`);
+                      throw parseError; // Throw the original error
+                    }
+                  }
+                } catch (err4) {
+                  console.error(`[${jobId}] All JSON repair attempts failed`);
+                  throw parseError; // Throw the original error
+                }
+              }
             }
           } else {
             console.error(`[${jobId}] No JSON object found in response`);
-            throw parseError;
+            
+            // Try one more approach - search for valid JSON in substrings
+            try {
+              console.log(`[${jobId}] Attempting to extract valid JSON from content chunks...`);
+              const contentLength = itineraryContent.length;
+              let validJSON = null;
+              
+              // Try parsing from different starting positions
+              for (let startPos = 0; startPos < 200 && startPos < contentLength; startPos++) {
+                const subContent = itineraryContent.substring(startPos);
+                const subMatch = subContent.match(/\{[\s\S]*\}/);
+                
+                if (subMatch) {
+                  try {
+                    validJSON = JSON.parse(subMatch[0]);
+                    console.log(`[${jobId}] Found valid JSON starting at position ${startPos}`);
+                    break;
+                  } catch (e) {
+                    // Continue trying
+                  }
+                }
+              }
+              
+              if (validJSON) {
+                itinerary = validJSON;
+              } else {
+                throw parseError;
+              }
+            } catch (e) {
+              throw parseError;
+            }
           }
         }
         
@@ -233,4 +335,78 @@ function ensureValidCoordinates(itinerary: any) {
   }
   
   console.log(`Coordinates validation complete. Fixed ${issuesFixed} issues.`);
+}
+
+// Helper function to sanitize and repair JSON string
+function sanitizeJSON(jsonString: string): string {
+  console.log('Sanitizing JSON string...');
+  
+  // Step 1: Remove any markdown code block formatting
+  let cleanedJSON = jsonString.replace(/```json\s*|\s*```/g, '');
+  
+  // Step 2: Remove any non-JSON content before the first curly brace and after the last curly brace
+  const firstCurlyIndex = cleanedJSON.indexOf('{');
+  const lastCurlyIndex = cleanedJSON.lastIndexOf('}');
+  
+  if (firstCurlyIndex !== -1 && lastCurlyIndex !== -1 && lastCurlyIndex > firstCurlyIndex) {
+    cleanedJSON = cleanedJSON.substring(firstCurlyIndex, lastCurlyIndex + 1);
+  }
+  
+  // Step 3: Fix dollar sign issues in price fields
+  // Replace patterns like "price": "$", "priceRange": "$$", etc. with proper escaped versions
+  cleanedJSON = cleanedJSON.replace(/"(price|priceRange|cost|estimatedCost)"(\s*):(\s*)"(\$+)"/g, '"$1"$2:$3"\\$4"');
+  
+  // Step 4: Fix potential issues with double quotes
+  // Replace single quotes used for property names with double quotes
+  cleanedJSON = cleanedJSON.replace(/(\s*)'([^']+)'(\s*):(\s*)/g, '$1"$2"$3:$4');
+  
+  // Step 5: Fix quotes inside string values
+  // This regex works for most cases but isn't perfect for nested quotes
+  let inString = false;
+  let inEscape = false;
+  let fixedJSON = '';
+  let i = 0;
+  
+  while (i < cleanedJSON.length) {
+    const char = cleanedJSON[i];
+    
+    if (inEscape) {
+      // Always add escaped characters directly
+      fixedJSON += char;
+      inEscape = false;
+    } else if (char === '\\') {
+      fixedJSON += char;
+      inEscape = true;
+    } else if (char === '"' && !inEscape) {
+      inString = !inString;
+      fixedJSON += char;
+    } else if (char === "'" && inString) {
+      // Replace single quotes inside strings with escaped double quotes
+      fixedJSON += "\\'";
+    } else if (char === '$' && inString) {
+      // Properly escape dollar signs in strings
+      fixedJSON += "\\$";
+    } else {
+      fixedJSON += char;
+    }
+    i++;
+  }
+  
+  // Step 6: Fix missing quotes around property values
+  // This is a simplified approach and might not catch all cases
+  fixedJSON = fixedJSON.replace(/:\s*([^",{\[\]\s][^,}\]\s]*)(\s*[,}])/g, ': "$1"$2');
+  
+  // Step 7: Fix comma issues (trailing commas and missing commas)
+  fixedJSON = fixedJSON.replace(/,\s*}/g, '}'); // Remove trailing commas
+  fixedJSON = fixedJSON.replace(/,\s*,/g, ','); // Remove double commas
+  
+  // Step 8: Fix common property name issues in price and cost fields (direct approach for most common errors)
+  fixedJSON = fixedJSON.replace(/([{,]\s*)price(\s*:)/g, '$1"price"$2');
+  fixedJSON = fixedJSON.replace(/([{,]\s*)priceRange(\s*:)/g, '$1"priceRange"$2');
+  fixedJSON = fixedJSON.replace(/([{,]\s*)cost(\s*:)/g, '$1"cost"$2');
+  fixedJSON = fixedJSON.replace(/([{,]\s*)estimatedCost(\s*:)/g, '$1"estimatedCost"$2');
+  
+  console.log('Cleaned JSON sample:', fixedJSON.substring(0, 200) + '...');
+  
+  return fixedJSON;
 } 

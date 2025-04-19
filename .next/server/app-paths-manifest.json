@@ -1,4 +1,4 @@
 {
-  "/trips/generated-trip/page": "app/trips/generated-trip/page.js",
-  "/trips/new/page": "app/trips/new/page.js"
+  "/trips/new/page": "app/trips/new/page.js",
+  "/trips/generated-trip/page": "app/trips/generated-trip/page.js"
 }

@@ -31,47 +31,53 @@ type SurveyData = {
 export async function POST(request: Request) {
   try {
     // Log key information for debugging
+    console.log(`========== ITINERARY GENERATION REQUEST ==========`);
     console.log(`API Request started: ${new Date().toISOString()}`);
     console.log('Environment:', {
       nodeEnv: process.env.NODE_ENV,
-      isProduction
+      isProduction: process.env.NODE_ENV === 'production'
     });
     
     // Log environment variables (without exposing actual values)
-    console.log('Supabase connection check:', {
+    console.log('Supabase connection details:', {
       hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
       hasSupabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      urlPrefix: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 10) || 'missing',
+      keyPrefix: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.substring(0, 5) || 'missing',
       urlLength: process.env.NEXT_PUBLIC_SUPABASE_URL?.length || 0,
       keyLength: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length || 0
     });
+    
+    console.log('OpenAI API Key:', {
+      hasKey: !!process.env.OPENAI_API_KEY,
+      keyLength: process.env.OPENAI_API_KEY?.length || 0,
+      keyPrefix: process.env.OPENAI_API_KEY?.substring(0, 5) || 'missing'
+    });
 
     // Only test Supabase connection if properly configured
-    if (isSupabaseConfigured) {
+    if (Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
       try {
+        console.log('Testing Supabase connection...');
         const { data, error } = await supabase.from('jobs').select('count').limit(1);
         if (error) {
-          console.error('Supabase connection test failed:', {
+          console.error('❌ Supabase connection test failed:', {
             message: error.message,
             hint: error.hint || '',
             code: error.code || ''
           });
-          // Continue execution despite connection error
-          // The job will be stored in memory
         } else {
-          console.log('Supabase connection test successful:', data);
+          console.log('✅ Supabase connection test successful:', data);
         }
       } catch (connError: any) {
-        console.error('Supabase connection test exception:', {
+        console.error('❌ Supabase connection test exception:', {
           message: connError.message,
           details: connError.toString(),
-          hint: '',
-          code: ''
+          name: connError.name,
+          stack: connError.stack?.substring(0, 200)
         });
-        // Continue execution despite connection error
-        // The job will be stored in memory
       }
     } else {
-      console.log('Skipping Supabase connection test - not configured');
+      console.log('⚠️ Skipping Supabase connection test - not configured');
     }
 
     // Parse the request body
@@ -113,12 +119,36 @@ export async function POST(request: Request) {
 
     // Create a new job
     console.log('Creating new job with ID:', jobId);
-    const jobCreated = await createJob(jobId);
+    let jobCreated = false;
+    let retryCount = 0;
+    const maxRetries = 3;
+    
+    // Add retry logic for job creation
+    while (!jobCreated && retryCount < maxRetries) {
+      try {
+        jobCreated = await createJob(jobId);
+        if (!jobCreated) {
+          console.error(`Failed to create job on attempt ${retryCount + 1}/${maxRetries}`);
+          retryCount++;
+          if (retryCount < maxRetries) {
+            // Exponential backoff
+            await new Promise(resolve => setTimeout(resolve, 500 * Math.pow(2, retryCount)));
+          }
+        }
+      } catch (error) {
+        console.error(`Error creating job on attempt ${retryCount + 1}/${maxRetries}:`, error);
+        retryCount++;
+        if (retryCount < maxRetries) {
+          // Exponential backoff
+          await new Promise(resolve => setTimeout(resolve, 500 * Math.pow(2, retryCount)));
+        }
+      }
+    }
     
     if (!jobCreated) {
-      console.error('Failed to create job');
+      console.error('Failed to create job after multiple attempts');
       return NextResponse.json(
-        { error: 'Failed to create job in database' },
+        { error: 'Failed to create job in database after multiple attempts' },
         { status: 500 }
       );
     }
@@ -126,12 +156,20 @@ export async function POST(request: Request) {
     console.log(`Job ${jobId} created successfully, current status: queued`);
 
     // Verify the job was created properly by fetching its status
+    let statusCheck;
     try {
-      const statusCheck = await getJobStatus(jobId);
+      statusCheck = await getJobStatus(jobId);
       console.log(`Initial job status check: ${statusCheck.status}`);
       
       if (statusCheck.status === 'not_found') {
         console.error(`Critical error: Job ${jobId} was not found immediately after creation`);
+        // Try to recreate the job one more time in case of race condition
+        jobCreated = await createJob(jobId);
+        if (jobCreated) {
+          console.log(`Job ${jobId} recreated successfully after initial not_found status`);
+          statusCheck = await getJobStatus(jobId);
+          console.log(`Second job status check: ${statusCheck.status}`);
+        }
       }
     } catch (statusCheckError) {
       console.error('Error checking initial job status:', statusCheckError);
@@ -303,6 +341,11 @@ Also include:
 - Total estimated budget breakdown for accommodation, food, activities, and transport
 
 Return this as a JSON object exactly as shown below. Do not include any markdown formatting, code blocks, or additional text. Use ONLY double quotes for all property names and string values - never use single quotes.
+
+VERY IMPORTANT: 
+- Do NOT use $ symbols in price fields. Instead use text descriptions like "Budget", "Moderate", "High-end" or numbers without currency symbols.
+- For price ranges, use format like "10-20" or "Budget to Moderate" instead of "$10-$20".
+- When mentioning locations with periods in their names (like St. Louis), make sure the JSON remains valid.
 
 {
   "title": "Trip title",

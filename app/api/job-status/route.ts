@@ -40,6 +40,7 @@ export async function GET(request: Request) {
   
   console.log(`Job status API called at ${new Date().toISOString()}`);
   console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log(`Supabase config: URL exists = ${!!process.env.NEXT_PUBLIC_SUPABASE_URL}, Key exists = ${!!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`);
   
   if (!jobId) {
     console.error('Missing jobId parameter in request');
@@ -69,7 +70,16 @@ export async function GET(request: Request) {
     if (jobStatus.status === 'not_found') {
       console.log(`Job ${jobId} not found`);
       return NextResponse.json(
-        { error: 'Job not found' },
+        { 
+          error: 'Job not found',
+          debug: {
+            jobId,
+            dbCompatibleId,
+            timestamp: new Date().toISOString(),
+            environment: process.env.NODE_ENV || 'unknown',
+            supabaseConfigured: !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+          }
+        },
         { status: 404 }
       );
     }

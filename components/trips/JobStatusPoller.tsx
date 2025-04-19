@@ -20,8 +20,8 @@ const JobStatusPoller: React.FC<JobStatusPollerProps> = ({
   jobId,
   onComplete,
   onError,
-  pollingInterval = 2000, // Default 2 seconds
-  maxPolls = 60, // Default max 2 minutes (60 x 2s)
+  pollingInterval = 3000, // Default 3 seconds (increased from 2)
+  maxPolls = 120, // Default max 6 minutes (increased from 60)
 }) => {
   const [status, setStatus] = useState<string>('queued');
   const [pollCount, setPollCount] = useState(0);
@@ -34,7 +34,7 @@ const JobStatusPoller: React.FC<JobStatusPollerProps> = ({
   
   // Maximum number of "not found" responses before considering it an error
   // This helps with eventual consistency in cloud environments
-  const MAX_NOT_FOUND_RETRIES = 5;
+  const MAX_NOT_FOUND_RETRIES = 20; // Increased from 5 to be more resilient
 
   useEffect(() => {
     if (!jobId) {
@@ -51,10 +51,30 @@ const JobStatusPoller: React.FC<JobStatusPollerProps> = ({
       try {
         console.log(`Polling job status for ${jobId} (attempt ${pollCount + 1})`);
         
+        const startTime = Date.now();
         const response = await fetch(`/api/job-status?jobId=${jobId}`);
+        const responseTime = Date.now() - startTime;
+        
+        console.log(`Job status response received in ${responseTime}ms, status: ${response.status}`);
         
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({ error: `HTTP Error ${response.status}` }));
+          // Try to parse error response for debugging
+          let errorData;
+          try {
+            errorData = await response.json();
+            console.log('Error response body:', errorData);
+          } catch (e) {
+            console.error('Failed to parse error response:', e);
+            errorData = { error: `HTTP Error ${response.status}` };
+          }
+          
+          // Log response headers for debugging
+          const headers: Record<string, string> = {};
+          response.headers.forEach((value, key) => {
+            headers[key] = value;
+          });
+          console.log('Response headers:', headers);
+          
           console.error(`Error response from job-status API: ${response.status}`, errorData);
           
           // Special handling for 404 Not Found errors
@@ -62,6 +82,8 @@ const JobStatusPoller: React.FC<JobStatusPollerProps> = ({
             // Increment not found counter
             const newNotFoundCount = notFoundCount + 1;
             setNotFoundCount(newNotFoundCount);
+            
+            console.log(`Job ${jobId} not found count: ${newNotFoundCount}/${MAX_NOT_FOUND_RETRIES}`);
             
             // Only throw an error if we've exceeded max retries for not found
             if (newNotFoundCount >= MAX_NOT_FOUND_RETRIES) {
@@ -73,6 +95,11 @@ const JobStatusPoller: React.FC<JobStatusPollerProps> = ({
               // For the first few "not found" responses, just keep polling
               console.log(`Job ${jobId} not found (attempt ${newNotFoundCount}/${MAX_NOT_FOUND_RETRIES}), will retry`);
               setMessage(`Your request is being processed (attempt ${newNotFoundCount}/${MAX_NOT_FOUND_RETRIES})...`);
+              
+              // Add increasing delay for each retry (exponential backoff)
+              const backoffDelay = Math.min(1000 * Math.pow(1.5, newNotFoundCount - 1), 10000);
+              console.log(`Applying backoff delay of ${backoffDelay}ms before next attempt`);
+              await new Promise(resolve => setTimeout(resolve, backoffDelay));
               
               // Don't throw, just continue polling
               setPollCount(prev => prev + 1);
