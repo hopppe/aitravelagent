@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow, Polyline } from '@react-google-maps/api';
+import { GoogleMap, Marker, InfoWindow, Polyline } from '@react-google-maps/api';
 
 // Location type with coordinates
 type Location = {
@@ -51,44 +51,75 @@ const containerStyle = {
   height: '100%'
 };
 
-// Improved API key handling for both client and server side rendering
-const googleMapsApiKey = typeof process !== 'undefined' && process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY 
-  ? process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY 
-  : '';
-
 export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [mapInstance, setMapInstance] = useState<google.maps.Map | null>(null);
   const [error, setError] = useState<string | null>(null);
-  
-  // Load Google Maps JS API with consistent parameters
-  const { isLoaded, loadError } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey,
-    libraries,
-  });
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [loadError, setLoadError] = useState<Error | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [google, setGoogle] = useState<any>(null);
 
-  // Log any errors with the API key
+  // Load the Google Maps script using our secure API route
   useEffect(() => {
-    // More detailed debugging in development mode
-    if (process.env.NODE_ENV === 'development') {
-      console.log('Environment check:', {
-        hasKey: !!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-        keyLength: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.length || 0,
-        envVars: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_')),
-      });
-    }
+    const loadGoogleMapsScript = async () => {
+      try {
+        // If script is already loaded, don't load again
+        if (window.google?.maps) {
+          setIsLoaded(true);
+          setGoogle(window.google);
+          return;
+        }
 
-    if (!googleMapsApiKey) {
-      console.error('Google Maps API key is not defined in environment variables');
-      setError('Google Maps API key is missing. Please add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to your deployment environment variables.');
-    }
-    
-    if (loadError) {
-      console.error('Google Maps loading error:', loadError);
-      setError(`Failed to load Google Maps: ${loadError.message} - Please check if your API key is valid and has correct domain restrictions.`);
-    }
-  }, [loadError, googleMapsApiKey]);
+        // Fetch the Google Maps URL with API key from our server
+        const response = await fetch('/api/google-maps');
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch Google Maps URL: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        
+        if (!data.url) {
+          throw new Error('Google Maps URL not returned from server');
+        }
+
+        // Create script element
+        const script = document.createElement('script');
+        script.src = data.url;
+        script.async = true;
+        script.defer = true;
+        script.id = 'google-maps-script';
+        
+        // Handle script loading
+        script.onload = () => {
+          setIsLoaded(true);
+          setGoogle(window.google);
+        };
+        
+        script.onerror = (e) => {
+          setLoadError(new Error('Failed to load Google Maps script'));
+        };
+        
+        // Add script to document
+        document.head.appendChild(script);
+        
+        // Cleanup function
+        return () => {
+          const existingScript = document.getElementById('google-maps-script');
+          if (existingScript) {
+            existingScript.remove();
+          }
+        };
+      } catch (err) {
+        console.error('Error loading Google Maps:', err);
+        setLoadError(err instanceof Error ? err : new Error('Unknown error loading Google Maps'));
+        setError('Failed to load Google Maps. Please try again later.');
+      }
+    };
+
+    loadGoogleMapsScript();
+  }, []);
 
   // Flatten all activities into a single array
   const allActivities = days.flatMap(day => day.activities);
@@ -166,6 +197,8 @@ export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
 
   // Create a custom marker icon with day number and activity index
   const createMarkerIcon = (dayIndex: number, activityIndex: number) => {
+    if (!google) return undefined;
+    
     const dayColor = dayColors[dayIndex % dayColors.length];
     
     const svg = `
@@ -210,7 +243,7 @@ export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
           <h3 className="text-lg font-semibold text-gray-800">Google Maps Error</h3>
           <p className="text-gray-600 mt-1">Failed to load Google Maps API. This could be due to:</p>
           <ul className="text-sm text-left list-disc pl-8 mt-2 text-gray-700">
-            <li>Missing NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in environment variables</li>
+            <li>Server-side Google Maps API key configuration issue</li>
             <li>API key restrictions not allowing this domain</li>
             <li>Maps JavaScript API not enabled for this API key</li>
             <li>Billing not enabled in Google Cloud Console</li>
@@ -218,7 +251,7 @@ export default function ItineraryMapView({ days }: ItineraryMapViewProps) {
           <div className="mt-4 bg-gray-200 p-3 rounded text-xs text-gray-700 text-left">
             <p className="font-semibold">For Administrators:</p>
             <ol className="list-decimal pl-5 mt-1 space-y-1">
-              <li>Verify the environment variable is set on the hosting platform</li>
+              <li>Verify the GOOGLE_MAPS_API_KEY environment variable is set on the server</li>
               <li>Check that the API key's "Application restrictions" in Google Cloud Console include this domain</li>
               <li>Ensure the "API restrictions" include "Maps JavaScript API"</li>
               <li>Visit the Google Cloud Console to enable billing</li>

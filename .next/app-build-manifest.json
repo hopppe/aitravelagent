@@ -1,9 +1,9 @@
 {
   "pages": {
-    "/page": [
+    "/trips/new/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
+      "static/chunks/app/trips/new/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -21,10 +21,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/not-found.js"
     ],
-    "/api-debug/page": [
+    "/trips/generated-trip/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/api-debug/page.js"
+      "static/chunks/app/trips/generated-trip/page.js"
+    ],
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
     ],
     "/_not-found/page": [
       "static/chunks/webpack.js",

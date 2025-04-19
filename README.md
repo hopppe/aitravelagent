@@ -133,7 +133,8 @@ To use the Google Maps functionality in this application, you need to set up a v
 
 5. **Add to Environment Variables**:
    - Create a `.env.local` file in the project root (if it doesn't exist)
-   - Add this line with your key: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=your_api_key_here`
+   - Add this line with your key: `GOOGLE_MAPS_API_KEY=your_api_key_here`
+   - The API key is handled securely through a server-side API route, not exposed to the client
    - Restart your development server for changes to take effect
 
 6. **Enable Billing**:

@@ -219,8 +219,8 @@ function getDbCompatibleId(id: string): number {
     return Number(timestampMatch[2]);
   }
 
-  // Consistent hash function using a specific algorithm
-  // Using a more deterministic approach than the previous version
+  // For any other IDs, use a hash function to generate a numeric ID
+  // This is useful for non-standard job IDs
   let hash = 0;
   const prime = 31; // Use a prime number for better distribution
   
@@ -231,7 +231,7 @@ function getDbCompatibleId(id: string): number {
     hash = Math.imul(hash, prime) + char | 0;
   }
   
-  // Ensure positive number by using absolute value
+  // Ensure positive number by using absolute value and make it large enough to avoid collisions
   return Math.abs(hash);
 }
 

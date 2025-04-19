@@ -65,14 +65,14 @@ const JobStatusPoller: React.FC<JobStatusPollerProps> = ({
             
             // Only throw an error if we've exceeded max retries for not found
             if (newNotFoundCount >= MAX_NOT_FOUND_RETRIES) {
-              const errMsg = 'Job not found after multiple attempts. The job may have been lost or failed to create properly.';
+              const errMsg = `Job ${jobId} not found after ${MAX_NOT_FOUND_RETRIES} attempts. The job may have been lost or failed to create properly.`;
               console.error(errMsg);
               setErrorDetails(errMsg);
               throw new Error(errMsg);
             } else {
               // For the first few "not found" responses, just keep polling
               console.log(`Job ${jobId} not found (attempt ${newNotFoundCount}/${MAX_NOT_FOUND_RETRIES}), will retry`);
-              setMessage(`Your request is being processed (attempt ${newNotFoundCount})...`);
+              setMessage(`Your request is being processed (attempt ${newNotFoundCount}/${MAX_NOT_FOUND_RETRIES})...`);
               
               // Don't throw, just continue polling
               setPollCount(prev => prev + 1);

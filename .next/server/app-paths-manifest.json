@@ -1,7 +1,4 @@
 {
-  "/api/supabase-test/route": "app/api/supabase-test/route.js",
-  "/api/job-status/route": "app/api/job-status/route.js",
-  "/api-debug/page": "app/api-debug/page.js",
-  "/page": "app/page.js",
-  "/api/debug-job-creation/route": "app/api/debug-job-creation/route.js"
+  "/trips/generated-trip/page": "app/trips/generated-trip/page.js",
+  "/trips/new/page": "app/trips/new/page.js"
 }
