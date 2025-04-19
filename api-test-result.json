@@ -13,8 +13,8 @@
           "id": "1",
           "time": "Morning",
           "title": "Arrival and Check-in",
-          "description": "Arrive in Paris and check-in to a comfortable mid-range hotel.",
-          "location": "Hotel in central Paris",
+          "description": "Arrive in Paris and check-in to the comfortable hotel.",
+          "location": "Hotel in Paris",
           "coordinates": {
             "lat": 48.8566,
             "lng": 2.3522
@@ -25,7 +25,7 @@
           "id": "2",
           "time": "Afternoon",
           "title": "Visit Louvre Museum",
-          "description": "Explore the world-renowned Louvre Museum and discover its art collections.",
+          "description": "Explore the world-renowned Louvre Museum and admire its art collection.",
           "location": "Rue de Rivoli, 75001 Paris",
           "coordinates": {
             "lat": 48.8606,
@@ -36,14 +36,14 @@
         {
           "id": "3",
           "time": "Evening",
-          "title": "Dinner at Le Bouillon Chartier",
-          "description": "Enjoy a delicious French meal at this historic restaurant known for its traditional dishes.",
-          "location": "7 Rue du Faubourg Montmartre, 75009 Paris",
+          "title": "Dinner at Le Procope",
+          "description": "Enjoy a delicious dinner at one of the oldest restaurants in Paris known for its traditional French cuisine.",
+          "location": "13 Rue de l'Ancienne Comédie, 75006 Paris",
           "coordinates": {
-            "lat": 48.8738,
-            "lng": 2.3432
+            "lat": 48.8531,
+            "lng": 2.3396
           },
-          "cost": 30
+          "cost": 40
         }
       ]
     },
@@ -53,8 +53,8 @@
         {
           "id": "4",
           "time": "Morning",
-          "title": "Explore Montmartre",
-          "description": "Wander through the charming streets of Montmartre, visit Sacré-Cœur Basilica, and enjoy panoramic views of Paris.",
+          "title": "Montmartre Exploration",
+          "description": "Discover the charming neighborhood of Montmartre, visit Sacré-Cœur Basilica, and stroll through its artistic streets.",
           "location": "Montmartre, 75018 Paris",
           "coordinates": {
             "lat": 48.8867,
@@ -65,26 +65,26 @@
         {
           "id": "5",
           "time": "Afternoon",
-          "title": "Lunch at Le Relais Gascon",
-          "description": "Savor a delicious French meal at this cozy restaurant known for its traditional cuisine.",
-          "location": "6 Rue des Abbesses, 75018 Paris",
+          "title": "Seine River Cruise",
+          "description": "Relax on a scenic Seine River cruise and enjoy views of Paris landmarks.",
+          "location": "Seine River Cruise Departure Point",
           "coordinates": {
-            "lat": 48.8863,
-            "lng": 2.3374
+            "lat": 48.8599,
+            "lng": 2.3266
           },
-          "cost": 25
+          "cost": 20
         },
         {
           "id": "6",
           "time": "Evening",
-          "title": "Seine River Cruise",
-          "description": "Relax on a scenic Seine River cruise and admire the iconic landmarks of Paris illuminated at night.",
-          "location": "Seine River, Paris",
+          "title": "Dinner at Le Marais",
+          "description": "Dine at a cozy restaurant in the vibrant Le Marais district known for its culinary scene.",
+          "location": "Le Marais, 75004 Paris",
           "coordinates": {
-            "lat": 48.8564,
-            "lng": 2.3523
+            "lat": 48.8574,
+            "lng": 2.3546
           },
-          "cost": 20
+          "cost": 35
         }
       ]
     },
@@ -94,38 +94,38 @@
         {
           "id": "7",
           "time": "Morning",
-          "title": "Visit Musée d'Orsay",
-          "description": "Explore the impressive collection of Impressionist and Post-Impressionist masterpieces at Musée d'Orsay.",
-          "location": "1 Rue de la Légion d'Honneur, 75007 Paris",
+          "title": "Versailles Palace Tour",
+          "description": "Visit the opulent Palace of Versailles and explore its gardens.",
+          "location": "Place d'Armes, 78000 Versailles",
           "coordinates": {
-            "lat": 48.8599,
-            "lng": 2.3266
+            "lat": 48.8049,
+            "lng": 2.1204
           },
-          "cost": 12
+          "cost": 25
         },
         {
           "id": "8",
           "time": "Afternoon",
-          "title": "Lunch at Le Procope",
-          "description": "Dine at the oldest café in Paris, known for its historic ambiance and French cuisine.",
-          "location": "13 Rue de l'Ancienne Comédie, 75006 Paris",
+          "title": "Shopping at Champs-Élysées",
+          "description": "Indulge in some shopping at the famous Champs-Élysées avenue.",
+          "location": "Champs-Élysées, 75008 Paris",
           "coordinates": {
-            "lat": 48.8533,
-            "lng": 2.3407
+            "lat": 48.8698,
+            "lng": 2.3073
           },
-          "cost": 35
+          "cost": 0
         },
         {
           "id": "9",
           "time": "Evening",
-          "title": "Stroll along Champs-Élysées",
-          "description": "Walk down the famous avenue, shop at luxury boutiques, and enjoy the vibrant atmosphere.",
-          "location": "Champs-Élysées, 75008 Paris",
+          "title": "Farewell Dinner at Le Cinq",
+          "description": "Experience a gourmet dinner at a Michelin-starred restaurant for a memorable evening.",
+          "location": "31 Avenue George V, 75008 Paris",
           "coordinates": {
-            "lat": 48.8699,
-            "lng": 2.3073
+            "lat": 48.8683,
+            "lng": 2.3005
           },
-          "cost": 0
+          "cost": 100
         }
       ]
     },
@@ -135,47 +135,23 @@
         {
           "id": "10",
           "time": "Morning",
-          "title": "Visit Notre-Dame Cathedral",
-          "description": "Admire the stunning Gothic architecture of Notre-Dame Cathedral on Île de la Cité.",
-          "location": "6 Parvis Notre-Dame - Pl. Jean-Paul II, 75004 Paris",
+          "title": "Relaxation and Check-out",
+          "description": "Enjoy a leisurely morning in Paris before checking out from the hotel.",
+          "location": "Hotel in Paris",
           "coordinates": {
-            "lat": 48.853,
-            "lng": 2.3499
+            "lat": 48.8566,
+            "lng": 2.3522
           },
           "cost": 0
-        },
-        {
-          "id": "11",
-          "time": "Afternoon",
-          "title": "Lunch at Café de Flore",
-          "description": "Experience a classic Parisian café culture at this historic café frequented by famous intellectuals.",
-          "location": "172 Boulevard Saint-Germain, 75006 Paris",
-          "coordinates": {
-            "lat": 48.8543,
-            "lng": 2.3333
-          },
-          "cost": 30
-        },
-        {
-          "id": "12",
-          "time": "Evening",
-          "title": "Farewell Dinner at Le Comptoir du Relais",
-          "description": "Enjoy a memorable dinner at this popular bistro known for its exceptional French cuisine.",
-          "location": "9 Carrefour de l'Odéon, 75006 Paris",
-          "coordinates": {
-            "lat": 48.8496,
-            "lng": 2.3375
-          },
-          "cost": 40
         }
       ]
     }
   ],
   "budget": {
     "accommodation": 400,
-    "food": 250,
-    "activities": 112,
+    "food": 200,
+    "activities": 200,
     "transport": 100,
-    "total": 862
+    "total": 900
   }
 }

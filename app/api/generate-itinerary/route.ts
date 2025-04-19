@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
-import { generateJobId, processItineraryJob } from '../job-processor';
+import { generateJobId, processItineraryResponse } from '../job-processor';
 import { createJob, updateJobStatus, getJobStatus, supabase } from '../../../lib/supabase';
+import { createLogger } from '../../../lib/logger';
 
-// Configure runtime for serverless function with Edge option for better response handling
-export const runtime = 'edge';
+// Initialize logger
+const logger = createLogger('generate-itinerary');
+
+// Configure runtime for serverless function - using edge for more consistent timeout behavior
+export const runtime = 'nodejs';
 export const maxDuration = 60; // Set max duration to 60 seconds
-
-// Use API key from environment variables
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 
 // Check if running in production environment
 const isProduction = process.env.NODE_ENV === 'production';
@@ -31,15 +32,15 @@ type SurveyData = {
 export async function POST(request: Request) {
   try {
     // Log key information for debugging
-    console.log(`========== ITINERARY GENERATION REQUEST ==========`);
-    console.log(`API Request started: ${new Date().toISOString()}`);
-    console.log('Environment:', {
+    logger.info(`========== ITINERARY GENERATION REQUEST ==========`);
+    logger.info(`API Request started: ${new Date().toISOString()}`);
+    logger.info('Environment:', {
       nodeEnv: process.env.NODE_ENV,
       isProduction: process.env.NODE_ENV === 'production'
     });
     
     // Log environment variables (without exposing actual values)
-    console.log('Supabase connection details:', {
+    logger.info('Supabase connection details:', {
       hasSupabaseUrl: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
       hasSupabaseKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
       urlPrefix: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 10) || 'missing',
@@ -47,29 +48,23 @@ export async function POST(request: Request) {
       urlLength: process.env.NEXT_PUBLIC_SUPABASE_URL?.length || 0,
       keyLength: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length || 0
     });
-    
-    console.log('OpenAI API Key:', {
-      hasKey: !!process.env.OPENAI_API_KEY,
-      keyLength: process.env.OPENAI_API_KEY?.length || 0,
-      keyPrefix: process.env.OPENAI_API_KEY?.substring(0, 5) || 'missing'
-    });
 
     // Only test Supabase connection if properly configured
-    if (Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+    if (isSupabaseConfigured) {
       try {
-        console.log('Testing Supabase connection...');
-        const { data, error } = await supabase.from('jobs').select('count').limit(1);
+        logger.info('Testing Supabase connection...');
+        const { data, error } = await supabase.from('jobs').select('*').limit(1);
         if (error) {
-          console.error('❌ Supabase connection test failed:', {
+          logger.error('❌ Supabase connection test failed:', {
             message: error.message,
             hint: error.hint || '',
             code: error.code || ''
           });
         } else {
-          console.log('✅ Supabase connection test successful:', data);
+          logger.info('✅ Supabase connection test successful');
         }
       } catch (connError: any) {
-        console.error('❌ Supabase connection test exception:', {
+        logger.error('❌ Supabase connection test exception:', {
           message: connError.message,
           details: connError.toString(),
           name: connError.name,
@@ -77,12 +72,12 @@ export async function POST(request: Request) {
         });
       }
     } else {
-      console.log('⚠️ Skipping Supabase connection test - not configured');
+      logger.warn('⚠️ Skipping Supabase connection test - not configured');
     }
 
     // Parse the request body
     const surveyData: SurveyData = await request.json();
-    console.log('Received survey data:', {
+    logger.info('Received survey data:', {
       destination: surveyData.destination,
       startDate: surveyData.startDate,
       endDate: surveyData.endDate,
@@ -93,21 +88,25 @@ export async function POST(request: Request) {
 
     // Create a unique job ID
     const jobId = generateJobId();
-    console.log(`Generated new job ID: ${jobId}`);
+    logger.info(`Generated new job ID: ${jobId}`);
+
+    // Generate the prompt on the server side
+    const prompt = generatePrompt(surveyData);
+    logger.info(`Generated prompt for job ${jobId}, length: ${prompt.length} characters`);
 
     // If we're in development or testing, return mock data immediately
-    if (process.env.NODE_ENV === 'development' && !OPENAI_API_KEY.startsWith('sk-')) {
-      console.log('Development mode: Returning mock data');
+    if (process.env.NODE_ENV === 'development' && process.env.USE_MOCK_DATA === 'true') {
+      logger.info('Development mode with mock data: Returning mock data');
       const mockItinerary = createMockItinerary(surveyData);
       const updateResult = await updateJobStatus(jobId, 'completed', { 
         result: { 
           itinerary: mockItinerary, 
-          prompt: generatePrompt(surveyData) 
+          prompt: prompt 
         }
       });
       
       if (!updateResult) {
-        console.error('Failed to update job status in development mode');
+        logger.error('Failed to update job status in development mode');
         return NextResponse.json(
           { error: 'Failed to update job status' },
           { status: 500 }
@@ -117,8 +116,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ jobId, status: 'completed' });
     }
 
-    // Create a new job
-    console.log('Creating new job with ID:', jobId);
+    // Create a new job in Supabase
+    logger.info('Creating new job with ID:', jobId);
     let jobCreated = false;
     let retryCount = 0;
     const maxRetries = 3;
@@ -128,7 +127,7 @@ export async function POST(request: Request) {
       try {
         jobCreated = await createJob(jobId);
         if (!jobCreated) {
-          console.error(`Failed to create job on attempt ${retryCount + 1}/${maxRetries}`);
+          logger.error(`Failed to create job on attempt ${retryCount + 1}/${maxRetries}`);
           retryCount++;
           if (retryCount < maxRetries) {
             // Exponential backoff
@@ -136,7 +135,7 @@ export async function POST(request: Request) {
           }
         }
       } catch (error) {
-        console.error(`Error creating job on attempt ${retryCount + 1}/${maxRetries}:`, error);
+        logger.error(`Error creating job on attempt ${retryCount + 1}/${maxRetries}:`, error);
         retryCount++;
         if (retryCount < maxRetries) {
           // Exponential backoff
@@ -146,110 +145,90 @@ export async function POST(request: Request) {
     }
     
     if (!jobCreated) {
-      console.error('Failed to create job after multiple attempts');
+      logger.error('Failed to create job after multiple attempts');
       return NextResponse.json(
         { error: 'Failed to create job in database after multiple attempts' },
         { status: 500 }
       );
     }
     
-    console.log(`Job ${jobId} created successfully, current status: queued`);
+    logger.info(`Job ${jobId} created successfully, current status: queued`);
 
     // Verify the job was created properly by fetching its status
     let statusCheck;
     try {
       statusCheck = await getJobStatus(jobId);
-      console.log(`Initial job status check: ${statusCheck.status}`);
+      logger.info(`Initial job status check: ${statusCheck.status}`);
       
       if (statusCheck.status === 'not_found') {
-        console.error(`Critical error: Job ${jobId} was not found immediately after creation`);
+        logger.error(`Critical error: Job ${jobId} was not found immediately after creation`);
         // Try to recreate the job one more time in case of race condition
         jobCreated = await createJob(jobId);
         if (jobCreated) {
-          console.log(`Job ${jobId} recreated successfully after initial not_found status`);
+          logger.info(`Job ${jobId} recreated successfully after initial not_found status`);
           statusCheck = await getJobStatus(jobId);
-          console.log(`Second job status check: ${statusCheck.status}`);
+          logger.info(`Second job status check: ${statusCheck.status}`);
         }
       }
     } catch (statusCheckError) {
-      console.error('Error checking initial job status:', statusCheckError);
+      logger.error('Error checking initial job status:', statusCheckError);
     }
 
-    // In production or when immediate request handling is needed, process synchronously
-    if (isProduction) {
-      console.log(`Running in production mode for job ${jobId}`);
+    // Call the Supabase Edge Function to process the itinerary
+    try {
+      logger.info(`Invoking Supabase Edge Function for job ${jobId}`);
       
-      // Update status to processing
-      const statusUpdateSuccess = await updateJobStatus(jobId, 'processing');
-      if (!statusUpdateSuccess) {
-        console.error(`Failed to update job ${jobId} status to processing`);
-      } else {
-        console.log(`Successfully updated job ${jobId} status to processing`);
+      // Update job status to processing
+      await updateJobStatus(jobId, 'processing');
+      
+      if (!isSupabaseConfigured) {
+        throw new Error('Supabase URL or key is missing');
       }
 
-      // Edge functions allow us to continue processing after response
-      console.log(`Initiating background processing for job ${jobId} with Edge Functions`);
-      
-      // Start the processing, but don't await it
-      const processingPromise = processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY)
-        .then(() => {
-          console.log(`Background processing completed for job ${jobId}`);
-        })
-        .catch(error => {
-          console.error(`Background processing error for job ${jobId}:`, error);
-          return updateJobStatus(jobId, 'failed', { 
-            error: error.message || 'Internal server error'
-          }).catch(e => {
-            console.error(`Failed to update job status after error for ${jobId}:`, e);
-          });
-        });
-      
-      // In Edge runtime, we don't need to explicitly use waitUntil
-      // The function will continue running after response is sent
-      
-      // Return the response immediately
-      return NextResponse.json({ 
-        jobId, 
-        status: 'processing',
-        message: 'Your itinerary is being generated. Poll the job-status endpoint for updates.'
-      });
-    } else {
-      // In development, use setTimeout for background processing (more reliable locally)
-      console.log(`Running in development mode for job ${jobId} with setTimeout...`);
-      setTimeout(async () => {
-        try {
-          console.log(`Background processing started for job ${jobId}`);
-          // First update to processing status to indicate we've started
-          await updateJobStatus(jobId, 'processing');
-          
-          // Process the job
-          await processItineraryJob(jobId, surveyData, generatePrompt, OPENAI_API_KEY);
-          
-          console.log(`Background processing completed successfully for job ${jobId}`);
-        } catch (error: any) {
-          console.error(`Background processing error for job ${jobId}:`, error);
-          // Make extra sure we update the job status on error
-          try {
-            await updateJobStatus(jobId, 'failed', { 
-              error: error.message || 'Internal server error'
-            });
-          } catch (updateError) {
-            console.error(`Failed to update job status after error for ${jobId}:`, updateError);
+      // Invoke the Edge Function with the generated prompt
+      const { data: functionData, error: functionError } = await supabase.functions.invoke(
+        'generate-itinerary',
+        {
+          body: {
+            jobId,
+            surveyData,
+            prompt // Send the prompt to the edge function
           }
         }
-      }, 100); // Small delay to ensure job is created first
+      );
+
+      if (functionError) {
+        logger.error(`Error invoking Supabase Edge Function:`, functionError);
+        throw new Error(`Edge Function error: ${functionError.message || 'Unknown error'}`);
+      }
+
+      logger.info(`Supabase Edge Function invoked successfully for job ${jobId}:`, functionData);
+      
+      // If the edge function returned a result directly, process it
+      if (functionData && functionData.result) {
+        logger.info(`Processing immediate result from edge function for job ${jobId}`);
+        await processItineraryResponse(jobId, functionData.result);
+      }
+    } catch (edgeFunctionError: any) {
+      logger.error(`Failed to invoke Supabase Edge Function:`, edgeFunctionError);
+      
+      // Update job status to reflect the error but don't fail the response
+      // We want the client to keep polling the job status
+      await updateJobStatus(jobId, 'processing', {
+        error: `Edge function invocation error (will retry): ${edgeFunctionError.message || 'Unknown error'}`
+      });
     }
 
     // Return immediately with the job ID
-    console.log(`Returning response for job ${jobId} with status: queued`);
+    logger.info(`Returning response for job ${jobId} with status: processing`);
     return NextResponse.json({ 
       jobId, 
-      status: 'queued',
+      status: 'processing',
       message: 'Your itinerary is being generated. Poll the job-status endpoint for updates.'
     });
     
   } catch (error: any) {
-    console.error('Error initiating itinerary generation:', error);
+    logger.error('Error initiating itinerary generation:', error);
     return NextResponse.json(
       { error: `Failed to initiate itinerary generation: ${error.message || 'Unknown error'}` },
       { status: 500 }
@@ -267,286 +246,170 @@ export function generatePrompt(surveyData: SurveyData): string {
   startDate.setHours(12, 0, 0, 0);
   endDate.setHours(12, 0, 0, 0);
   
-  // Calculate days including both start and end date
-  // Using Math.floor instead of Math.round and adding 1 to include both start and end date
-  const diffTime = endDate.getTime() - startDate.getTime();
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  const durationDays = diffDays + 1; // Add 1 to include both start and end date
+  // Calculate number of days
+  const tripDuration = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) + 1;
   
-  console.log('Date calculation:', {
-    startDate: surveyData.startDate,
-    endDate: surveyData.endDate,
-    startTimestamp: startDate.getTime(),
-    endTimestamp: endDate.getTime(),
-    diffTime,
-    diffDays,
-    durationDays
-  });
-
-  // Format preferences
-  const preferencesText = surveyData.preferences.length > 0
-    ? `They particularly enjoy ${surveyData.preferences.join(', ')}.`
-    : '';
-
-  // Format budget level
-  let budgetLevel = '';
-  switch (surveyData.budget) {
-    case 'budget':
-      budgetLevel = 'budget-friendly options, looking for economical accommodations, affordable dining, and free or low-cost activities';
-      break;
-    case 'moderate':
-      budgetLevel = 'mid-range options, with comfortable accommodations, good quality restaurants, and a mix of paid and free activities';
-      break;
-    case 'luxury':
-      budgetLevel = 'high-end options, with luxury accommodations, fine dining, and premium experiences';
-      break;
-    default:
-      budgetLevel = 'a mix of affordable and premium options';
-  }
-
-  // Format trip purpose
-  let purposeText = '';
-  switch (surveyData.purpose) {
-    case 'vacation':
-      purposeText = 'a relaxing vacation';
-      break;
-    case 'honeymoon':
-      purposeText = 'their honeymoon, so include romantic activities and settings';
-      break;
-    case 'family':
-      purposeText = 'a family trip, so include family-friendly activities';
-      break;
-    case 'solo':
-      purposeText = 'a solo adventure, with opportunities for both exploration and meeting people';
-      break;
-    case 'business':
-      purposeText = 'a business trip with some leisure time';
-      break;
-    case 'weekend':
-      purposeText = 'a quick weekend getaway';
-      break;
-    case 'roadtrip':
-      purposeText = 'a road trip, including notable stops and routes';
-      break;
-    default:
-      purposeText = 'a vacation';
+  // Format dates for display
+  const formattedStartDate = formatDate(startDate);
+  const formattedEndDate = formatDate(endDate);
+  
+  // Build the preferences section
+  let preferencesText = '';
+  if (surveyData.preferences && surveyData.preferences.length > 0) {
+    preferencesText = 'The traveler has expressed interest in the following: ' + 
+      surveyData.preferences.join(', ') + '. ';
   }
 
   // Construct the prompt
-  const prompt = `
-Create a detailed ${durationDays}-day travel itinerary for a trip to ${surveyData.destination} from ${formatDate(startDate)} to ${formatDate(endDate)}.
+  return `
+Create a personalized travel itinerary for a trip to ${surveyData.destination} from ${formattedStartDate} to ${formattedEndDate} (${tripDuration} days).
 
-This trip is for ${purposeText}. ${preferencesText} The traveler is looking for ${budgetLevel}.
+Trip purpose: ${surveyData.purpose}
+Budget level: ${surveyData.budget}
+${preferencesText}
 
-IMPORTANT: You MUST create exactly ${durationDays} days in the itinerary, with dates from ${surveyData.startDate} to ${surveyData.endDate} inclusive.
-
-For each day, provide:
-1. Morning activity or attraction with: name, description, location, approximate cost
-2. Lunch recommendation with: restaurant name, cuisine type, price range
-3. Afternoon activity or attraction with: name, description, location, approximate cost
-4. Dinner recommendation with: restaurant name, cuisine type, price range
-5. Evening activity (if applicable) with: name, description, location, approximate cost
-
-Also include:
-- Recommended accommodation options with estimated nightly rates
-- Transportation suggestions within the destination
-- Total estimated budget breakdown for accommodation, food, activities, and transport
-
-Return this as a JSON object exactly as shown below. Do not include any markdown formatting, code blocks, or additional text. Use ONLY double quotes for all property names and string values - never use single quotes.
-
-VERY IMPORTANT: 
-- Do NOT use $ symbols in price fields. Instead use text descriptions like "Budget", "Moderate", "High-end" or numbers without currency symbols.
-- For price ranges, use format like "10-20" or "Budget to Moderate" instead of "$10-$20".
-- When mentioning locations with periods in their names (like St. Louis), make sure the JSON remains valid.
+Generate a comprehensive day-by-day travel itinerary with the following structure (as a valid JSON object):
 
 {
-  "title": "Trip title",
-  "destination": "Destination name",
+  "destination": "${surveyData.destination}",
+  "tripName": "<create a catchy name for this trip>",
   "dates": {
-    "start": "YYYY-MM-DD",
-    "end": "YYYY-MM-DD"
+    "start": "${surveyData.startDate}",
+    "end": "${surveyData.endDate}"
   },
+  "summary": "<brief overview of the trip highlighting key attractions and experiences>",
   "days": [
     {
-      "date": "YYYY-MM-DD",
+      "day": 1,
+      "date": "${surveyData.startDate}",
       "activities": [
         {
-          "id": "unique-id",
-          "time": "Morning/Afternoon/Evening",
-          "title": "Activity name",
-          "description": "Detailed description",
-          "location": "Address or area",
-          "coordinates": { "lat": 41.3851, "lng": 2.1734 },
-          "cost": 0
-        }
+          "time": "<morning/afternoon/evening>",
+          "title": "<activity name>",
+          "description": "<detailed description>",
+          "location": "<specific location name>",
+          "coordinates": {
+            "lat": <latitude as number>,
+            "lng": <longitude as number>
+          },
+          "duration": "<estimated duration>",
+          "cost": "<cost estimate or budget level>"
+        },
+        ... more activities ...
       ]
-    }
+    },
+    ... more days ...
   ],
-  "accommodation": [
-    {
-      "name": "Accommodation name",
-      "description": "Description",
-      "location": "Address",
-      "pricePerNight": 0
-    }
-  ],
-  "transportation": [
-    {
-      "type": "Type of transport",
-      "description": "Description",
-      "estimatedCost": 0
-    }
-  ],
-  "budget": {
-    "accommodation": 0,
-    "food": 0,
-    "activities": 0,
-    "transport": 0,
-    "total": 0
-  }
+  "budgetEstimate": {
+    "accommodation": <estimated total cost as number>,
+    "food": <estimated total cost as number>,
+    "activities": <estimated total cost as number>,
+    "transportation": <estimated total cost as number>,
+    "total": <total estimated cost as number>
+  },
+  "travelTips": [
+    "<useful tip for this destination>",
+    ... more tips ...
+  ]
 }
 
-Ensure all costs are in USD and are realistic estimates. For coordinates, use approximate latitude and longitude for each location. Remember to provide a properly formatted JSON response with all property names in double quotes.
-`;
+Remember, EACH activity MUST include valid and accurate coordinates (latitude and longitude) as numerical values - never use empty or placeholder coordinates. Research real locations in ${surveyData.destination} and include their actual coordinates.
 
-  return prompt;
+Only return valid JSON that can be parsed with JSON.parse(). Do not include any explanations, markdown formatting, or code blocks outside the JSON object. Ensure all property names and string values use double quotes, not single quotes.
+  `;
 }
 
-// Helper function to format dates
+// Format date for display
 function formatDate(date: Date): string {
-  return date.toLocaleDateString('en-US', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  });
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  
+  // Add suffix to day
+  let suffix = 'th';
+  if (day === 1 || day === 21 || day === 31) suffix = 'st';
+  else if (day === 2 || day === 22) suffix = 'nd';
+  else if (day === 3 || day === 23) suffix = 'rd';
+  
+  return `${month} ${day}${suffix}, ${year}`;
 }
 
-// Create mock itinerary data for development
+// Helper function to create mock data for development testing
 function createMockItinerary(surveyData: SurveyData): any {
-  const startDate = new Date(surveyData.startDate);
-  const endDate = new Date(surveyData.endDate);
-  
-  // Set time to noon to avoid timezone issues
-  startDate.setHours(12, 0, 0, 0);
-  endDate.setHours(12, 0, 0, 0);
-  
-  // Calculate days including both start and end date
-  // Using Math.floor instead of Math.round and adding 1 to include both start and end date
-  const diffTime = endDate.getTime() - startDate.getTime();
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  const durationDays = diffDays + 1; // Add 1 to include both start and end date
-  
-  console.log('Mock Date calculation:', {
-    startDate: surveyData.startDate,
-    endDate: surveyData.endDate,
-    diffTime,
-    diffDays,
-    durationDays
-  });
-  
-  const days = [];
-  
-  // Generate mock days
-  for (let i = 0; i < durationDays; i++) {
-    const currentDate = new Date(startDate);
-    currentDate.setDate(startDate.getDate() + i);
-    
-    days.push({
-      date: currentDate.toISOString().split('T')[0],
-      activities: [
-        {
-          id: `act-${i}-1`,
-          time: 'Morning',
-          title: `Explore ${surveyData.destination} - Day ${i + 1} Morning`,
-          description: 'Start your day with a visit to a popular local attraction.',
-          location: `${surveyData.destination} City Center`,
-          coordinates: { lat: 40.7128, lng: -74.0060 }, // NYC coordinates as placeholder
-          cost: 25,
-        },
-        {
-          id: `act-${i}-2`,
-          time: 'Afternoon',
-          title: `${surveyData.destination} Afternoon Activity`,
-          description: 'Enjoy a relaxing afternoon activity based on your preferences.',
-          location: `${surveyData.destination} Park`,
-          coordinates: { lat: 40.7828, lng: -73.9654 }, // Central Park coordinates as placeholder
-          cost: 15,
-        },
-        {
-          id: `act-${i}-3`,
-          time: 'Evening',
-          title: `${surveyData.destination} Night Experience`,
-          description: 'Experience the local nightlife and culture.',
-          location: `${surveyData.destination} Entertainment District`,
-          coordinates: { lat: 40.7590, lng: -73.9845 }, // Times Square coordinates as placeholder
-          cost: 50,
-        },
-      ]
-    });
-  }
-  
-  // Create mock budget based on preferences
-  let accommodationCost = 0;
-  switch (surveyData.budget) {
-    case 'budget':
-      accommodationCost = 75;
-      break;
-    case 'moderate':
-      accommodationCost = 150;
-      break;
-    case 'luxury':
-      accommodationCost = 300;
-      break;
-    default:
-      accommodationCost = 150;
-  }
-  
-  const totalAccommodation = accommodationCost * durationDays;
-  const totalFood = 60 * durationDays;
-  const totalActivities = 90 * durationDays;
-  const totalTransport = 30 * durationDays;
-  
   return {
-    title: `${surveyData.destination} ${surveyData.purpose.charAt(0).toUpperCase() + surveyData.purpose.slice(1)} Trip`,
     destination: surveyData.destination,
+    tripName: `${surveyData.purpose} trip to ${surveyData.destination}`,
     dates: {
       start: surveyData.startDate,
-      end: surveyData.endDate,
+      end: surveyData.endDate
     },
-    days,
-    accommodation: [
+    summary: `A ${surveyData.budget} ${surveyData.purpose} adventure in ${surveyData.destination}, featuring ${surveyData.preferences.join(', ')}.`,
+    days: [
       {
-        name: `${surveyData.destination} Hotel`,
-        description: 'A comfortable hotel in a convenient location.',
-        location: `Central ${surveyData.destination}`,
-        pricePerNight: accommodationCost
+        day: 1,
+        date: surveyData.startDate,
+        activities: [
+          {
+            time: "morning",
+            title: "Breakfast at local cafe",
+            description: "Start your day with a delicious local breakfast",
+            location: "Central Cafe",
+            coordinates: {
+              lat: 48.8566,
+              lng: 2.3522
+            },
+            duration: "1 hour",
+            cost: "moderate"
+          },
+          {
+            time: "afternoon",
+            title: "City Tour",
+            description: "Explore the main attractions of the city",
+            location: "City Center",
+            coordinates: {
+              lat: 48.8584,
+              lng: 2.3536
+            },
+            duration: "3 hours",
+            cost: surveyData.budget
+          }
+        ]
       },
       {
-        name: `${surveyData.destination} Boutique Stay`,
-        description: 'A charming boutique accommodation with local character.',
-        location: `Historic District, ${surveyData.destination}`,
-        pricePerNight: accommodationCost * 1.2
+        day: 2,
+        date: new Date(new Date(surveyData.startDate).setDate(new Date(surveyData.startDate).getDate() + 1)).toISOString().split('T')[0],
+        activities: [
+          {
+            time: "morning",
+            title: "Museum Visit",
+            description: "Visit the famous local museum",
+            location: "National Museum",
+            coordinates: {
+              lat: 48.8606,
+              lng: 2.3376
+            },
+            duration: "2 hours",
+            cost: surveyData.budget
+          }
+        ]
       }
     ],
-    transportation: [
-      {
-        type: 'Public Transit',
-        description: 'Convenient and affordable public transportation network.',
-        estimatedCost: totalTransport * 0.5
-      },
-      {
-        type: 'Taxi/Rideshare',
-        description: 'On-demand rides for convenience.',
-        estimatedCost: totalTransport * 0.5
-      }
-    ],
-    budget: {
-      accommodation: totalAccommodation,
-      food: totalFood,
-      activities: totalActivities,
-      transport: totalTransport,
-      total: totalAccommodation + totalFood + totalActivities + totalTransport
-    }
+    budgetEstimate: {
+      accommodation: 500,
+      food: 300,
+      activities: 200,
+      transportation: 100,
+      total: 1100
+    },
+    travelTips: [
+      "Pack comfortable walking shoes",
+      "Try the local specialty dishes",
+      "Learn a few phrases in the local language"
+    ]
   };
 } 

@@ -1,0 +1,2108 @@
+[2025-04-19T14:03:54.991Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 4
+}
+[2025-04-19T14:03:54.992Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:03:54.994Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:03:54.995Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:03:55.002Z] [INFO] [supabase] Getting status for job: debug_1745071427285 (db id: 1745071427285) 
+[2025-04-19T14:03:55.597Z] [INFO] [supabase] Job debug_1745071427285 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:03:47.286+00:00"
+}
+[2025-04-19T14:03:55.611Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:04:01.369Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 4
+}
+[2025-04-19T14:04:01.370Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:04:01.375Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:04:01.376Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:04:01.381Z] [INFO] [debug-jobs-api] Debug jobs API called 
+[2025-04-19T14:04:02.111Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:04:02.126Z] [INFO] [supabase] Retrieved 3 recent jobs from Supabase 
+[2025-04-19T14:04:54.675Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 4
+}
+[2025-04-19T14:04:54.676Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:04:54.679Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:04:54.683Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:04:54.687Z] [INFO] [debug-jobs-api] Debug jobs API called 
+[2025-04-19T14:04:55.495Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:05:11.253Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 4
+}
+[2025-04-19T14:05:11.254Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:05:11.258Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:05:11.261Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:05:11.265Z] [INFO] [debug-jobs-api] Debug jobs API called 
+[2025-04-19T14:05:12.109Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:06:38.068Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:06:38.068Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:06:38.070Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:06:38.072Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:06:38.076Z] [INFO] [supabase] Creating new job: test_job_1745071598076 (db id: 1169825103) 
+[2025-04-19T14:06:38.841Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:06:38.844Z] [INFO] [supabase] Job test_job_1745071598076 created successfully 
+[2025-04-19T14:06:38.851Z] [INFO] [supabase] Updating job status: test_job_1745071598076 -> processing {
+  "dbId": 1169825103,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:06:39.095Z] [INFO] [supabase] Job test_job_1745071598076 status updated successfully to processing 
+[2025-04-19T14:06:39.096Z] [INFO] [supabase] Getting status for job: test_job_1745071598076 (db id: 1169825103) 
+[2025-04-19T14:06:39.489Z] [INFO] [supabase] Job test_job_1745071598076 status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:38.851+00:00"
+}
+[2025-04-19T14:06:39.491Z] [INFO] [supabase] Updating job status: test_job_1745071598076 -> completed {
+  "dbId": 1169825103,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T14:06:39.745Z] [INFO] [supabase] Job test_job_1745071598076 status updated successfully to completed 
+[2025-04-19T14:06:39.751Z] [INFO] [supabase] Getting status for job: test_job_1745071598076 (db id: 1169825103) 
+[2025-04-19T14:06:40.140Z] [INFO] [supabase] Job test_job_1745071598076 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:39.491+00:00"
+}
+[2025-04-19T14:06:40.279Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:06:40.279Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:06:40.283Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:06:40.285Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:06:40.516Z] [INFO] [supabase] Creating new job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:06:40.572Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:06:40.919Z] [INFO] [supabase] Job job_1745071600515_k75cn87 created successfully 
+[2025-04-19T14:06:40.920Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:06:41.319Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:06:57.163Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:06:57.164Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:06:57.167Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:06:57.169Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:06:57.172Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:06:57.457Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:06:57.944Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:06:59.970Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:00.354Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:02.380Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:02.593Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:04.627Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:05.034Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:07.057Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:07.484Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:09.509Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:09.922Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:11.947Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:12.168Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:14.195Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:14.589Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:16.613Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:16.999Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:19.023Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:19.430Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:21.453Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:21.924Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:23.945Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:24.338Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:26.358Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:26.754Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:28.777Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:29.007Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:31.031Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:31.405Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:33.427Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:33.815Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:35.839Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:36.218Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:38.237Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:38.638Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:40.660Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:41.038Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:43.059Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:43.454Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:45.469Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:45.696Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:47.718Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:48.111Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:50.136Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:50.573Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:52.595Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:52.852Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:54.874Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:55.379Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:57.394Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:07:57.773Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:07:59.796Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:00.010Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:02.032Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:02.419Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:04.437Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:04.828Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:06.852Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:07.088Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:09.110Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:09.351Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:11.377Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:11.778Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:13.796Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:14.021Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:16.043Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:16.439Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:18.461Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:18.909Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:20.984Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:21.375Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:23.398Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:24.126Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:26.150Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:26.543Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:28.567Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:28.963Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:30.990Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:31.399Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:33.414Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:33.820Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:35.842Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:36.345Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:38.365Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:38.758Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:40.776Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:41.283Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:43.304Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:43.525Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:45.553Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:45.939Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:47.962Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:48.358Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:50.380Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:50.769Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:52.787Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:53.173Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:55.206Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:55.604Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:08:57.625Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:08:58.018Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:00.041Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:00.484Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:02.503Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:02.752Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:04.809Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:05.022Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:07.087Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:07.339Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:09.360Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:09.600Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:11.623Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:12.023Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:14.042Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:14.442Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:16.459Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:16.844Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:09:18.856Z] [INFO] [supabase] Getting status for job: job_1745071600515_k75cn87 (db id: 1745071600515) 
+[2025-04-19T14:09:19.233Z] [INFO] [supabase] Job job_1745071600515_k75cn87 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:06:40.516+00:00"
+}
+[2025-04-19T14:42:37.187Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:42:37.189Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:42:37.193Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:42:37.195Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:42:37.201Z] [INFO] [supabase] Creating new job: test_job_1745073757201 (db id: 1296598704) 
+[2025-04-19T14:42:38.249Z] [INFO] [supabase] Job test_job_1745073757201 created successfully 
+[2025-04-19T14:42:38.250Z] [INFO] [supabase] Updating job status: test_job_1745073757201 -> processing {
+  "dbId": 1296598704,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:42:38.339Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:42:38.510Z] [INFO] [supabase] Job test_job_1745073757201 status updated successfully to processing 
+[2025-04-19T14:42:38.518Z] [INFO] [supabase] Getting status for job: test_job_1745073757201 (db id: 1296598704) 
+[2025-04-19T14:42:38.929Z] [INFO] [supabase] Job test_job_1745073757201 status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:38.25+00:00"
+}
+[2025-04-19T14:42:38.931Z] [INFO] [supabase] Updating job status: test_job_1745073757201 -> completed {
+  "dbId": 1296598704,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T14:42:39.146Z] [INFO] [supabase] Job test_job_1745073757201 status updated successfully to completed 
+[2025-04-19T14:42:39.151Z] [INFO] [supabase] Getting status for job: test_job_1745073757201 (db id: 1296598704) 
+[2025-04-19T14:42:39.375Z] [INFO] [supabase] Job test_job_1745073757201 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:38.931+00:00"
+}
+[2025-04-19T14:42:39.496Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:42:39.496Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:42:39.503Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:42:39.505Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:42:39.509Z] [INFO] [generate-itinerary] ========== ITINERARY GENERATION REQUEST ========== 
+[2025-04-19T14:42:39.514Z] [INFO] [generate-itinerary] API Request started: 2025-04-19T14:42:39.514Z 
+[2025-04-19T14:42:39.520Z] [INFO] [generate-itinerary] Environment: {
+  "nodeEnv": "development",
+  "isProduction": false
+}
+[2025-04-19T14:42:39.524Z] [INFO] [generate-itinerary] Supabase connection details: {
+  "hasSupabaseUrl": true,
+  "hasSupabaseKey": true,
+  "urlPrefix": "https://to",
+  "keyPrefix": "eyJhb",
+  "urlLength": 40,
+  "keyLength": 208
+}
+[2025-04-19T14:42:39.527Z] [INFO] [generate-itinerary] Testing Supabase connection... 
+[2025-04-19T14:42:39.767Z] [INFO] [generate-itinerary] ✅ Supabase connection test successful 
+[2025-04-19T14:42:39.773Z] [INFO] [generate-itinerary] Received survey data: {
+  "destination": "rome",
+  "startDate": "2025-04-23",
+  "endDate": "2025-04-28",
+  "purpose": "honeymoon",
+  "budget": "moderate",
+  "preferences": [
+    "family"
+  ]
+}
+[2025-04-19T14:42:39.779Z] [INFO] [generate-itinerary] Generated new job ID: job_1745073759779_kmiqjjt 
+[2025-04-19T14:42:39.783Z] [INFO] [generate-itinerary] Generated prompt for job job_1745073759779_kmiqjjt, length: 1998 characters 
+[2025-04-19T14:42:39.786Z] [INFO] [generate-itinerary] Creating new job with ID: job_1745073759779_kmiqjjt
+[2025-04-19T14:42:39.791Z] [INFO] [supabase] Creating new job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:42:39.919Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:42:40.163Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt created successfully 
+[2025-04-19T14:42:40.164Z] [INFO] [generate-itinerary] Job job_1745073759779_kmiqjjt created successfully, current status: queued 
+[2025-04-19T14:42:40.169Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:42:40.559Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:39.791+00:00"
+}
+[2025-04-19T14:42:40.560Z] [INFO] [generate-itinerary] Initial job status check: queued 
+[2025-04-19T14:42:40.567Z] [INFO] [generate-itinerary] Invoking Supabase Edge Function for job job_1745073759779_kmiqjjt 
+[2025-04-19T14:42:40.572Z] [INFO] [supabase] Updating job status: job_1745073759779_kmiqjjt -> processing {
+  "dbId": 1745073759779,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:42:40.787Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status updated successfully to processing 
+[2025-04-19T14:42:57.728Z] [INFO] [generate-itinerary] Supabase Edge Function invoked successfully for job job_1745073759779_kmiqjjt: {
+  "success": true,
+  "jobId": "job_1745073759779_kmiqjjt"
+}
+[2025-04-19T14:42:57.729Z] [INFO] [generate-itinerary] Returning response for job job_1745073759779_kmiqjjt with status: processing 
+[2025-04-19T14:42:59.837Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:42:59.837Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:42:59.844Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:42:59.848Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:42:59.854Z] [INFO] [job-status] Job status API called at 2025-04-19T14:42:59.854Z 
+[2025-04-19T14:42:59.857Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:42:59.861Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:00.270Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:00.272Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:00.278Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:00.615Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:43:02.308Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:02.308Z 
+[2025-04-19T14:43:02.308Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:02.311Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:02.703Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:02.709Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:02.713Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:04.736Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:04.736Z 
+[2025-04-19T14:43:04.737Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:04.741Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:05.124Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:05.125Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:05.129Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:07.153Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:07.153Z 
+[2025-04-19T14:43:07.154Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:07.159Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:07.549Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:07.550Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:07.556Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:09.582Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:09.582Z 
+[2025-04-19T14:43:09.582Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:09.587Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:10.019Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:10.020Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:10.024Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:12.047Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:12.047Z 
+[2025-04-19T14:43:12.048Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:12.050Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:12.418Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:12.420Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:12.426Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:14.455Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:14.455Z 
+[2025-04-19T14:43:14.456Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:14.460Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:14.839Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:14.841Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:14.847Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:16.877Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:16.877Z 
+[2025-04-19T14:43:16.878Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:16.885Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:17.105Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:17.106Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:17.112Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:19.137Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:19.137Z 
+[2025-04-19T14:43:19.138Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:19.141Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:19.544Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:19.546Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:19.552Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:21.579Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:21.579Z 
+[2025-04-19T14:43:21.580Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:21.585Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:21.965Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:21.966Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:21.968Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:23.988Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:23.988Z 
+[2025-04-19T14:43:23.989Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:23.993Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:24.389Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:24.391Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:24.398Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:26.425Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:26.425Z 
+[2025-04-19T14:43:26.426Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:26.429Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:26.803Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:26.805Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:26.809Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:28.832Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:28.832Z 
+[2025-04-19T14:43:28.833Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:28.837Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:29.238Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:29.240Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:29.247Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:31.274Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:31.274Z 
+[2025-04-19T14:43:31.276Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:31.280Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:31.686Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:31.688Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:31.694Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:33.725Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:33.725Z 
+[2025-04-19T14:43:33.726Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:33.730Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:34.145Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:34.146Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:34.151Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:36.176Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:36.176Z 
+[2025-04-19T14:43:36.177Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:36.181Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:36.583Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:36.585Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:36.591Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:38.618Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:38.618Z 
+[2025-04-19T14:43:38.619Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:38.624Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:39.019Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:39.020Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:39.025Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:41.052Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:41.052Z 
+[2025-04-19T14:43:41.053Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:41.058Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:41.463Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:41.465Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:41.469Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:43.500Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:43.500Z 
+[2025-04-19T14:43:43.501Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:43.506Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:43.903Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:43.904Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:43.910Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:45.936Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:45.936Z 
+[2025-04-19T14:43:45.937Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:45.940Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:46.339Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:46.340Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:46.347Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:43:48.373Z] [INFO] [job-status] Job status API called at 2025-04-19T14:43:48.373Z 
+[2025-04-19T14:43:48.374Z] [INFO] [job-status] Checking status for job: job_1745073759779_kmiqjjt 
+[2025-04-19T14:43:48.377Z] [INFO] [supabase] Getting status for job: job_1745073759779_kmiqjjt (db id: 1745073759779) 
+[2025-04-19T14:43:48.786Z] [INFO] [supabase] Job job_1745073759779_kmiqjjt status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:42:40.572+00:00"
+}
+[2025-04-19T14:43:48.787Z] [INFO] [job-status] Job job_1745073759779_kmiqjjt status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:43:48.790Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:53:37.248Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:53:37.249Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:53:37.255Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:53:37.259Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:53:37.266Z] [INFO] [supabase] Creating new job: test_job_1745074417266 (db id: 498676369) 
+[2025-04-19T14:53:38.102Z] [INFO] [supabase] Job test_job_1745074417266 created successfully 
+[2025-04-19T14:53:38.104Z] [INFO] [supabase] Updating job status: test_job_1745074417266 -> processing {
+  "dbId": 498676369,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:53:38.190Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:53:38.322Z] [INFO] [supabase] Job test_job_1745074417266 status updated successfully to processing 
+[2025-04-19T14:53:38.324Z] [INFO] [supabase] Getting status for job: test_job_1745074417266 (db id: 498676369) 
+[2025-04-19T14:53:38.549Z] [INFO] [supabase] Job test_job_1745074417266 status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:53:38.104+00:00"
+}
+[2025-04-19T14:53:38.551Z] [INFO] [supabase] Updating job status: test_job_1745074417266 -> completed {
+  "dbId": 498676369,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T14:53:38.777Z] [INFO] [supabase] Job test_job_1745074417266 status updated successfully to completed 
+[2025-04-19T14:53:38.779Z] [INFO] [supabase] Getting status for job: test_job_1745074417266 (db id: 498676369) 
+[2025-04-19T14:53:39.180Z] [INFO] [supabase] Job test_job_1745074417266 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:53:38.551+00:00"
+}
+[2025-04-19T14:53:39.324Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:53:39.325Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:53:39.332Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:53:39.336Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:53:39.340Z] [INFO] [generate-itinerary] ========== ITINERARY GENERATION REQUEST ========== 
+[2025-04-19T14:53:39.344Z] [INFO] [generate-itinerary] API Request started: 2025-04-19T14:53:39.344Z 
+[2025-04-19T14:53:39.346Z] [INFO] [generate-itinerary] Environment: {
+  "nodeEnv": "development",
+  "isProduction": false
+}
+[2025-04-19T14:53:39.349Z] [INFO] [generate-itinerary] Supabase connection details: {
+  "hasSupabaseUrl": true,
+  "hasSupabaseKey": true,
+  "urlPrefix": "https://to",
+  "keyPrefix": "eyJhb",
+  "urlLength": 40,
+  "keyLength": 208
+}
+[2025-04-19T14:53:39.353Z] [INFO] [generate-itinerary] Testing Supabase connection... 
+[2025-04-19T14:53:39.741Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:53:39.744Z] [INFO] [generate-itinerary] ✅ Supabase connection test successful 
+[2025-04-19T14:53:39.750Z] [INFO] [generate-itinerary] Received survey data: {
+  "destination": "rome",
+  "startDate": "2025-04-22",
+  "endDate": "2025-04-25",
+  "purpose": "vacation",
+  "budget": "moderate",
+  "preferences": [
+    "food"
+  ]
+}
+[2025-04-19T14:53:39.756Z] [INFO] [generate-itinerary] Generated new job ID: job_1745074419756_55uqamg 
+[2025-04-19T14:53:39.760Z] [INFO] [generate-itinerary] Generated prompt for job job_1745074419756_55uqamg, length: 1995 characters 
+[2025-04-19T14:53:39.763Z] [INFO] [generate-itinerary] Creating new job with ID: job_1745074419756_55uqamg
+[2025-04-19T14:53:39.767Z] [INFO] [supabase] Creating new job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:40.180Z] [INFO] [supabase] Job job_1745074419756_55uqamg created successfully 
+[2025-04-19T14:53:40.182Z] [INFO] [generate-itinerary] Job job_1745074419756_55uqamg created successfully, current status: queued 
+[2025-04-19T14:53:40.187Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:40.565Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:53:39.767+00:00"
+}
+[2025-04-19T14:53:40.566Z] [INFO] [generate-itinerary] Initial job status check: queued 
+[2025-04-19T14:53:40.572Z] [INFO] [generate-itinerary] Invoking Supabase Edge Function for job job_1745074419756_55uqamg 
+[2025-04-19T14:53:40.580Z] [INFO] [supabase] Updating job status: job_1745074419756_55uqamg -> processing {
+  "dbId": 1745074419756,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:53:40.815Z] [INFO] [supabase] Job job_1745074419756_55uqamg status updated successfully to processing 
+[2025-04-19T14:53:41.417Z] [ERROR] [generate-itinerary] Error invoking Supabase Edge Function: {
+  "name": "FunctionsHttpError",
+  "context": {}
+}
+[2025-04-19T14:53:41.419Z] [ERROR] [generate-itinerary] Failed to invoke Supabase Edge Function: {}
+[2025-04-19T14:53:41.422Z] [INFO] [supabase] Updating job status: job_1745074419756_55uqamg -> processing {
+  "dbId": 1745074419756,
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:53:41.651Z] [INFO] [supabase] Job job_1745074419756_55uqamg status updated successfully to processing 
+[2025-04-19T14:53:41.657Z] [INFO] [generate-itinerary] Returning response for job job_1745074419756_55uqamg with status: processing 
+[2025-04-19T14:53:43.769Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:53:43.769Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:53:43.775Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:53:43.779Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:53:43.783Z] [INFO] [job-status] Job status API called at 2025-04-19T14:53:43.783Z 
+[2025-04-19T14:53:43.788Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:53:43.790Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:44.185Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:53:44.204Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:53:44.210Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:53:44.215Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:53:46.241Z] [INFO] [job-status] Job status API called at 2025-04-19T14:53:46.241Z 
+[2025-04-19T14:53:46.242Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:53:46.246Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:46.471Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:53:46.472Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:53:46.477Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:53:48.518Z] [INFO] [job-status] Job status API called at 2025-04-19T14:53:48.518Z 
+[2025-04-19T14:53:48.519Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:53:48.522Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:48.900Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:53:48.902Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:53:48.908Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:53:50.936Z] [INFO] [job-status] Job status API called at 2025-04-19T14:53:50.936Z 
+[2025-04-19T14:53:50.937Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:53:50.941Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:51.337Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:53:51.339Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:53:51.343Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:53:53.366Z] [INFO] [job-status] Job status API called at 2025-04-19T14:53:53.366Z 
+[2025-04-19T14:53:53.367Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:53:53.371Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:53.746Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:53:53.747Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:53:53.754Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:53:55.781Z] [INFO] [job-status] Job status API called at 2025-04-19T14:53:55.781Z 
+[2025-04-19T14:53:55.782Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:53:55.786Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:56.260Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:53:56.261Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:53:56.268Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:53:58.294Z] [INFO] [job-status] Job status API called at 2025-04-19T14:53:58.294Z 
+[2025-04-19T14:53:58.294Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:53:58.297Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:53:58.543Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:53:58.545Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:53:58.551Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:00.580Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:00.580Z 
+[2025-04-19T14:54:00.581Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:00.586Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:01.107Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:01.109Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:01.118Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:03.144Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:03.144Z 
+[2025-04-19T14:54:03.145Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:03.150Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:03.666Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:03.667Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:03.674Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:05.699Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:05.699Z 
+[2025-04-19T14:54:05.700Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:05.705Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:05.951Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:05.956Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:05.961Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:07.985Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:07.985Z 
+[2025-04-19T14:54:07.986Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:07.989Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:08.376Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:08.377Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:08.384Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:10.410Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:10.410Z 
+[2025-04-19T14:54:10.411Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:10.416Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:10.799Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:10.800Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:10.803Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:12.827Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:12.827Z 
+[2025-04-19T14:54:12.828Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:12.834Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:13.214Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:13.215Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:13.219Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:15.342Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:15.342Z 
+[2025-04-19T14:54:15.343Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:15.347Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:15.820Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:15.822Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:15.827Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:18.019Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:18.019Z 
+[2025-04-19T14:54:18.020Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:18.025Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:18.255Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:18.257Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:18.260Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:20.382Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:20.382Z 
+[2025-04-19T14:54:20.383Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:20.388Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:20.604Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:20.605Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:20.611Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:22.735Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:22.735Z 
+[2025-04-19T14:54:22.736Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:22.743Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:22.966Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:22.973Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:22.977Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:25.095Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:25.095Z 
+[2025-04-19T14:54:25.095Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:25.097Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:25.490Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:25.491Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:25.496Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:27.561Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:27.561Z 
+[2025-04-19T14:54:27.562Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:27.566Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:27.778Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:27.779Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:27.784Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:29.906Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:29.906Z 
+[2025-04-19T14:54:29.907Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:29.913Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:30.167Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:30.168Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:30.171Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:32.293Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:32.293Z 
+[2025-04-19T14:54:32.293Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:32.297Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:32.691Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:32.693Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:32.698Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:34.820Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:34.819Z 
+[2025-04-19T14:54:34.821Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:34.824Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:35.044Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:35.046Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:35.051Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:37.175Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:37.175Z 
+[2025-04-19T14:54:37.177Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:37.181Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:37.441Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:37.443Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:37.449Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:39.569Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:39.569Z 
+[2025-04-19T14:54:39.570Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:39.576Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:39.802Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:39.803Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:39.811Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:41.928Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:41.928Z 
+[2025-04-19T14:54:41.929Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:41.932Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:42.166Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:42.168Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:42.171Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:44.290Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:44.290Z 
+[2025-04-19T14:54:44.291Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:44.295Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:44.685Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:44.686Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:44.690Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:46.812Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:46.812Z 
+[2025-04-19T14:54:46.813Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:46.819Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:47.236Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:47.237Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:47.243Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:49.365Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:49.365Z 
+[2025-04-19T14:54:49.366Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:49.370Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:49.770Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:49.771Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:49.777Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:51.900Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:51.900Z 
+[2025-04-19T14:54:51.901Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:51.908Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:52.315Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:52.316Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:52.324Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:54.445Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:54.445Z 
+[2025-04-19T14:54:54.446Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:54.452Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:54.865Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:54.866Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:54.871Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:56.991Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:56.991Z 
+[2025-04-19T14:54:56.991Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:56.995Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:57.410Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:57.412Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:57.416Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:54:59.533Z] [INFO] [job-status] Job status API called at 2025-04-19T14:54:59.533Z 
+[2025-04-19T14:54:59.534Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:54:59.538Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:54:59.828Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:54:59.829Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:54:59.833Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:01.945Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:01.945Z 
+[2025-04-19T14:55:01.945Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:01.947Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:02.355Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:02.356Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:02.363Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:04.488Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:04.488Z 
+[2025-04-19T14:55:04.489Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:04.493Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:04.885Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:04.886Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:04.894Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:07.014Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:07.014Z 
+[2025-04-19T14:55:07.016Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:07.020Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:07.521Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:07.523Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:07.529Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:09.654Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:09.654Z 
+[2025-04-19T14:55:09.655Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:09.660Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:10.109Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:10.111Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:10.118Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:12.242Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:12.242Z 
+[2025-04-19T14:55:12.244Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:12.247Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:12.681Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:12.681Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:12.682Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:14.804Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:14.804Z 
+[2025-04-19T14:55:14.805Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:14.812Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:15.225Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:15.226Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:15.232Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:17.362Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:17.362Z 
+[2025-04-19T14:55:17.363Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:17.367Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:17.776Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:17.778Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:17.785Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:19.961Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:19.961Z 
+[2025-04-19T14:55:19.962Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:19.967Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:20.471Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:20.473Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:20.477Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:22.598Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:22.598Z 
+[2025-04-19T14:55:22.599Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:22.603Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:22.889Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:22.890Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:22.894Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:25.015Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:25.015Z 
+[2025-04-19T14:55:25.016Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:25.020Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:25.397Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:25.398Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:25.403Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:55:27.522Z] [INFO] [job-status] Job status API called at 2025-04-19T14:55:27.522Z 
+[2025-04-19T14:55:27.523Z] [INFO] [job-status] Checking status for job: job_1745074419756_55uqamg 
+[2025-04-19T14:55:27.525Z] [INFO] [supabase] Getting status for job: job_1745074419756_55uqamg (db id: 1745074419756) 
+[2025-04-19T14:55:27.991Z] [INFO] [supabase] Job job_1745074419756_55uqamg status retrieved: processing {
+  "hasResult": false,
+  "hasError": true,
+  "updatedAt": "2025-04-19T14:53:41.422+00:00"
+}
+[2025-04-19T14:55:27.992Z] [INFO] [job-status] Job job_1745074419756_55uqamg status result: {
+  "statusFound": true,
+  "status": "processing",
+  "hasResult": false,
+  "hasError": true
+}
+[2025-04-19T14:55:27.995Z] [INFO] [job-status] Returning job status: processing 
+[2025-04-19T14:57:21.673Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:57:21.674Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:57:21.679Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:57:21.681Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:57:21.687Z] [INFO] [supabase] Creating new job: test_job_1745074641687 (db id: 438822343) 
+[2025-04-19T14:57:22.722Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:57:22.787Z] [INFO] [supabase] Job test_job_1745074641687 created successfully 
+[2025-04-19T14:57:22.793Z] [INFO] [supabase] Updating job status: test_job_1745074641687 -> processing {
+  "dbId": 438822343,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:57:23.016Z] [INFO] [supabase] Job test_job_1745074641687 status updated successfully to processing 
+[2025-04-19T14:57:23.023Z] [INFO] [supabase] Getting status for job: test_job_1745074641687 (db id: 438822343) 
+[2025-04-19T14:57:23.253Z] [INFO] [supabase] Job test_job_1745074641687 status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:57:22.793+00:00"
+}
+[2025-04-19T14:57:23.261Z] [INFO] [supabase] Updating job status: test_job_1745074641687 -> completed {
+  "dbId": 438822343,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T14:57:23.497Z] [INFO] [supabase] Job test_job_1745074641687 status updated successfully to completed 
+[2025-04-19T14:57:23.502Z] [INFO] [supabase] Getting status for job: test_job_1745074641687 (db id: 438822343) 
+[2025-04-19T14:57:23.917Z] [INFO] [supabase] Job test_job_1745074641687 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:57:23.261+00:00"
+}
+[2025-04-19T14:57:24.030Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:57:24.030Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:57:24.035Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:57:24.039Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:57:24.044Z] [INFO] [generate-itinerary] ========== ITINERARY GENERATION REQUEST ========== 
+[2025-04-19T14:57:24.047Z] [INFO] [generate-itinerary] API Request started: 2025-04-19T14:57:24.047Z 
+[2025-04-19T14:57:24.052Z] [INFO] [generate-itinerary] Environment: {
+  "nodeEnv": "development",
+  "isProduction": false
+}
+[2025-04-19T14:57:24.055Z] [INFO] [generate-itinerary] Supabase connection details: {
+  "hasSupabaseUrl": true,
+  "hasSupabaseKey": true,
+  "urlPrefix": "https://to",
+  "keyPrefix": "eyJhb",
+  "urlLength": 40,
+  "keyLength": 208
+}
+[2025-04-19T14:57:24.059Z] [INFO] [generate-itinerary] Testing Supabase connection... 
+[2025-04-19T14:57:24.441Z] [INFO] [generate-itinerary] ✅ Supabase connection test successful 
+[2025-04-19T14:57:24.444Z] [INFO] [generate-itinerary] Received survey data: {
+  "destination": "rome",
+  "startDate": "2025-04-22",
+  "endDate": "2025-04-25",
+  "purpose": "vacation",
+  "budget": "moderate",
+  "preferences": [
+    "food"
+  ]
+}
+[2025-04-19T14:57:24.450Z] [INFO] [generate-itinerary] Generated new job ID: job_1745074644450_ed2iqw9 
+[2025-04-19T14:57:24.455Z] [INFO] [generate-itinerary] Generated prompt for job job_1745074644450_ed2iqw9, length: 1995 characters 
+[2025-04-19T14:57:24.461Z] [INFO] [generate-itinerary] Creating new job with ID: job_1745074644450_ed2iqw9
+[2025-04-19T14:57:24.466Z] [INFO] [supabase] Creating new job: job_1745074644450_ed2iqw9 (db id: 1745074644450) 
+[2025-04-19T14:57:24.476Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T14:57:24.862Z] [INFO] [supabase] Job job_1745074644450_ed2iqw9 created successfully 
+[2025-04-19T14:57:24.864Z] [INFO] [generate-itinerary] Job job_1745074644450_ed2iqw9 created successfully, current status: queued 
+[2025-04-19T14:57:24.869Z] [INFO] [supabase] Getting status for job: job_1745074644450_ed2iqw9 (db id: 1745074644450) 
+[2025-04-19T14:57:25.280Z] [INFO] [supabase] Job job_1745074644450_ed2iqw9 status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:57:24.466+00:00"
+}
+[2025-04-19T14:57:25.282Z] [INFO] [generate-itinerary] Initial job status check: queued 
+[2025-04-19T14:57:25.286Z] [INFO] [generate-itinerary] Invoking Supabase Edge Function for job job_1745074644450_ed2iqw9 
+[2025-04-19T14:57:25.293Z] [INFO] [supabase] Updating job status: job_1745074644450_ed2iqw9 -> processing {
+  "dbId": 1745074644450,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T14:57:25.546Z] [INFO] [supabase] Job job_1745074644450_ed2iqw9 status updated successfully to processing 
+[2025-04-19T14:57:43.657Z] [INFO] [generate-itinerary] Supabase Edge Function invoked successfully for job job_1745074644450_ed2iqw9: {
+  "success": true,
+  "jobId": "job_1745074644450_ed2iqw9",
+  "message": "Job completed successfully and status updated to completed"
+}
+[2025-04-19T14:57:43.659Z] [INFO] [generate-itinerary] Returning response for job job_1745074644450_ed2iqw9 with status: processing 
+[2025-04-19T14:57:45.895Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T14:57:45.896Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T14:57:45.898Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T14:57:45.901Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T14:57:45.907Z] [INFO] [job-status] Job status API called at 2025-04-19T14:57:45.907Z 
+[2025-04-19T14:57:45.912Z] [INFO] [job-status] Checking status for job: job_1745074644450_ed2iqw9 
+[2025-04-19T14:57:45.914Z] [INFO] [supabase] Getting status for job: job_1745074644450_ed2iqw9 (db id: 1745074644450) 
+[2025-04-19T14:57:46.142Z] [INFO] [supabase] Job job_1745074644450_ed2iqw9 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T14:57:43.749+00:00"
+}
+[2025-04-19T14:57:46.143Z] [INFO] [job-status] Job job_1745074644450_ed2iqw9 status result: {
+  "statusFound": true,
+  "status": "completed",
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T14:57:46.149Z] [INFO] [job-status] Returning job status: completed 
+[2025-04-19T14:57:46.663Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:09:38.440Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T15:09:38.440Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:09:38.443Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:09:38.444Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:09:38.448Z] [INFO] [supabase] Creating new job: test_job_1745075378448 (db id: 365770940) 
+[2025-04-19T15:09:39.872Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:09:39.874Z] [INFO] [supabase] Job test_job_1745075378448 created successfully 
+[2025-04-19T15:09:39.880Z] [INFO] [supabase] Updating job status: test_job_1745075378448 -> processing {
+  "dbId": 365770940,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T15:09:40.107Z] [INFO] [supabase] Job test_job_1745075378448 status updated successfully to processing 
+[2025-04-19T15:09:40.109Z] [INFO] [supabase] Getting status for job: test_job_1745075378448 (db id: 365770940) 
+[2025-04-19T15:09:40.507Z] [INFO] [supabase] Job test_job_1745075378448 status retrieved: processing {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:09:39.88+00:00"
+}
+[2025-04-19T15:09:40.509Z] [INFO] [supabase] Updating job status: test_job_1745075378448 -> completed {
+  "dbId": 365770940,
+  "hasResult": true,
+  "hasError": false
+}
+[2025-04-19T15:09:40.756Z] [INFO] [supabase] Job test_job_1745075378448 status updated successfully to completed 
+[2025-04-19T15:09:40.765Z] [INFO] [supabase] Getting status for job: test_job_1745075378448 (db id: 365770940) 
+[2025-04-19T15:09:41.097Z] [INFO] [supabase] Job test_job_1745075378448 status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:09:40.509+00:00"
+}
+[2025-04-19T15:09:41.222Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T15:09:41.222Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:09:41.227Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:09:41.231Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:09:41.234Z] [INFO] [generate-itinerary] ========== ITINERARY GENERATION REQUEST ========== 
+[2025-04-19T15:09:41.239Z] [INFO] [generate-itinerary] API Request started: 2025-04-19T15:09:41.239Z 
+[2025-04-19T15:09:41.243Z] [INFO] [generate-itinerary] Environment: {
+  "nodeEnv": "development",
+  "isProduction": false
+}
+[2025-04-19T15:09:41.245Z] [INFO] [generate-itinerary] Supabase connection details: {
+  "hasSupabaseUrl": true,
+  "hasSupabaseKey": true,
+  "urlPrefix": "https://to",
+  "keyPrefix": "eyJhb",
+  "urlLength": 40,
+  "keyLength": 208
+}
+[2025-04-19T15:09:41.248Z] [INFO] [generate-itinerary] Testing Supabase connection... 
+[2025-04-19T15:09:41.493Z] [INFO] [generate-itinerary] ✅ Supabase connection test successful 
+[2025-04-19T15:09:41.494Z] [INFO] [generate-itinerary] Received survey data: {
+  "destination": "rome",
+  "startDate": "2025-04-23",
+  "endDate": "2025-04-25",
+  "purpose": "vacation",
+  "budget": "moderate",
+  "preferences": [
+    "food"
+  ]
+}
+[2025-04-19T15:09:41.497Z] [INFO] [generate-itinerary] Generated new job ID: job_1745075381497_l58l4om 
+[2025-04-19T15:09:41.499Z] [INFO] [generate-itinerary] Generated prompt for job job_1745075381497_l58l4om, length: 1995 characters 
+[2025-04-19T15:09:41.501Z] [INFO] [generate-itinerary] Creating new job with ID: job_1745075381497_l58l4om
+[2025-04-19T15:09:41.504Z] [INFO] [supabase] Creating new job: job_1745075381497_l58l4om (db id: 1745075381497) 
+[2025-04-19T15:09:41.639Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 
+[2025-04-19T15:09:41.919Z] [INFO] [supabase] Job job_1745075381497_l58l4om created successfully 
+[2025-04-19T15:09:41.921Z] [INFO] [generate-itinerary] Job job_1745075381497_l58l4om created successfully, current status: queued 
+[2025-04-19T15:09:41.925Z] [INFO] [supabase] Getting status for job: job_1745075381497_l58l4om (db id: 1745075381497) 
+[2025-04-19T15:09:42.320Z] [INFO] [supabase] Job job_1745075381497_l58l4om status retrieved: queued {
+  "hasResult": false,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:09:41.504+00:00"
+}
+[2025-04-19T15:09:42.321Z] [INFO] [generate-itinerary] Initial job status check: queued 
+[2025-04-19T15:09:42.325Z] [INFO] [generate-itinerary] Invoking Supabase Edge Function for job job_1745075381497_l58l4om 
+[2025-04-19T15:09:42.332Z] [INFO] [supabase] Updating job status: job_1745075381497_l58l4om -> processing {
+  "dbId": 1745075381497,
+  "hasResult": false,
+  "hasError": false
+}
+[2025-04-19T15:09:42.570Z] [INFO] [supabase] Job job_1745075381497_l58l4om status updated successfully to processing 
+[2025-04-19T15:09:55.017Z] [INFO] [generate-itinerary] Supabase Edge Function invoked successfully for job job_1745075381497_l58l4om: {
+  "success": true,
+  "jobId": "job_1745075381497_l58l4om",
+  "message": "Job completed successfully and status updated to completed"
+}
+[2025-04-19T15:09:55.019Z] [INFO] [generate-itinerary] Returning response for job job_1745075381497_l58l4om with status: processing 
+[2025-04-19T15:09:57.156Z] [INFO] [supabase] Supabase initialization {
+  "NODE_ENV": "development",
+  "hasProcessEnv": true,
+  "nodeEnv": "development",
+  "hasSbUrl": true,
+  "hasSbKey": true,
+  "nextConfig": true,
+  "envVarCount": 5
+}
+[2025-04-19T15:09:57.156Z] [INFO] [supabase] Supabase configuration check {
+  "hasUrl": true,
+  "urlLength": 40,
+  "urlPrefix": "https://",
+  "hasKey": true,
+  "keyLength": 208,
+  "keyPrefix": "eyJh"
+}
+[2025-04-19T15:09:57.161Z] [INFO] [supabase] Supabase client initialized, verifying connection... 
+[2025-04-19T15:09:57.163Z] [INFO] [supabase] Checking Supabase connection... 
+[2025-04-19T15:09:57.169Z] [INFO] [app] Job status API called at 2025-04-19T15:09:57.169Z 
+[2025-04-19T15:09:57.170Z] [INFO] [app] Checking status for job: job_1745075381497_l58l4om 
+[2025-04-19T15:09:57.176Z] [INFO] [supabase] Getting status for job: job_1745075381497_l58l4om (db id: 1745075381497) 
+[2025-04-19T15:09:57.565Z] [INFO] [supabase] Job job_1745075381497_l58l4om status retrieved: completed {
+  "hasResult": true,
+  "hasError": false,
+  "updatedAt": "2025-04-19T15:09:55.142+00:00"
+}
+[2025-04-19T15:09:57.567Z] [INFO] [app] Job job_1745075381497_l58l4om status result: {
+  "status": "completed",
+  "result": {
+    "usage": {
+      "total_tokens": 1738,
+      "prompt_tokens": 617,
+      "completion_tokens": 1121,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "accepted_prediction_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    },
+    "prompt": "\nCreate a personalized travel itinerary for a trip to rome from April 23rd, 2025 to April 25th, 2025 (3 days).\n\nTrip purpose: vacation\nBudget level: moderate\nThe traveler has expressed interest in the following: food. \n\nGenerate a comprehensive day-by-day travel itinerary with the following structure (as a valid JSON object):\n\n{\n  \"destination\": \"rome\",\n  \"tripName\": \"<create a catchy name for this trip>\",\n  \"dates\": {\n    \"start\": \"2025-04-23\",\n    \"end\": \"2025-04-25\"\n  },\n  \"summary\": \"<brief overview of the trip highlighting key attractions and experiences>\",\n  \"days\": [\n    {\n      \"day\": 1,\n      \"date\": \"2025-04-23\",\n      \"activities\": [\n        {\n          \"time\": \"<morning/afternoon/evening>\",\n          \"title\": \"<activity name>\",\n          \"description\": \"<detailed description>\",\n          \"location\": \"<specific location name>\",\n          \"coordinates\": {\n            \"lat\": <latitude as number>,\n            \"lng\": <longitude as number>\n          },\n          \"duration\": \"<estimated duration>\",\n          \"cost\": \"<cost estimate or budget level>\"\n        },\n        ... more activities ...\n      ]\n    },\n    ... more days ...\n  ],\n  \"budgetEstimate\": {\n    \"accommodation\": <estimated total cost as number>,\n    \"food\": <estimated total cost as number>,\n    \"activities\": <estimated total cost as number>,\n    \"transportation\": <estimated total cost as number>,\n    \"total\": <total estimated cost as number>\n  },\n  \"travelTips\": [\n    \"<useful tip for this destination>\",\n    ... more tips ...\n  ]\n}\n\nRemember, EACH activity MUST include valid and accurate coordinates (latitude and longitude) as numerical values - never use empty or placeholder coordinates. Research real locations in rome and include their actual coordinates.\n\nOnly return valid JSON that can be parsed with JSON.parse(). Do not include any explanations, markdown formatting, or code blocks outside the JSON object. Ensure all property names and string values use double quotes, not single quotes.\n  ",
+    "rawContent": "{\n  \"destination\": \"Rome\",\n  \"tripName\": \"Gastronomic Delights in the Eternal City\",\n  \"dates\": {\n    \"start\": \"2025-04-23\",\n    \"end\": \"2025-04-25\"\n  },\n  \"summary\": \"Indulge in Rome's vibrant food scene with a mix of traditional Roman cuisine and modern gastronomic experiences.\",\n  \"days\": [\n    {\n      \"day\": 1,\n      \"date\": \"2025-04-23\",\n      \"activities\": [\n        {\n          \"time\": \"Morning\",\n          \"title\": \"Breakfast at Roscioli\",\n          \"description\": \"Enjoy freshly baked pastries, artisanal coffee, and a variety of Italian delicacies at this renowned bakery.\",\n          \"location\": \"Roscioli\",\n          \"coordinates\": {\n            \"lat\": 41.8957,\n            \"lng\": 12.4727\n          },\n          \"duration\": \"1 hour\",\n          \"cost\": \"Moderate\"\n        },\n        {\n          \"time\": \"Afternoon\",\n          \"title\": \"Food Tour in Testaccio\",\n          \"description\": \"Embark on a guided food tour through Testaccio district, sampling classic Roman street food and local specialties.\",\n          \"location\": \"Testaccio\",\n          \"coordinates\": {\n            \"lat\": 41.8759,\n            \"lng\": 12.4718\n          },\n          \"duration\": \"3 hours\",\n          \"cost\": \"Moderate\"\n        },\n        {\n          \"time\": \"Evening\",\n          \"title\": \"Dinner at Armando al Pantheon\",\n          \"description\": \"Savor authentic Roman dishes in a cozy trattoria setting near the Pantheon.\",\n          \"location\": \"Armando al Pantheon\",\n          \"coordinates\": {\n            \"lat\": 41.8991,\n            \"lng\": 12.4762\n          },\n          \"duration\": \"2 hours\",\n          \"cost\": \"Moderate\"\n        }\n      ]\n    },\n    {\n      \"day\": 2,\n      \"date\": \"2025-04-24\",\n      \"activities\": [\n        {\n          \"time\": \"Morning\",\n          \"title\": \"Breakfast at Antico Forno Roscioli\",\n          \"description\": \"Experience more delectable pastries and coffee at this historic bakery with a local touch.\",\n          \"location\": \"Antico Forno Roscioli\",\n          \"coordinates\": {\n            \"lat\": 41.8960,\n            \"lng\": 12.4724\n          },\n          \"duration\": \"1 hour\",\n          \"cost\": \"Moderate\"\n        },\n        {\n          \"time\": \"Afternoon\",\n          \"title\": \"Pizza Making Class at Rimessa Roscioli\",\n          \"description\": \"Learn the art of making traditional Roman pizza from expert chefs in a hands-on cooking class.\",\n          \"location\": \"Rimessa Roscioli\",\n          \"coordinates\": {\n            \"lat\": 41.8948,\n            \"lng\": 12.4755\n          },\n          \"duration\": \"2 hours\",\n          \"cost\": \"Moderate\"\n        },\n        {\n          \"time\": \"Evening\",\n          \"title\": \"Dinner at Trastevere\",\n          \"description\": \"Explore the charming streets of Trastevere and dine at a local osteria for a taste of Roman hospitality.\",\n          \"location\": \"Trastevere\",\n          \"coordinates\": {\n            \"lat\": 41.8876,\n            \"lng\": 12.4675\n          },\n          \"duration\": \"2 hours\",\n          \"cost\": \"Moderate\"\n        }\n      ]\n    },\n    {\n      \"day\": 3,\n      \"date\": \"2025-04-25\",\n      \"activities\": [\n        {\n          \"time\": \"Morning\",\n          \"title\": \"Cappuccino at Sant'Eustachio Il Caffè\",\n          \"description\": \"Sip on Rome's famous cappuccino at one of the oldest coffee bars in the city.\",\n          \"location\": \"Sant'Eustachio Il Caffè\",\n          \"coordinates\": {\n            \"lat\": 41.8986,\n            \"lng\": 12.4751\n          },\n          \"duration\": \"1 hour\",\n          \"cost\": \"Moderate\"\n        },\n        {\n          \"time\": \"Afternoon\",\n          \"title\": \"Gelato at Giolitti\",\n          \"description\": \"Indulge in creamy gelato flavors at a historic gelateria known for its artisanal frozen treats.\",\n          \"location\": \"Giolitti\",\n          \"coordinates\": {\n            \"lat\": 41.9009,\n            \"lng\": 12.4767\n          },\n          \"duration\": \"1 hour\",\n          \"cost\": \"Moderate\"\n        }\n      ]\n    }\n  ],\n  \"budgetEstimate\": {\n    \"accommodation\": 600,\n    \"food\": 300,\n    \"activities\": 250,\n    \"transportation\": 150,\n    \"total\": 1300\n  },\n  \"travelTips\": [\n    \"Try traditional Roman dishes like Cacio e Pepe and Carciofi alla Romana for an authentic culinary experience.\",\n    \"Don't forget to explore local markets for fresh produce and regional specialties.\"\n  ]\n}"
+  },
+  "error": null
+}
+[2025-04-19T15:09:57.572Z] [INFO] [app] Returning job status: completed 
+[2025-04-19T15:09:57.940Z] [INFO] [supabase] Supabase connection verified successfully, jobs table exists 

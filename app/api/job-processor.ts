@@ -1,412 +1,297 @@
 import { updateJobStatus } from '../../lib/supabase';
+import { createLogger } from '../../lib/logger';
+
+// Create a logger for the job processor
+const logger = createLogger('job-processor');
 
 // Helper function to generate a unique job ID
-export function generateJobId() {
-  const timestamp = Date.now();
-  // Use a simple format with just the timestamp to ensure consistency across environments
-  return `job_${timestamp}`;
+export function generateJobId(): string {
+  return `job_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
 }
 
-// Process the itinerary generation in the background
-export async function processItineraryJob(jobId: string, surveyData: any, generatePrompt: Function, OPENAI_API_KEY: string) {
-  try {
-    console.log(`[${jobId}] Starting itinerary generation process...`);
-    
-    // Update status to processing (already done in the caller, but make sure)
-    await updateJobStatus(jobId, 'processing');
-    
-    // Create the prompt for GPT
-    const prompt = generatePrompt(surveyData);
-    console.log(`[${jobId}] Generated prompt (${prompt.length} chars)`);
-    
-    // Make the OpenAI API call
-    console.log(`[${jobId}] Calling OpenAI API...`);
-    const startTime = Date.now();
-    
-    // Check if we have a valid API key first
-    if (!OPENAI_API_KEY || !OPENAI_API_KEY.startsWith('sk-')) {
-      console.error(`[${jobId}] Invalid OpenAI API key`);
-      await updateJobStatus(jobId, 'failed', { 
-        error: 'Invalid OpenAI API key configuration. Please check your environment variables.' 
-      });
+// Function to sanitize JSON - fixes common JSON syntax issues
+export function sanitizeJSON(content: string): string {
+  logger.debug('Sanitizing JSON content');
+  
+  // Remove JavaScript-style comments
+  let sanitized = content.replace(/\/\/.*?(\r?\n|$)/g, '$1')
+                        .replace(/\/\*[\s\S]*?\*\//g, '');
+                        
+  // Fix property names without quotes
+  sanitized = sanitized.replace(/(\{|\,)\s*([a-zA-Z0-9_]+)\s*\:/g, '$1"$2":');
+  
+  // Remove trailing commas
+  sanitized = sanitized.replace(/,(\s*[\]\}])/g, '$1');
+  
+  // Replace single quotes with double quotes
+  sanitized = sanitized.replace(/'/g, '"');
+  
+  return sanitized;
+}
+
+// Ensure valid coordinates in the itinerary
+export function ensureValidCoordinates(itinerary: any): any {
+  logger.debug('Validating and fixing coordinates in itinerary');
+  
+  // Default backup coordinates for Paris (use as last resort)
+  const defaultCoordinates = { lat: 48.8566, lng: 2.3522 };
+  
+  // Helper to validate a single coordinates object
+  const isValidCoordinates = (coords: any): boolean => {
+    return coords && 
+           typeof coords === 'object' && 
+           typeof coords.lat === 'number' && 
+           typeof coords.lng === 'number' &&
+           !isNaN(coords.lat) && 
+           !isNaN(coords.lng);
+  };
+  
+  // If there are no days, nothing to do
+  if (!itinerary.days || !Array.isArray(itinerary.days)) {
+    logger.warn('No days array found in itinerary');
+    return itinerary;
+  }
+  
+  // Track issues found
+  let issuesFound = 0;
+  
+  // Check each day and activity
+  itinerary.days.forEach((day: any, dayIndex: number) => {
+    if (!day.activities || !Array.isArray(day.activities)) {
+      logger.warn(`Day ${dayIndex + 1} has no activities array`);
       return;
     }
     
-    // Create AbortController for timeout handling
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
-    
-    try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are an expert travel planner. Generate a detailed travel itinerary based on the user\'s preferences. Return your response in a structured JSON format only, with no additional text, explanation, or markdown formatting. Do not wrap the JSON in code blocks. Ensure all property names use double quotes. IMPORTANT: Every activity MUST include a valid "coordinates" object with "lat" and "lng" numerical values - never omit coordinates or use empty objects. For price fields, DO NOT use $ symbols directly - use price descriptors like "Budget", "Moderate", "Expensive" or numeric values without currency symbols. ALL city names and locations with periods (like "St. Louis") must be properly escaped in JSON. Return a valid JSON object that can be parsed with JSON.parse().'
-            },
-            {
-              role: 'user',
-              content: prompt
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 3000, // Increased token limit to avoid truncated responses
-        }),
-        signal: controller.signal,
-      });
-      
-      clearTimeout(timeoutId); // Clear the timeout if request completes
-      
-      const responseTime = Date.now() - startTime;
-      console.log(`[${jobId}] OpenAI API response received in ${responseTime}ms`);
-
-      if (!response.ok) {
-        const error = await response.json();
-        console.error(`[${jobId}] OpenAI API error:`, error);
-        await updateJobStatus(jobId, 'failed', { 
-          error: `Failed to generate itinerary: ${error.error?.message || 'API error'}`
-        });
+    day.activities.forEach((activity: any, activityIndex: number) => {
+      // Skip if there's no activity object
+      if (!activity || typeof activity !== 'object') {
+        logger.warn(`Invalid activity at day ${dayIndex + 1}, index ${activityIndex}`);
         return;
       }
-
-      const data = await response.json();
-      console.log(`[${jobId}] OpenAI response received with ${data.usage?.total_tokens || 'unknown'} tokens`);
       
-      const itineraryContent = data.choices[0].message.content;
-      console.log(`[${jobId}] Content length: ${itineraryContent.length} characters`);
-      
-      // Parse the JSON response with better error handling
-      try {
-        console.log(`[${jobId}] Parsing JSON response...`);
-        
-        // Try direct parse first
-        let itinerary;
-        try {
-          itinerary = JSON.parse(itineraryContent);
-          console.log(`[${jobId}] JSON parsed successfully on first attempt`);
-        } catch (err) {
-          const parseError = err as Error;
-          console.error(`[${jobId}] Initial JSON parse failed:`, parseError.message);
-          
-          // First try to extract JSON content from the response
-          const jsonMatch = itineraryContent.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            try {
-              console.log(`[${jobId}] Attempting to extract JSON from response...`);
-              itinerary = JSON.parse(jsonMatch[0]);
-              console.log(`[${jobId}] JSON extracted and parsed successfully`);
-            } catch (err2) {
-              const extractError = err2 as Error;
-              console.error(`[${jobId}] Failed to extract valid JSON:`, extractError.message);
-              
-              // Try to sanitize and repair the JSON
-              try {
-                console.log(`[${jobId}] Attempting to sanitize and repair the JSON...`);
-                const sanitizedJSON = sanitizeJSON(itineraryContent);
-                console.log(`[${jobId}] JSON sanitized, attempting to parse...`);
-                
-                itinerary = JSON.parse(sanitizedJSON);
-                console.log(`[${jobId}] Sanitized JSON parsed successfully`);
-              } catch (err3) {
-                const sanitizeError = err3 as Error;
-                console.error(`[${jobId}] Failed to parse sanitized JSON:`, sanitizeError.message);
-                
-                // Last resort: try to fix common JSON syntax errors
-                try {
-                  console.log(`[${jobId}] Using last resort JSON repair attempt...`);
-                  
-                  // Replace single quotes with double quotes for property names and values
-                  let lastResortJSON = itineraryContent.replace(/'/g, '"');
-                  
-                  // Fix property names without quotes (common error)
-                  lastResortJSON = lastResortJSON.replace(/([{,]\s*)([a-zA-Z0-9_\.]+)(\s*:)/g, '$1"$2"$3');
-                  
-                  // Fix dollar signs in price fields (a common source of problems)
-                  lastResortJSON = lastResortJSON.replace(/"(price|priceRange|cost|estimatedCost)"(\s*):(\s*)"(\$+)"/g, '"$1"$2:$3"Price Range $4"');
-                  
-                  // Handle common patterns with dollar signs
-                  lastResortJSON = lastResortJSON.replace(/:(\s*)\$(\d+)/g, ': "$$$2"');
-                  lastResortJSON = lastResortJSON.replace(/:(\s*)\$(\d+)-(\d+)/g, ': "$$$2-$$$3"');
-                  
-                  // Replace unquoted property values
-                  lastResortJSON = lastResortJSON.replace(/:(\s*)([^"{}\[\],\s][^,}\]]*?)(\s*[,}])/g, ':"$2"$3');
-                  
-                  // Handle St. Louis and other places with periods
-                  // First ensure property names with periods are properly quoted
-                  lastResortJSON = lastResortJSON.replace(/"([^"]*?\.)([^"]*?)"/g, '"$1$2"');
-                  
-                  // Fix quotes and unescaped characters around periods in content
-                  lastResortJSON = lastResortJSON.replace(/St\.\s*Louis/g, 'St. Louis');
-                  
-                  console.log(`[${jobId}] Repaired JSON sample:`, lastResortJSON.substring(0, 200) + '...');
-                  
-                  try {
-                    itinerary = JSON.parse(lastResortJSON);
-                    console.log(`[${jobId}] Last resort JSON repair successful`);
-                  } catch (directParseError) {
-                    // If direct parsing still fails, try the sliding window approach as a final attempt
-                    console.log(`[${jobId}] Direct repair failed, trying JSON substring extraction...`);
-                    
-                    // Try to find valid JSON objects within the repair attempt
-                    const matches = lastResortJSON.match(/(\{[\s\S]*\})/g) || [];
-                    
-                    for (const match of matches) {
-                      try {
-                        const possibleJSON = JSON.parse(match);
-                        if (possibleJSON && typeof possibleJSON === 'object' && possibleJSON.days) {
-                          console.log(`[${jobId}] Found valid JSON object in repair attempt`);
-                          itinerary = possibleJSON;
-                          break;
-                        }
-                      } catch (e) {
-                        // Continue to the next match
-                      }
-                    }
-                    
-                    if (!itinerary) {
-                      console.error(`[${jobId}] All JSON repair attempts failed`);
-                      throw parseError; // Throw the original error
-                    }
-                  }
-                } catch (err4) {
-                  console.error(`[${jobId}] All JSON repair attempts failed`);
-                  throw parseError; // Throw the original error
-                }
-              }
-            }
-          } else {
-            console.error(`[${jobId}] No JSON object found in response`);
-            
-            // Try one more approach - search for valid JSON in substrings
-            try {
-              console.log(`[${jobId}] Attempting to extract valid JSON from content chunks...`);
-              const contentLength = itineraryContent.length;
-              let validJSON = null;
-              
-              // Try parsing from different starting positions
-              for (let startPos = 0; startPos < 200 && startPos < contentLength; startPos++) {
-                const subContent = itineraryContent.substring(startPos);
-                const subMatch = subContent.match(/\{[\s\S]*\}/);
-                
-                if (subMatch) {
-                  try {
-                    validJSON = JSON.parse(subMatch[0]);
-                    console.log(`[${jobId}] Found valid JSON starting at position ${startPos}`);
-                    break;
-                  } catch (e) {
-                    // Continue trying
-                  }
-                }
-              }
-              
-              if (validJSON) {
-                itinerary = validJSON;
-              } else {
-                throw parseError;
-              }
-            } catch (e) {
-              throw parseError;
-            }
-          }
-        }
-        
-        // Quick validation of the itinerary
-        if (!itinerary || typeof itinerary !== 'object') {
-          throw new Error('Parsed result is not a valid object');
-        }
-        
-        console.log(`[${jobId}] Validating coordinates...`);
-        
-        // Ensure coordinates exist for all activities
-        ensureValidCoordinates(itinerary);
-        console.log(`[${jobId}] Coordinates validated successfully`);
-        
-        // Update job status with the successful result
-        console.log(`[${jobId}] Updating job status to completed...`);
-        
-        await updateJobStatus(jobId, 'completed', { 
-          result: { 
-            itinerary, 
-            prompt 
-          }
+      // Check if coordinates exist and are valid
+      if (!isValidCoordinates(activity.coordinates)) {
+        issuesFound++;
+        logger.warn(`Invalid coordinates found for activity "${activity.title}" on day ${dayIndex + 1}`, {
+          coordinates: activity.coordinates,
+          activityIndex,
+          dayIndex
         });
         
-        console.log(`[${jobId}] Job completed successfully!`);
+        // If the coordinates exist but are invalid, try to fix them
+        if (activity.coordinates && typeof activity.coordinates === 'object') {
+          // Try to convert string values to numbers
+          if (typeof activity.coordinates.lat === 'string') {
+            activity.coordinates.lat = parseFloat(activity.coordinates.lat);
+          }
+          if (typeof activity.coordinates.lng === 'string') {
+            activity.coordinates.lng = parseFloat(activity.coordinates.lng);
+          }
+          
+          // If still invalid, use default
+          if (!isValidCoordinates(activity.coordinates)) {
+            activity.coordinates = { ...defaultCoordinates };
+          }
+        } else {
+          // No coordinates or completely invalid, use default
+          activity.coordinates = { ...defaultCoordinates };
+        }
+        
+        logger.debug(`Fixed coordinates for activity "${activity.title}"`, activity.coordinates);
+      }
+    });
+  });
+  
+  if (issuesFound > 0) {
+    logger.info(`Fixed ${issuesFound} coordinate issues in itinerary`);
+  } else {
+    logger.debug('All coordinates in itinerary are valid');
+  }
+  
+  return itinerary;
+}
+
+// Parse and process the OpenAI response from Edge Function
+export async function processItineraryResponse(jobId: string, contentData: any): Promise<boolean> {
+  try {
+    logger.info(`Processing itinerary response for job ${jobId}`);
+    
+    if (!contentData || !contentData.rawContent) {
+      logger.error(`Invalid response data for job ${jobId}`);
+      await updateJobStatus(jobId, 'failed', { 
+        error: 'Invalid response data from Supabase edge function' 
+      });
+      return false;
+    }
+    
+    const itineraryContent = contentData.rawContent;
+    logger.debug(`Content length for job ${jobId}: ${itineraryContent.length} characters`);
+    
+    // Parse the JSON response with error handling
+    try {
+      logger.debug(`Parsing JSON response for job ${jobId}`);
+      
+      // Try direct parse first
+      let itinerary;
+      try {
+        itinerary = JSON.parse(itineraryContent);
+        logger.info(`JSON for job ${jobId} parsed successfully on first attempt`);
       } catch (err) {
         const parseError = err as Error;
-        console.error(`[${jobId}] Failed to parse itinerary JSON:`, parseError);
-        console.error(`[${jobId}] Raw content sample:`, itineraryContent.substring(0, 200));
+        logger.error(`Initial JSON parse failed for job ${jobId}:`, parseError.message);
         
-        // Log the position where the error occurred if available
-        if (parseError instanceof SyntaxError && parseError.message.includes('position')) {
-          const positionMatch = parseError.message.match(/position (\d+)/);
-          if (positionMatch) {
-            const position = parseInt(positionMatch[1]);
-            const errorContext = itineraryContent.substring(
-              Math.max(0, position - 30),
-              Math.min(itineraryContent.length, position + 30)
-            );
-            console.error(`[${jobId}] Error context around position ${position}:`, errorContext);
+        // First try to extract JSON content from the response
+        const jsonMatch = itineraryContent.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          try {
+            logger.debug(`Attempting to extract JSON from response for job ${jobId}`);
+            itinerary = JSON.parse(jsonMatch[0]);
+            logger.info(`JSON extracted and parsed successfully for job ${jobId}`);
+          } catch (err2) {
+            const extractError = err2 as Error;
+            logger.error(`Failed to extract valid JSON for job ${jobId}:`, extractError.message);
+            
+            // Try to sanitize and repair the JSON
+            try {
+              logger.debug(`Attempting to sanitize and repair the JSON for job ${jobId}`);
+              const sanitizedJSON = sanitizeJSON(itineraryContent);
+              
+              itinerary = JSON.parse(sanitizedJSON);
+              logger.info(`Sanitized JSON parsed successfully for job ${jobId}`);
+            } catch (err3) {
+              throw parseError; // Fallback to the original error
+            }
           }
+        } else {
+          throw parseError;
         }
-        
-        console.log(`[${jobId}] Updating job status to failed due to parsing error...`);
-        await updateJobStatus(jobId, 'failed', { 
-          error: 'Unable to parse the generated itinerary data',
-          result: { 
-            rawContent: itineraryContent.substring(0, 500),
-            errorMessage: parseError.message
-          } 
-        });
-      }
-    } catch (fetchError: any) {
-      clearTimeout(timeoutId);
-      
-      if (fetchError.name === 'AbortError') {
-        console.error(`[${jobId}] OpenAI API request timed out after 45 seconds`);
-        await updateJobStatus(jobId, 'failed', {
-          error: 'The request to generate an itinerary timed out. Please try again.'
-        });
-        return;
       }
       
-      // Re-throw for the outer catch block to handle
-      throw fetchError;
+      // Quick validation of the itinerary
+      if (!itinerary || typeof itinerary !== 'object') {
+        throw new Error('Parsed result is not a valid object');
+      }
+      
+      logger.debug(`Validating coordinates for job ${jobId}`);
+      
+      // Ensure coordinates exist for all activities
+      ensureValidCoordinates(itinerary);
+      logger.info(`Coordinates validated successfully for job ${jobId}`);
+      
+      // Update job status with the successful result
+      logger.info(`Updating job ${jobId} status to completed`);
+      await updateJobStatus(jobId, 'completed', { result: { 
+        itinerary,
+        prompt: contentData.prompt, // Include the prompt for reference
+        generatedAt: new Date().toISOString()
+      }});
+      
+      logger.info(`Job ${jobId} completed successfully`);
+      return true;
+    } catch (parseError: any) {
+      logger.error(`JSON parsing error for job ${jobId}:`, {
+        message: parseError.message,
+        stack: parseError.stack?.substring(0, 200)
+      });
+      
+      // Content may be too long to include in logs, write to a debug file in development
+      if (process.env.NODE_ENV === 'development') {
+        try {
+          const fs = require('fs');
+          fs.writeFileSync(`debug-job-${jobId}.txt`, itineraryContent);
+          logger.debug(`Wrote debug content to debug-job-${jobId}.txt`);
+        } catch (fsError) {
+          logger.error(`Failed to write debug file for job ${jobId}:`, fsError);
+        }
+      }
+      
+      // Update job status to failed
+      await updateJobStatus(jobId, 'failed', {
+        error: `Failed to parse itinerary JSON: ${parseError.message}`
+      });
+      
+      logger.info(`Job ${jobId} failed due to JSON parsing error`);
+      return false;
     }
   } catch (error: any) {
-    console.error(`[${jobId}] Error processing itinerary job:`, error);
+    logger.error(`Error processing itinerary job ${jobId}:`, {
+      message: error.message,
+      stack: error.stack?.substring(0, 200)
+    });
     await updateJobStatus(jobId, 'failed', { error: error.message || 'Unknown error' });
+    return false;
   }
 }
 
-// Helper function to ensure all activities have valid coordinates
-function ensureValidCoordinates(itinerary: any) {
-  if (!itinerary.days || !Array.isArray(itinerary.days)) {
-    itinerary.days = [];
-    return;
-  }
-  
-  console.log('Validating coordinates for all activities...');
-  let issuesFixed = 0;
-  
-  for (const day of itinerary.days) {
-    if (!day.activities || !Array.isArray(day.activities)) {
-      day.activities = [];
-      continue;
-    }
+// Process itinerary job by making a direct OpenAI API call
+export async function processItineraryJob(
+  jobId: string, 
+  surveyData: any, 
+  promptGenerator: ((surveyData: any) => string) | string,
+  apiKey: string
+): Promise<boolean> {
+  try {
+    logger.info(`Processing itinerary job for job ${jobId}`);
     
-    for (const activity of day.activities) {
-      // Skip if not an object
-      if (!activity || typeof activity !== 'object') continue;
-      
-      // Ensure coordinates exist and are properly formatted
-      if (!activity.coordinates || typeof activity.coordinates !== 'object') {
-        console.log(`Missing coordinates for activity "${activity.title}", adding default coordinates`);
-        activity.coordinates = { lat: 40.7128, lng: -74.0060 }; // Default to NYC coordinates
-        issuesFixed++;
-      } else {
-        // Make sure lat and lng are numbers
-        let coordinateFixed = false;
-        
-        if (typeof activity.coordinates.lat !== 'number') {
-          console.log(`Invalid lat coordinate for activity "${activity.title}": ${activity.coordinates.lat} (${typeof activity.coordinates.lat})`);
-          activity.coordinates.lat = parseFloat(activity.coordinates.lat) || 40.7128;
-          coordinateFixed = true;
-          issuesFixed++;
-        }
-        if (typeof activity.coordinates.lng !== 'number') {
-          console.log(`Invalid lng coordinate for activity "${activity.title}": ${activity.coordinates.lng} (${typeof activity.coordinates.lng})`);
-          activity.coordinates.lng = parseFloat(activity.coordinates.lng) || -74.0060;
-          coordinateFixed = true;
-          issuesFixed++;
-        }
-        
-        if (coordinateFixed) {
-          console.log(`Fixed coordinates for activity "${activity.title}": ${JSON.stringify(activity.coordinates)}`);
-        }
-      }
-    }
-  }
-  
-  console.log(`Coordinates validation complete. Fixed ${issuesFixed} issues.`);
-}
-
-// Helper function to sanitize and repair JSON string
-function sanitizeJSON(jsonString: string): string {
-  console.log('Sanitizing JSON string...');
-  
-  // Step 1: Remove any markdown code block formatting
-  let cleanedJSON = jsonString.replace(/```json\s*|\s*```/g, '');
-  
-  // Step 2: Remove any non-JSON content before the first curly brace and after the last curly brace
-  const firstCurlyIndex = cleanedJSON.indexOf('{');
-  const lastCurlyIndex = cleanedJSON.lastIndexOf('}');
-  
-  if (firstCurlyIndex !== -1 && lastCurlyIndex !== -1 && lastCurlyIndex > firstCurlyIndex) {
-    cleanedJSON = cleanedJSON.substring(firstCurlyIndex, lastCurlyIndex + 1);
-  }
-  
-  // Step 3: Fix dollar sign issues in price fields
-  // Replace patterns like "price": "$", "priceRange": "$$", etc. with proper escaped versions
-  cleanedJSON = cleanedJSON.replace(/"(price|priceRange|cost|estimatedCost)"(\s*):(\s*)"(\$+)"/g, '"$1"$2:$3"\\$4"');
-  
-  // Step 4: Fix potential issues with double quotes
-  // Replace single quotes used for property names with double quotes
-  cleanedJSON = cleanedJSON.replace(/(\s*)'([^']+)'(\s*):(\s*)/g, '$1"$2"$3:$4');
-  
-  // Step 5: Fix quotes inside string values
-  // This regex works for most cases but isn't perfect for nested quotes
-  let inString = false;
-  let inEscape = false;
-  let fixedJSON = '';
-  let i = 0;
-  
-  while (i < cleanedJSON.length) {
-    const char = cleanedJSON[i];
-    
-    if (inEscape) {
-      // Always add escaped characters directly
-      fixedJSON += char;
-      inEscape = false;
-    } else if (char === '\\') {
-      fixedJSON += char;
-      inEscape = true;
-    } else if (char === '"' && !inEscape) {
-      inString = !inString;
-      fixedJSON += char;
-    } else if (char === "'" && inString) {
-      // Replace single quotes inside strings with escaped double quotes
-      fixedJSON += "\\'";
-    } else if (char === '$' && inString) {
-      // Properly escape dollar signs in strings
-      fixedJSON += "\\$";
+    // Use the provided prompt or generate one using the generator function
+    let prompt: string;
+    if (typeof promptGenerator === 'function') {
+      prompt = promptGenerator(surveyData);
+      logger.debug(`Generated prompt for job ${jobId}, length: ${prompt.length} characters`);
     } else {
-      fixedJSON += char;
+      prompt = promptGenerator;
+      logger.debug(`Using pre-formulated prompt for job ${jobId}, length: ${prompt.length} characters`);
     }
-    i++;
+    
+    // Call OpenAI API directly
+    logger.info(`Calling OpenAI API for job ${jobId}`);
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-3.5-turbo',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are an expert travel planner. Generate a detailed travel itinerary based on the user\'s preferences. Return your response in a structured JSON format only, with no additional text, explanation, or markdown formatting. Do not wrap the JSON in code blocks. Ensure all property names use double quotes. IMPORTANT: Every activity MUST include a valid "coordinates" object with "lat" and "lng" numerical values - never omit coordinates or use empty objects. For price fields, DO NOT use $ symbols directly - use price descriptors like "Budget", "Moderate", "Expensive" or numeric values without currency symbols.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 3000,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`OpenAI API error: ${error.error?.message || 'Unknown error'}`);
+    }
+
+    const openAIData = await response.json();
+    const rawContent = openAIData.choices[0].message.content;
+    
+    // Process the raw response
+    await processItineraryResponse(jobId, { 
+      rawContent, 
+      prompt,
+      usage: openAIData.usage
+    });
+    
+    return true;
+  } catch (error: any) {
+    logger.error(`Failed to process itinerary job ${jobId}:`, error);
+    
+    // Update job status to failed
+    await updateJobStatus(jobId, 'failed', {
+      error: `OpenAI API error: ${error.message || 'Unknown error'}`
+    });
+    
+    return false;
   }
-  
-  // Step 6: Fix missing quotes around property values
-  // This is a simplified approach and might not catch all cases
-  fixedJSON = fixedJSON.replace(/:\s*([^",{\[\]\s][^,}\]\s]*)(\s*[,}])/g, ': "$1"$2');
-  
-  // Step 7: Fix comma issues (trailing commas and missing commas)
-  fixedJSON = fixedJSON.replace(/,\s*}/g, '}'); // Remove trailing commas
-  fixedJSON = fixedJSON.replace(/,\s*,/g, ','); // Remove double commas
-  
-  // Step 8: Fix common property name issues in price and cost fields (direct approach for most common errors)
-  fixedJSON = fixedJSON.replace(/([{,]\s*)price(\s*:)/g, '$1"price"$2');
-  fixedJSON = fixedJSON.replace(/([{,]\s*)priceRange(\s*:)/g, '$1"priceRange"$2');
-  fixedJSON = fixedJSON.replace(/([{,]\s*)cost(\s*:)/g, '$1"cost"$2');
-  fixedJSON = fixedJSON.replace(/([{,]\s*)estimatedCost(\s*:)/g, '$1"estimatedCost"$2');
-  
-  console.log('Cleaned JSON sample:', fixedJSON.substring(0, 200) + '...');
-  
-  return fixedJSON;
 } 

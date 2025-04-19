@@ -122,12 +122,20 @@ const JobStatusPoller: React.FC<JobStatusPollerProps> = ({
         // Handle different status cases
         switch (data.status) {
           case 'completed':
-            if (data.result?.itinerary) {
-              console.log(`Job ${jobId} completed successfully`);
+            if (data.result?.rawContent) {
+              console.log(`[${jobId}] Job contains raw content`);
+              
+              // The result has the raw content from OpenAI - client will parse
+              onComplete(data.result);
+            } else if (data.result?.itinerary) {
+              console.log(`[${jobId}] Job contains parsed itinerary`);
+              
+              // Legacy format with parsed itinerary
               onComplete(data.result);
             } else {
-              const errMsg = 'Completed job has no itinerary result';
-              console.error(errMsg);
+              // No recognizable result format
+              const errMsg = 'Completed job has no valid result format';
+              console.error(`[${jobId}] ${errMsg}`);
               setErrorDetails(errMsg);
               onError(errMsg);
             }

@@ -1,157 +1,125 @@
 # AI Travel Agent
 
-A modern web application that uses AI to generate personalized travel itineraries based on user preferences.
+An AI-powered travel agent that generates personalized travel itineraries using OpenAI and Supabase.
 
-## Features
+## Architecture
 
-- Create personalized trip itineraries using AI
-- View trips in calendar and map formats
-- Track and manage travel budgets
-- Edit and customize generated itineraries
-- Save and share trip plans
+This application uses a serverless architecture with Next.js, Supabase, and OpenAI:
 
-## Technologies Used
+1. **Frontend**: Next.js React application where users submit travel preferences
+2. **Backend API**: Next.js API routes that handle job creation and status checks
+3. **Database**: Supabase PostgreSQL database to store jobs and results
+4. **Processing**: Supabase Edge Functions to handle the OpenAI API calls
 
-- Next.js (React framework)
-- TypeScript
-- Tailwind CSS
-- React Icons
-- React Calendar
-- Mapbox GL for maps
+### Key Components
 
-## Getting Started
+- `app/api/generate-itinerary/route.ts`: API endpoint that receives travel survey data and creates jobs
+- `app/api/job-status/route.ts`: API endpoint to check job status
+- `app/api/job-processor.ts`: Utilities for processing job responses
+- `lib/supabase.ts`: Supabase client and job management utilities
+- `lib/logger.ts`: Structured logging system
+- `supabase/functions/generate-itinerary/index.ts`: Supabase Edge Function that calls OpenAI
+
+## How It Works
+
+1. User submits travel preferences through the UI
+2. The frontend calls the `/api/generate-itinerary` endpoint
+3. The server creates a job in Supabase and triggers a Supabase Edge Function
+4. The Edge Function calls OpenAI to generate a travel itinerary
+5. Results are stored in Supabase
+6. The frontend polls the `/api/job-status` endpoint to check progress
+7. When the job is complete, the frontend displays the generated itinerary
+
+## Setup
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 16+
+- Supabase account
+- OpenAI API key
+
+### Environment Variables
+
+Create a `.env.local` file with the following variables:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+OPENAI_API_KEY=your_openai_api_key
+```
+
+For the Supabase Edge Function, you'll need to set these secrets:
+
+```bash
+supabase secrets set OPENAI_API_KEY=your_openai_api_key
+```
+
+### Database Setup
+
+Create a `jobs` table in your Supabase database:
+
+```sql
+CREATE TABLE jobs (
+  id BIGINT PRIMARY KEY,
+  status TEXT,
+  result JSONB,
+  error TEXT,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
 
 ### Installation
 
 1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Deploy the Supabase Edge Function:
+   ```bash
+   npm run supabase:deploy-functions
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Development
+
+### Testing the Supabase Connection
+
 ```bash
-git clone https://github.com/yourusername/ai-travel-agent.git
-cd ai-travel-agent
+npm run test:supabase
 ```
 
-2. Install dependencies
+### Creating a Test Job
+
 ```bash
-npm install
+npm run test:mock-job
 ```
 
-3. Run the development server
+### Testing the Edge Function Locally
+
 ```bash
-npm run dev
+npm run supabase:serve-functions
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+## Troubleshooting
 
-## Project Structure
+### Job Processing Issues
 
-- `/app` - Next.js app router pages
-- `/components` - Reusable UI components
-- `/components/trips` - Trip-related components
-- `/components/layout` - Layout components
-- `/public` - Static assets
+If jobs get stuck in the "processing" state:
 
-## Roadmap
+1. Check the Supabase logs for the Edge Function
+2. Look at the application logs in the `logs/` directory
+3. Check if the OpenAI API key is valid
 
-See the [todo.md](todo.md) file for the list of planned features and current development status.
+### Database Issues
 
-## Supabase Setup
-
-This application uses Supabase for persistently storing job status information. To set up Supabase:
-
-1. **Create a Supabase Account**:
-   - Go to [Supabase](https://supabase.com/) and sign up for a free account
-   - Create a new project with a name of your choice
-
-2. **Create the Jobs Table**:
-   - Go to the "Table Editor" in your Supabase dashboard
-   - Click "Create a new table"
-   - Name the table `jobs`
-   - Add the following columns:
-     - `id` (type: text, primary key)
-     - `status` (type: text)
-     - `result` (type: jsonb, nullable)
-     - `error` (type: text, nullable)
-     - `created_at` (type: timestamptz, default: now())
-     - `updated_at` (type: timestamptz)
-
-3. **Get Your API Keys**:
-   - Go to "Project Settings" > "API"
-   - Find your project URL and anon/public key
-   - Add these to your `.env.local` file:
-     ```
-     NEXT_PUBLIC_SUPABASE_URL=your_project_url
-     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-     ```
-
-4. **Set Row-Level Security** (Optional but Recommended):
-   - Go to the "Authentication" > "Policies" section
-   - Create policies that restrict access as needed
-
-## OpenAI API Setup
-
-To generate travel itineraries, you need an OpenAI API key:
-
-1. **Create an OpenAI Account**:
-   - Go to [OpenAI](https://platform.openai.com/signup) and sign up for an account
-   - Navigate to the API section
-
-2. **Create an API Key**:
-   - Go to "API keys" in your account
-   - Click "Create new secret key"
-   - Add this to your `.env.local` file:
-     ```
-     OPENAI_API_KEY=your_openai_api_key
-     ```
-
-## Google Maps API Setup
-
-To use the Google Maps functionality in this application, you need to set up a valid API key:
-
-1. **Create a Google Cloud Project**:
-   - Go to the [Google Cloud Console](https://console.cloud.google.com/)
-   - Create a new project or select an existing one
-
-2. **Enable the Maps JavaScript API**:
-   - Go to "APIs & Services" > "Library"
-   - Search for "Maps JavaScript API" and enable it
-   - Also enable "Places API" if you're using location search functionality
-
-3. **Create API Key**:
-   - Go to "APIs & Services" > "Credentials"
-   - Click "Create Credentials" > "API Key"
-   - A new API key will be created
-
-4. **Restrict the API Key** (recommended for production):
-   - In the credentials page, find your API key and click "Edit"
-   - Under "Application restrictions", you can restrict by:
-     - HTTP referrers (websites): Add your domains
-     - IP addresses: Add your server IPs
-   - Under "API restrictions", restrict to Maps JavaScript API and any other APIs you're using
-
-5. **Add to Environment Variables**:
-   - Create a `.env.local` file in the project root (if it doesn't exist)
-   - Add this line with your key: `GOOGLE_MAPS_API_KEY=your_api_key_here`
-   - The API key is handled securely through a server-side API route, not exposed to the client
-   - Restart your development server for changes to take effect
-
-6. **Enable Billing**:
-   - Google Maps Platform requires a billing account
-   - Set up billing in Google Cloud Console
-   - Google provides a monthly free tier that's sufficient for many small to medium applications
-
-### Troubleshooting API Key Issues
-
-If you see `InvalidKeyMapError` or other API key related errors:
-
-1. Check that your key is correctly added to `.env.local`
-2. Verify the key is correctly formatted without spaces or quotes
-3. Make sure you've enabled the Maps JavaScript API in your Google Cloud project
-4. Check if you have billing enabled
-5. If using API restrictions, ensure your domain/IP is properly allowed
-6. For local development, you might need to set the API key to allow localhost
+1. Verify your Supabase credentials in `.env.local`
+2. Make sure the `jobs` table exists in your Supabase database
+3. Check that the database permissions allow read/write access to the `jobs` table
 
 ## License
 

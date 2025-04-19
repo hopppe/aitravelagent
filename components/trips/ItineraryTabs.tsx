@@ -23,19 +23,19 @@ type Day = {
 };
 
 type Budget = {
-  accommodation: number;
-  food: number;
-  activities: number;
-  transport: number;
-  total: number;
+  accommodation?: number;
+  food?: number;
+  activities?: number;
+  transport?: number;
+  total?: number;
 };
 
 interface ItineraryTabsProps {
   days: Day[];
-  budget: Budget;
+  budget: Budget | undefined;
 }
 
-export default function ItineraryTabs({ days, budget }: ItineraryTabsProps) {
+export default function ItineraryTabs({ days, budget = {} }: ItineraryTabsProps) {
   const [activeView, setActiveView] = useState<'calendar' | 'map' | 'budget'>('calendar');
   
   return (
@@ -152,10 +152,20 @@ function ActivityCard({ activity }: { activity: Activity }) {
 
 // Internal component for budget view
 function BudgetView({ budget }: { budget: Budget }) {
+  // Default values if budget properties are undefined
+  const total = budget?.total || 0;
+  const accommodation = budget?.accommodation || 0;
+  const food = budget?.food || 0;
+  const activities = budget?.activities || 0;
+  const transport = budget?.transport || 0;
+  
+  // Calculate total if not provided but we have component values
+  const calculatedTotal = total || (accommodation + food + activities + transport);
+  
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="mb-6">
-        <p className="text-3xl font-bold text-primary">${budget.total}</p>
+        <p className="text-3xl font-bold text-primary">${calculatedTotal}</p>
         <p className="text-gray-500">Total trip budget</p>
       </div>
       
@@ -170,7 +180,7 @@ function BudgetView({ budget }: { budget: Budget }) {
             <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
             <span>Accommodation</span>
           </p>
-          <p>${budget.accommodation}</p>
+          <p>${accommodation}</p>
         </div>
         
         <div className="flex justify-between items-center">
@@ -178,7 +188,7 @@ function BudgetView({ budget }: { budget: Budget }) {
             <span className="w-3 h-3 bg-green-500 rounded-full"></span>
             <span>Food</span>
           </p>
-          <p>${budget.food}</p>
+          <p>${food}</p>
         </div>
         
         <div className="flex justify-between items-center">
@@ -186,7 +196,7 @@ function BudgetView({ budget }: { budget: Budget }) {
             <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
             <span>Activities</span>
           </p>
-          <p>${budget.activities}</p>
+          <p>${activities}</p>
         </div>
         
         <div className="flex justify-between items-center">
@@ -194,7 +204,7 @@ function BudgetView({ budget }: { budget: Budget }) {
             <span className="w-3 h-3 bg-red-500 rounded-full"></span>
             <span>Transport</span>
           </p>
-          <p>${budget.transport}</p>
+          <p>${transport}</p>
         </div>
       </div>
       
@@ -203,19 +213,19 @@ function BudgetView({ budget }: { budget: Budget }) {
         <div className="w-full h-4 rounded-full overflow-hidden flex">
           <div
             className="h-full bg-blue-500"
-            style={{ width: `${(budget.accommodation / budget.total) * 100}%` }}
+            style={{ width: `${calculatedTotal > 0 ? (accommodation / calculatedTotal) * 100 : 0}%` }}
           ></div>
           <div
             className="h-full bg-green-500"
-            style={{ width: `${(budget.food / budget.total) * 100}%` }}
+            style={{ width: `${calculatedTotal > 0 ? (food / calculatedTotal) * 100 : 0}%` }}
           ></div>
           <div
             className="h-full bg-yellow-500"
-            style={{ width: `${(budget.activities / budget.total) * 100}%` }}
+            style={{ width: `${calculatedTotal > 0 ? (activities / calculatedTotal) * 100 : 0}%` }}
           ></div>
           <div
             className="h-full bg-red-500"
-            style={{ width: `${(budget.transport / budget.total) * 100}%` }}
+            style={{ width: `${calculatedTotal > 0 ? (transport / calculatedTotal) * 100 : 0}%` }}
           ></div>
         </div>
       </div>

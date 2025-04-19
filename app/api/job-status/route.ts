@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
 import { getJobStatus } from '../../../lib/supabase';
+import { processRawResponse } from '../../../lib/itinerary-processor';
+import { logger } from '../../../lib/logger';
 
-// Maximum duration to handle potential Supabase connection issues
+// Configure runtime
 export const runtime = 'nodejs';
-export const maxDuration = 10; // 10 seconds for a status check should be plenty
+export const maxDuration = 60; // 60 seconds - plenty for a status check
+
+// Use dynamic configurations
+export const dynamic = 'force-dynamic';
 
 // Helper function to get DB-compatible ID (copied for debugging)
 function getDbCompatibleId(id: string): number {
@@ -35,86 +40,71 @@ function getDbCompatibleId(id: string): number {
 }
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const jobId = searchParams.get('jobId');
-  
-  console.log(`Job status API called at ${new Date().toISOString()}`);
-  console.log(`Environment: ${process.env.NODE_ENV}`);
-  console.log(`Supabase config: URL exists = ${!!process.env.NEXT_PUBLIC_SUPABASE_URL}, Key exists = ${!!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`);
-  
-  if (!jobId) {
-    console.error('Missing jobId parameter in request');
-    return NextResponse.json(
-      { error: 'Missing jobId parameter' },
-      { status: 400 }
-    );
-  }
-  
-  console.log(`Checking status for job: ${jobId}`);
-  
-  // Debug info about the job ID conversion for logging
-  const dbCompatibleId = getDbCompatibleId(jobId);
-  console.log(`Job ID conversion: "${jobId}" -> ${dbCompatibleId} (db-compatible)`);
-  
   try {
-    console.log(`Getting status for job ${jobId}`);
-    const jobStatus = await getJobStatus(jobId);
+    logger.info(`Job status API called at ${new Date().toISOString()}`);
     
-    console.log(`Job ${jobId} status result:`, {
-      statusFound: jobStatus.status !== 'not_found',
-      status: jobStatus.status,
-      hasResult: !!jobStatus.result,
-      hasError: !!jobStatus.error
-    });
+    // Get the job ID from the query params
+    const { searchParams } = new URL(request.url);
+    const jobId = searchParams.get('jobId');
     
-    if (jobStatus.status === 'not_found') {
-      console.log(`Job ${jobId} not found`);
+    if (!jobId) {
+      logger.error('Missing jobId parameter');
       return NextResponse.json(
-        { 
-          error: 'Job not found',
-          debug: {
-            jobId,
-            dbCompatibleId,
-            timestamp: new Date().toISOString(),
-            environment: process.env.NODE_ENV || 'unknown',
-            supabaseConfigured: !!process.env.NEXT_PUBLIC_SUPABASE_URL && !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-          }
-        },
-        { status: 404 }
+        { error: 'Missing jobId parameter' },
+        { status: 400 }
       );
     }
     
-    console.log(`Returning job status: ${jobStatus.status}`);
-    return NextResponse.json({
-      ...jobStatus,
-      _debug: {
-        originalJobId: jobId,
-        dbCompatibleId,
-        timestamp: new Date().toISOString()
+    logger.info(`Checking status for job: ${jobId}`);
+    
+    // Debug info about the job ID conversion for logging
+    const dbCompatibleId = getDbCompatibleId(jobId);
+    logger.debug(`Job ID conversion: "${jobId}" -> ${dbCompatibleId} (db-compatible)`);
+    
+    // Get the job status from Supabase
+    const statusResult = await getJobStatus(jobId);
+    
+    logger.info(`Job ${jobId} status result:`, statusResult);
+    
+    // For completed jobs with raw results that haven't been processed yet,
+    // process them and return the processed data
+    if (
+      statusResult.statusFound &&
+      statusResult.status === 'completed' &&
+      statusResult.hasRawResult &&
+      !statusResult.result?.processed
+    ) {
+      try {
+        // Process the raw OpenAI response
+        const processedItinerary = processRawResponse(statusResult.rawResult);
+        
+        // Return the processed itinerary along with the status
+        return NextResponse.json({
+          status: statusResult.status,
+          itinerary: processedItinerary
+        });
+      } catch (processingError: any) {
+        logger.error(`Error processing raw response for job ${jobId}:`, processingError);
+        return NextResponse.json({
+          status: 'failed',
+          error: `Error processing response: ${processingError.message}`
+        });
       }
+    }
+    
+    // Return the status as-is if it's not a completed job with raw results
+    logger.info(`Returning job status: ${statusResult.status}`);
+    return NextResponse.json({
+      status: statusResult.status,
+      hasResult: statusResult.hasResult,
+      hasError: statusResult.hasError,
+      error: statusResult.error,
+      result: statusResult.result
     });
   } catch (error: any) {
-    console.error(`Error retrieving job status for ${jobId}:`, error);
-    
-    // Enhanced error logging
-    console.error('Error details:', {
-      message: error.message,
-      stack: error.stack?.substring(0, 200),
-      name: error.name,
-      jobId,
-      dbCompatibleId
-    });
-    
+    logger.error('Error in job status API:', error);
     return NextResponse.json(
-      { 
-        error: 'Failed to retrieve job status', 
-        message: error.message,
-        _debug: {
-          originalJobId: jobId,
-          dbCompatibleId,
-          timestamp: new Date().toISOString()
-        }
-      },
+      { error: `Server error: ${error.message}` },
       { status: 500 }
     );
   }

@@ -255,11 +255,48 @@ export default function TripSurveyForm() {
     console.log('Job completed with result:', result);
     
     try {
-      if (!result || !result.itinerary) {
-        throw new Error('Invalid result from job');
+      // Check if we have rawContent from the OpenAI API
+      if (result && result.rawContent) {
+        console.log('Processing raw content from OpenAI');
+        
+        // Try to parse the JSON from the raw content
+        try {
+          // First try direct JSON parse
+          const itinerary = JSON.parse(result.rawContent);
+          handleStoreItineraryAndNavigate(itinerary);
+          return;
+        } catch (jsonError) {
+          console.error('Error parsing raw JSON:', jsonError);
+          
+          // Try to extract JSON if it's wrapped in other text
+          const jsonMatch = result.rawContent.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            try {
+              const itinerary = JSON.parse(jsonMatch[0]);
+              console.log('Successfully extracted JSON from raw content');
+              handleStoreItineraryAndNavigate(itinerary);
+              return;
+            } catch (extractError) {
+              console.error('Error parsing extracted JSON:', extractError);
+            }
+          }
+          
+          // If all parsing attempts fail, show error
+          setError('Failed to parse the generated itinerary. Please try again.');
+          setErrorDetails('The AI generated an invalid JSON response.');
+          setIsGenerating(false);
+          return;
+        }
       }
       
-      handleStoreItineraryAndNavigate(result.itinerary);
+      // Fallback to old format if rawContent is not available
+      if (result && result.itinerary) {
+        handleStoreItineraryAndNavigate(result.itinerary);
+        return;
+      }
+      
+      // If we reach here, something went wrong
+      throw new Error('Invalid result format from job');
     } catch (err) {
       console.error('Error processing job result:', err);
       setError('Error processing the generated itinerary');
@@ -288,8 +325,50 @@ export default function TripSurveyForm() {
       }
       
       console.log(`Itinerary has ${itinerary.days.length} days`);
+
+      // Validate and fix coordinates client-side
+      let coordinatesFixed = 0;
       
-      // Check coordinates before storing
+      for (const day of itinerary.days) {
+        if (!day.activities || !Array.isArray(day.activities)) {
+          day.activities = [];
+          continue;
+        }
+        
+        for (const activity of day.activities) {
+          // Skip if not an object
+          if (!activity || typeof activity !== 'object') continue;
+          
+          // Ensure coordinates exist and are properly formatted
+          if (!activity.coordinates || typeof activity.coordinates !== 'object') {
+            activity.coordinates = { lat: 40.7128, lng: -74.0060 }; // Default to NYC coordinates
+            coordinatesFixed++;
+          } else {
+            // Make sure lat and lng are numbers
+            if (typeof activity.coordinates.lat !== 'number' && activity.coordinates.lat !== undefined) {
+              activity.coordinates.lat = parseFloat(String(activity.coordinates.lat)) || 40.7128;
+              coordinatesFixed++;
+            } else if (activity.coordinates.lat === undefined) {
+              activity.coordinates.lat = 40.7128;
+              coordinatesFixed++;
+            }
+            
+            if (typeof activity.coordinates.lng !== 'number' && activity.coordinates.lng !== undefined) {
+              activity.coordinates.lng = parseFloat(String(activity.coordinates.lng)) || -74.0060;
+              coordinatesFixed++;
+            } else if (activity.coordinates.lng === undefined) {
+              activity.coordinates.lng = -74.0060;
+              coordinatesFixed++;
+            }
+          }
+        }
+      }
+      
+      if (coordinatesFixed > 0) {
+        console.log(`Fixed ${coordinatesFixed} coordinate issues in the itinerary`);
+      }
+      
+      // Check coordinates after validation
       if (itinerary.days.length > 0 && itinerary.days[0].activities?.length > 0) {
         const firstActivity = itinerary.days[0].activities[0];
         console.log('First activity before storing:', {

@@ -5,16 +5,85 @@ import { FaEdit, FaShare } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import ItineraryTabs from '../../../components/trips/ItineraryTabs';
 import BookingServices from '../../../components/trips/BookingServices';
+import useBudgetCalculator from '../../../hooks/useBudgetCalculator';
 
-// Helper function to ensure valid coordinates
+// Helper function to ensure valid coordinates and data structure
 function ensureValidCoordinates(itinerary: any) {
   if (!itinerary || !itinerary.days || !Array.isArray(itinerary.days)) {
     return itinerary;
   }
   
-  console.log('Validating coordinates in loaded itinerary...');
+  console.log('Validating itinerary data structure...');
   let issuesFixed = 0;
   
+  // Ensure budget exists and has proper structure
+  if (!itinerary.budget || typeof itinerary.budget !== 'object') {
+    console.log('Missing budget object, creating default budget');
+    itinerary.budget = {
+      accommodation: 0,
+      food: 0,
+      activities: 0,
+      transport: 0,
+      total: 0
+    };
+    issuesFixed++;
+  } else {
+    // Calculate budget from activities if necessary
+    let totalActivitiesCost = 0;
+    
+    // Ensure all budget properties exist with defaults
+    if (itinerary.budget.accommodation === undefined) {
+      console.log('Missing budget.accommodation, defaulting to 0');
+      itinerary.budget.accommodation = 0;
+      issuesFixed++;
+    }
+    
+    if (itinerary.budget.food === undefined) {
+      console.log('Missing budget.food, defaulting to 0');
+      itinerary.budget.food = 0;
+      issuesFixed++;
+    }
+    
+    if (itinerary.budget.transport === undefined) {
+      console.log('Missing budget.transport, defaulting to 0');
+      itinerary.budget.transport = 0;
+      issuesFixed++;
+    }
+    
+    // Calculate activities cost from actual activities if needed
+    if (itinerary.budget.activities === undefined) {
+      console.log('Missing budget.activities, calculating from activity costs');
+      
+      // Sum up all activity costs
+      for (const day of itinerary.days) {
+        if (day.activities && Array.isArray(day.activities)) {
+          for (const activity of day.activities) {
+            if (activity && typeof activity.cost === 'number') {
+              totalActivitiesCost += activity.cost;
+            }
+          }
+        }
+      }
+      
+      itinerary.budget.activities = totalActivitiesCost;
+      issuesFixed++;
+    }
+    
+    // Ensure total is present and accurate
+    const calculatedTotal = 
+      itinerary.budget.accommodation + 
+      itinerary.budget.food + 
+      itinerary.budget.activities + 
+      itinerary.budget.transport;
+    
+    if (itinerary.budget.total === undefined || itinerary.budget.total !== calculatedTotal) {
+      console.log(`${itinerary.budget.total === undefined ? 'Missing' : 'Incorrect'} budget.total, updating to calculated total: ${calculatedTotal}`);
+      itinerary.budget.total = calculatedTotal;
+      issuesFixed++;
+    }
+  }
+  
+  // Process all days and activities
   for (const day of itinerary.days) {
     if (!day.activities || !Array.isArray(day.activities)) {
       day.activities = [];
@@ -62,10 +131,17 @@ function ensureValidCoordinates(itinerary: any) {
           console.log(`Fixed coordinates for activity "${activity.title}": ${JSON.stringify(activity.coordinates)}`);
         }
       }
+      
+      // Ensure cost is a number
+      if (typeof activity.cost !== 'number') {
+        console.log(`Converting cost for activity "${activity.title}" from ${typeof activity.cost} to number`);
+        activity.cost = parseFloat(String(activity.cost)) || 0;
+        issuesFixed++;
+      }
     }
   }
   
-  console.log(`Coordinates validation complete. Fixed ${issuesFixed} issues.`);
+  console.log(`Validation complete. Fixed ${issuesFixed} issues.`);
   return itinerary;
 }
 
@@ -233,6 +309,9 @@ export default function GeneratedTripPage() {
   const router = useRouter();
   const [itinerary, setItinerary] = useState(mockItinerary);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Use our budget calculator hook to get normalized budget values
+  const normalizedBudget = useBudgetCalculator(itinerary);
 
   useEffect(() => {
     // Try to get the itinerary from localStorage
@@ -371,13 +450,13 @@ export default function GeneratedTripPage() {
         </div>
         <div className="flex-1 min-w-[250px]">
           <h2 className="font-semibold text-lg mb-2">Total Budget</h2>
-          <p className="text-2xl font-bold text-primary">${itinerary.budget.total}</p>
+          <p className="text-2xl font-bold text-primary">${normalizedBudget.total}</p>
           <p className="text-sm text-gray-500">View detailed breakdown below</p>
         </div>
       </div>
 
       {/* Tabs - Calendar, Map, Budget Views */}
-      <ItineraryTabs days={itinerary.days} budget={itinerary.budget} />
+      <ItineraryTabs days={itinerary.days} budget={normalizedBudget} />
       
       {/* Booking Services */}
       <div className="mt-10">

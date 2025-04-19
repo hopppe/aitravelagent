@@ -1,7 +1,10 @@
 {
-  "/api/generate-itinerary/route": "app/api/generate-itinerary/route.js",
-  "/api/google-maps/route": "app/api/google-maps/route.js",
-  "/api/job-status/route": "app/api/job-status/route.js",
+  "/page": "app/page.js",
+  "/trips/generated-trip/page": "app/trips/generated-trip/page.js",
   "/trips/new/page": "app/trips/new/page.js",
-  "/trips/generated-trip/page": "app/trips/generated-trip/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/test-job/route": "app/api/test-job/route.js",
+  "/api/generate-itinerary/route": "app/api/generate-itinerary/route.js",
+  "/api/job-status/route": "app/api/job-status/route.js",
+  "/api/google-maps/route": "app/api/google-maps/route.js"
 }
